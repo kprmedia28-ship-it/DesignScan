@@ -37,6 +37,7 @@
     <nav class="nav" aria-label="Primary">
       <a href="#how">How it works</a>
       <a href="#criteria">What we measure</a>
+      <a href="#run-scan">Real scan</a>
       <a href="#report">Sample report</a>
     </nav>
     <a class="btn btn--ghost nav__cta" href="#scan">Scan a page</a>
@@ -178,7 +179,43 @@
 
   <div class="ruler" aria-hidden="true"></div>
 
-  <!-- SAMPLE REPORT -->
+  <!-- REAL SCANNER -->
+  <section class="scanner wrap" id="run-scan" aria-labelledby="scanner-title">
+    <header class="sec-head">
+      <p class="eyebrow">Try it on your own page</p>
+      <h2 id="scanner-title">Scan your HTML — for real</h2>
+      <p class="sec-sub">Paste the page source or drop in an <code>.html</code> file. DesignScan reads it against the rubric right here in your browser — nothing is uploaded anywhere.</p>
+    </header>
+
+    <div class="scanner__panel">
+      <div class="scanner__input">
+        <label class="scan__label" for="html-input">Page source (HTML)</label>
+        <textarea id="html-input" class="scanner__textarea" rows="8"
+          placeholder="Right-click your page → View Page Source → copy/paste here. Or use the file picker below."></textarea>
+        <div class="scanner__controls">
+          <label class="btn btn--ghost scanner__file">
+            <input type="file" id="html-file" accept=".html,.htm,text/html" hidden />
+            Choose .html file
+          </label>
+          <button class="btn btn--solid" id="run-scan-btn" type="button">Run real scan</button>
+          <span class="scanner__hint" id="scanner-hint"></span>
+        </div>
+      </div>
+
+      <div class="scanner__results" id="scanner-results" hidden>
+        <div class="report__bar">
+          <span class="report__file" id="result-file">your-page.html</span>
+          <span class="report__score">Overall <strong id="result-score">—</strong>/100</span>
+        </div>
+        <ul class="submeters" id="result-submeters" aria-label="Sub-scores by criterion"></ul>
+        <ul class="issues" id="result-issues"></ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="ruler" aria-hidden="true"></div>
+
+
   <section class="report wrap" id="report" aria-labelledby="report-title">
     <header class="sec-head">
       <p class="eyebrow">What lands in your inbox</p>
@@ -221,6 +258,49 @@
           </div>
         </li>
       </ul>
+    </div>
+  </section>
+
+  <div class="ruler" aria-hidden="true"></div>
+
+  <!-- FIX MY WEBSITE SERVICE -->
+  <section class="fixit wrap" id="fix-my-website" aria-labelledby="fixit-title">
+    <div class="fixit__card">
+      <div class="fixit__main">
+        <p class="eyebrow eyebrow--light">Done for you</p>
+        <h2 id="fixit-title">Don't want to fix it yourself?<br>We will.</h2>
+        <p class="fixit__lede">A scan tells you what's wrong. The <strong>Fix my website</strong> service tells you exactly how to make it right — and gives your team a ready-to-build plan.</p>
+
+        <ul class="fixit__list">
+          <li>
+            <span class="fixit__num">15</span>
+            <div>
+              <h3>Core issues, ranked by impact</h3>
+              <p>The exact blockers hurting conversion, clarity and trust — not a generic checklist.</p>
+            </div>
+          </li>
+          <li>
+            <span class="fixit__num">4d</span>
+            <div>
+              <h3>Turnaround</h3>
+              <p>Delivered within four working days, so you can act before more visitors leave.</p>
+            </div>
+          </li>
+          <li>
+            <span class="fixit__num">1:1</span>
+            <div>
+              <h3>Built for your team</h3>
+              <p>Each fix is written so a designer or developer can implement it the same day — copy, layout and code references included.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="fixit__cta">
+        <p class="fixit__price">From <strong>€ 349</strong><span> · one-time</span></p>
+        <a class="btn btn--solid btn--lg" href="mailto:hello@designscan.example?subject=Fix%20my%20website">Get my Fix-it report</a>
+        <p class="fixit__note">Or run a free scan first — <a href="#run-scan">scan your HTML</a> or <a href="#scan">scan a URL</a>.</p>
+      </div>
     </div>
   </section>
 
