@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DesignScan — Measure your interface, then fix it</title>
+<meta name="description" content="DesignScan gives your website an objective UI/UX score across six calibrated criteria — visual hierarchy, usability, accessibility, consistency, conversion clarity and performance — with the exact fixes that move the needle." />
+<meta name="author" content="DesignScan" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="DesignScan — Measure your interface, then fix it" />
+<meta property="og:description" content="An objective UI/UX score across six calibrated criteria, with the exact fixes that move the needle." />
+<meta property="og:site_name" content="DesignScan" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="theme-color" content="#ECEDEF" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   DesignScan — "The Readout"
+   Precision-instrument aesthetic: cool instrument grey + deep ink
+   + one warm ember signal (the needle). Mono for all numerics.
+   ============================================================ */
+
+:root {
+  --paper:    #ECEDEF;
+  --paper-2:  #E4E6E9;
+  --surface:  #FBFBFC;
+  --ink:      #11161A;
+  --ink-2:    #5C656D;
+  --line:     #D4D8DC;
+  --ember:    #E2562A;
+  --ember-2:  #C2431D;   /* button bg — AA white text */
+  --teal:     #0E6E66;
+  --warn:     #C7841B;
+
+  --sans: "Inter", system-ui, -apple-system, sans-serif;
+  --disp: "Space Grotesk", "Inter", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --wrap: 1140px;
+  --r: 14px;
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  /* faint engineering grid */
+  background-image:
+    linear-gradient(transparent 95%, rgba(17,22,26,.025) 95%),
+    linear-gradient(90deg, transparent 95%, rgba(17,22,26,.025) 95%);
+  background-size: 28px 28px;
+}
+
+.wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: 24px; }
+
+h1, h2, h3 { font-family: var(--disp); font-weight: 600; line-height: 1.08; letter-spacing: -0.02em; margin: 0; }
+p { margin: 0; }
+a { color: inherit; }
+
+.ink-em { color: var(--ember); font-style: italic; }
+
+.skip-link {
+  position: absolute; left: 12px; top: -48px; z-index: 100;
+  background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 8px;
+  transition: top .2s var(--ease);
+}
+.skip-link:focus { top: 12px; }
+
+/* ---------- Eyebrow / labels (mono = instrument labels) ---------- */
+.eyebrow {
+  font-family: var(--mono); font-size: 12px; font-weight: 500;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--ember-2);
+  margin-bottom: 14px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--disp); font-weight: 600; font-size: 16px;
+  border-radius: 10px; padding: 13px 22px; text-decoration: none;
+  border: 1.5px solid transparent; cursor: pointer;
+  transition: transform .15s var(--ease), background .2s, box-shadow .2s;
+}
+.btn--solid { background: var(--ember-2); color: #fff; }
+.btn--solid:hover { background: var(--ember); box-shadow: 0 8px 24px -10px rgba(226,86,42,.7); transform: translateY(-1px); }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn--ghost:hover { border-color: var(--ink); }
+.btn--lg { font-size: 19px; padding: 17px 32px; }
+.btn:focus-visible { outline: 3px solid var(--ember); outline-offset: 3px; }
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar__inner { display: flex; align-items: center; gap: 28px; height: 68px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+.brand__mark { color: var(--ink); flex: none; }
+.brand__needle { transform-origin: 13px 13px; }
+.brand:hover .brand__needle { transition: transform .5s var(--ease); transform: rotate(40deg); }
+.brand__word { font-family: var(--disp); font-weight: 700; font-size: 20px; letter-spacing: -.02em; }
+.nav { display: flex; gap: 26px; margin-left: auto; }
+.nav a { font-size: 15px; color: var(--ink-2); text-decoration: none; font-weight: 500; }
+.nav a:hover { color: var(--ink); }
+.nav__cta { padding: 9px 18px; font-size: 15px; }
+
+/* ---------- Hero ---------- */
+.hero {
+  display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center;
+  padding-block: 84px 76px;
+}
+.hero h1 { font-size: clamp(40px, 6vw, 68px); font-weight: 700; }
+.lede { font-size: 19px; color: var(--ink-2); margin-top: 22px; max-width: 30em; }
+
+.scan { margin-top: 32px; }
+.scan__label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-2); display: block; margin-bottom: 8px;
+}
+.scan__row { display: flex; gap: 10px; }
+.scan__input {
+  flex: 1; min-width: 0; font-family: var(--mono); font-size: 15px;
+  padding: 14px 16px; border: 1.5px solid var(--line); border-radius: 10px;
+  background: var(--surface); color: var(--ink);
+}
+.scan__input::placeholder { color: #9aa1a7; }
+.scan__input:focus-visible { outline: none; border-color: var(--ember); box-shadow: 0 0 0 3px rgba(226,86,42,.18); }
+.scan__note { font-family: var(--mono); font-size: 12px; color: var(--ink-2); margin-top: 12px; letter-spacing: .02em; }
+
+.trust { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 28px 0 0; }
+.trust li {
+  font-family: var(--mono); font-size: 12px; color: var(--ink-2);
+  border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px;
+}
+.trust li::before { content: "✓ "; color: var(--teal); }
+
+/* ---------- The Readout (signature) ---------- */
+.readout {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 22px 24px 26px;
+  box-shadow: 0 30px 60px -40px rgba(17,22,26,.45);
+}
+.readout__head {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--ink-2);
+  padding-bottom: 14px; border-bottom: 1px dashed var(--line);
+}
+.readout__tag { color: var(--ember-2); font-weight: 700; }
+.readout__src { opacity: .8; }
+
+.gauge { position: relative; margin-top: 6px; }
+.gauge__svg { width: 100%; height: auto; display: block; }
+.gauge__needle { transform-origin: 140px 140px; transform: rotate(0deg); }
+.gauge__readout {
+  position: absolute; left: 0; right: 0; bottom: 6px; text-align: center;
+}
+.gauge__score { font-family: var(--mono); font-weight: 700; font-size: 56px; color: var(--ink); line-height: 1; }
+.gauge__of { font-family: var(--mono); font-size: 18px; color: var(--ink-2); }
+.gauge__grade { display: block; font-family: var(--sans); font-size: 14px; color: var(--ink-2); margin-top: 6px; }
+
+.submeters { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 11px; }
+.sm { display: grid; grid-template-columns: 120px 1fr 34px; align-items: center; gap: 12px; }
+.sm__name { font-size: 13px; color: var(--ink-2); }
+.sm__bar { height: 7px; background: var(--paper-2); border-radius: 999px; overflow: hidden; }
+.sm__bar i {
+  display: block; height: 100%; width: var(--v); border-radius: 999px;
+  background: var(--ink); transform-origin: left; transform: scaleX(0);
+  animation: fill 1s var(--ease) forwards;
+}
+.sm__val { font-family: var(--mono); font-size: 14px; text-align: right; color: var(--ink); }
+
+@keyframes fill { to { transform: scaleX(1); } }
+
+/* ---------- Ruler divider (tick motif) ---------- */
+.ruler {
+  height: 26px; max-width: var(--wrap); margin: 8px auto; margin-inline: auto;
+  padding-inline: 24px;
+  background:
+    repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 32px) padding-box;
+  background-position: bottom; background-size: 100% 12px; background-repeat: repeat-x;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------- Section heads ---------- */
+.sec-head { max-width: 640px; margin-bottom: 40px; }
+.sec-head h2 { font-size: clamp(28px, 4vw, 40px); }
+.sec-sub { color: var(--ink-2); margin-top: 14px; font-size: 18px; }
+
+.how, .criteria, .report { padding-block: 76px; }
+
+/* ---------- Steps ---------- */
+.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.step { border-top: 2px solid var(--ink); padding-top: 18px; }
+.step__no { font-family: var(--mono); font-weight: 700; font-size: 14px; color: var(--ember-2); }
+.step h3 { font-size: 22px; margin: 14px 0 8px; }
+.step p { color: var(--ink-2); font-size: 16px; }
+
+/* ---------- Criteria grid ---------- */
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 24px; transition: transform .2s var(--ease), box-shadow .2s;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -28px rgba(17,22,26,.5); }
+.card__top { display: flex; justify-content: space-between; align-items: baseline; }
+.card__top h3 { font-size: 19px; }
+.chip {
+  font-family: var(--mono); font-weight: 700; font-size: 15px;
+  color: var(--teal); border: 1px solid color-mix(in srgb, var(--teal) 40%, var(--line));
+  border-radius: 8px; padding: 2px 9px;
+}
+.chip--warn { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, var(--line)); }
+.meterline { display: block; height: 4px; background: var(--paper-2); border-radius: 999px; margin: 14px 0 14px; overflow: hidden; }
+.meterline i { display: block; height: 100%; background: var(--ember); width: 0; border-radius: 999px; }
+.card p { color: var(--ink-2); font-size: 15px; }
+
+/* ---------- Report ---------- */
+.report__card { background: var(--ink); color: #E9EBED; border-radius: var(--r); overflow: hidden; box-shadow: 0 30px 70px -40px rgba(17,22,26,.6); }
+.report__bar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 20px; background: #0B0F12; font-family: var(--mono); font-size: 13px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.report__file { color: #8C949B; }
+.report__score strong { color: var(--ember); }
+.issues { list-style: none; margin: 0; padding: 8px; }
+.issue { display: grid; grid-template-columns: 64px 1fr; gap: 14px; padding: 18px 14px; border-bottom: 1px solid rgba(255,255,255,.07); }
+.issue:last-child { border-bottom: none; }
+.issue__sev {
+  font-family: var(--mono); font-weight: 700; font-size: 11px; letter-spacing: .08em;
+  height: fit-content; padding: 4px 8px; border-radius: 6px; text-align: center;
+  background: rgba(226,86,42,.18); color: #FF8559; border: 1px solid rgba(226,86,42,.4);
+}
+.issue__sev--med { background: rgba(199,132,27,.16); color: #E7B25A; border-color: rgba(199,132,27,.4); }
+.issue__sev--low { background: rgba(255,255,255,.08); color: #A9B0B6; border-color: rgba(255,255,255,.16); }
+.issue h3 { font-size: 17px; color: #fff; }
+.issue p { color: #AEB5BB; font-size: 15px; margin-top: 6px; }
+.fix { color: var(--ember); font-weight: 600; font-family: var(--mono); font-size: 13px; }
+
+/* ---------- CTA band ---------- */
+.cta-band { background: var(--ink); color: #fff; margin-top: 8px; }
+.cta-band__inner { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding-block: 64px; flex-wrap: wrap; }
+.cta-band h2 { font-size: clamp(28px, 4vw, 42px); }
+
+/* ---------- Footer ---------- */
+.footer { background: var(--paper); border-top: 1px solid var(--line); }
+.footer__inner { display: flex; align-items: center; gap: 18px; padding-block: 28px; flex-wrap: wrap; }
+.footer__brand { display: flex; align-items: baseline; gap: 12px; }
+.footer__tag, .footer__ver { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+.footer__links { margin-left: auto; display: flex; gap: 10px; font-size: 14px; }
+.footer__links a { color: var(--ink-2); text-decoration: none; }
+.footer__links a:hover { color: var(--ink); }
+
+/* ---------- Reveal on scroll ---------- */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; padding-block: 52px 56px; }
+  .nav { display: none; }
+  .steps, .grid { grid-template-columns: 1fr; }
+  .grid { gap: 14px; }
+}
+@media (max-width: 520px) {
+  body { font-size: 16px; }
+  .scan__row { flex-direction: column; }
+  .btn--solid { width: 100%; }
+  .cta-band__inner { flex-direction: column; align-items: flex-start; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+  .reveal { opacity: 1; transform: none; }
+  .sm__bar i { transform: scaleX(1); }
+}
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="wrap topbar__inner">
+    <a class="brand" href="#top" aria-label="DesignScan home">
+      <svg class="brand__mark" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <circle cx="13" cy="13" r="11.5" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.35"/>
+        <line x1="13" y1="3.5" x2="13" y2="6.5" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="13" y1="19.5" x2="13" y2="22.5" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="3.5" y1="13" x2="6.5" y2="13" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="19.5" y1="13" x2="22.5" y2="13" stroke="currentColor" stroke-width="1.4"/>
+        <line class="brand__needle" x1="13" y1="13" x2="19" y2="7.5" stroke="var(--ember)" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="13" cy="13" r="2" fill="var(--ember)"/>
+      </svg>
+      <span class="brand__word">DesignScan</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#how">How it works</a>
+      <a href="#criteria">What we measure</a>
+      <a href="#report">Sample report</a>
+    </nav>
+    <a class="btn btn--ghost nav__cta" href="#scan">Scan a page</a>
+  </div>
+</header>
+
+<main id="main">
+  <span id="top"></span>
+
+  <!-- HERO -->
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div class="hero__copy">
+      <p class="eyebrow">Objective UI/UX measurement</p>
+      <h1 id="hero-title">How good is your<br>design, <span class="ink-em">really</span>?</h1>
+      <p class="lede">Paste a URL and DesignScan reads it the way a senior product designer would — six calibrated criteria, a single honest score, and the specific fixes that move the needle.</p>
+
+      <form class="scan" id="scan" autocomplete="off" novalidate>
+        <label class="scan__label" for="url">Page to scan</label>
+        <div class="scan__row">
+          <input class="scan__input" id="url" name="url" type="url" inputmode="url"
+                 placeholder="https://your-site.com" aria-describedby="scan-note" />
+          <button class="btn btn--solid" type="submit" id="scan-btn">
+            <span class="btn__label">Scan my design</span>
+          </button>
+        </div>
+        <p class="scan__note" id="scan-note">Free preview · No sign-up · Result in seconds</p>
+      </form>
+
+      <ul class="trust" aria-label="What the scan checks">
+        <li>Heuristic-based</li>
+        <li>Accessibility-aware</li>
+        <li>Conversion-focused</li>
+      </ul>
+    </div>
+
+    <!-- SIGNATURE: the gauge readout -->
+    <div class="readout" role="group" aria-labelledby="readout-title">
+      <div class="readout__head">
+        <span class="readout__tag" id="readout-title">LIVE&nbsp;READING</span>
+        <span class="readout__src" id="readout-src">demo · sample-store.com</span>
+      </div>
+
+      <div class="gauge" id="gauge">
+        <svg class="gauge__svg" viewBox="0 0 280 210" role="img"
+             aria-label="Overall design score: 78 out of 100, rated good">
+          <g id="gauge-arc"><!-- arc segments injected by JS, falls back gracefully --></g>
+          <g id="gauge-ticks"></g>
+          <g class="gauge__needle" id="gauge-needle" style="transform: rotate(67.2deg)">
+            <line x1="140" y1="140" x2="140" y2="58" stroke="var(--ember)" stroke-width="3.5" stroke-linecap="round"/>
+          </g>
+          <circle cx="140" cy="140" r="7" fill="var(--ink)"/>
+          <circle cx="140" cy="140" r="3" fill="var(--ember)"/>
+        </svg>
+        <div class="gauge__readout">
+          <span class="gauge__score" id="gauge-score" aria-hidden="true">78</span>
+          <span class="gauge__of">/100</span>
+          <span class="gauge__grade" id="gauge-grade">Good — three fixes from great</span>
+        </div>
+      </div>
+
+      <ul class="submeters" id="submeters" aria-label="Sub-scores by criterion">
+        <li class="sm" data-score="82"><span class="sm__name">Visual hierarchy</span><span class="sm__bar"><i style="--v:82%"></i></span><span class="sm__val">82</span></li>
+        <li class="sm" data-score="71"><span class="sm__name">Usability</span><span class="sm__bar"><i style="--v:71%"></i></span><span class="sm__val">71</span></li>
+        <li class="sm" data-score="64"><span class="sm__name">Accessibility</span><span class="sm__bar"><i style="--v:64%"></i></span><span class="sm__val">64</span></li>
+        <li class="sm" data-score="88"><span class="sm__name">Consistency</span><span class="sm__bar"><i style="--v:88%"></i></span><span class="sm__val">88</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="ruler" aria-hidden="true"></div>
+
+  <!-- HOW IT WORKS (a true sequence → numbering earns its place) -->
+  <section class="how wrap" id="how" aria-labelledby="how-title">
+    <header class="sec-head">
+      <p class="eyebrow">The method</p>
+      <h2 id="how-title">Three steps, no questionnaire</h2>
+    </header>
+    <ol class="steps">
+      <li class="step">
+        <span class="step__no">01</span>
+        <h3>Point it at a page</h3>
+        <p>Drop in a live URL or upload a screenshot. DesignScan captures the layout, type, color and structure as a real visitor receives it.</p>
+      </li>
+      <li class="step">
+        <span class="step__no">02</span>
+        <h3>It reads against the rubric</h3>
+        <p>Every element is checked against six calibrated criteria drawn from established usability heuristics and accessibility standards — not vibes.</p>
+      </li>
+      <li class="step">
+        <span class="step__no">03</span>
+        <h3>You get the fixes</h3>
+        <p>A scored breakdown lands with the highest-impact issues first, each paired with a concrete change your team can ship today.</p>
+      </li>
+    </ol>
+  </section>
+
+  <div class="ruler" aria-hidden="true"></div>
+
+  <!-- WHAT WE MEASURE -->
+  <section class="criteria wrap" id="criteria" aria-labelledby="crit-title">
+    <header class="sec-head">
+      <p class="eyebrow">The rubric</p>
+      <h2 id="crit-title">Six things we measure</h2>
+      <p class="sec-sub">Each criterion is scored independently, so you see exactly where the points leak — and where you already win.</p>
+    </header>
+    <div class="grid">
+      <article class="card" data-v="82">
+        <div class="card__top"><h3>Visual hierarchy</h3><span class="chip">82</span></div>
+        <span class="meterline"><i></i></span>
+        <p>Does the eye land where it should? We check contrast, scale, spacing and grouping against the page's actual goal.</p>
+      </article>
+      <article class="card" data-v="71">
+        <div class="card__top"><h3>Usability</h3><span class="chip">71</span></div>
+        <span class="meterline"><i></i></span>
+        <p>Clear affordances, predictable navigation, forgiving interactions — measured against Nielsen's heuristics.</p>
+      </article>
+      <article class="card" data-v="64">
+        <div class="card__top"><h3>Accessibility</h3><span class="chip chip--warn">64</span></div>
+        <span class="meterline"><i></i></span>
+        <p>Contrast ratios, focus order, target sizes and semantics, mapped to WCAG 2.2 AA where it matters most.</p>
+      </article>
+      <article class="card" data-v="88">
+        <div class="card__top"><h3>Consistency</h3><span class="chip">88</span></div>
+        <span class="meterline"><i></i></span>
+        <p>One type scale, one spacing system, one voice. We flag the drift that quietly erodes trust.</p>
+      </article>
+      <article class="card" data-v="76">
+        <div class="card__top"><h3>Conversion clarity</h3><span class="chip">76</span></div>
+        <span class="meterline"><i></i></span>
+        <p>Is the next action obvious? We weigh CTA prominence, friction and the path from arrival to action.</p>
+      </article>
+      <article class="card" data-v="69">
+        <div class="card__top"><h3>Performance signals</h3><span class="chip">69</span></div>
+        <span class="meterline"><i></i></span>
+        <p>Perceived speed, layout stability and the loading experience that shapes a first impression.</p>
+      </article>
+    </div>
+  </section>
+
+  <div class="ruler" aria-hidden="true"></div>
+
+  <!-- SAMPLE REPORT -->
+  <section class="report wrap" id="report" aria-labelledby="report-title">
+    <header class="sec-head">
+      <p class="eyebrow">What lands in your inbox</p>
+      <h2 id="report-title">A report you can act on</h2>
+      <p class="sec-sub">Issues ranked by impact, each with the change to make. No 40-page PDF, no fluff.</p>
+    </header>
+
+    <div class="report__card">
+      <div class="report__bar">
+        <span class="report__file">sample-store.com — report.txt</span>
+        <span class="report__score">Overall <strong>78</strong>/100</span>
+      </div>
+      <ul class="issues">
+        <li class="issue issue--high">
+          <span class="issue__sev" aria-label="High impact">HIGH</span>
+          <div>
+            <h3>Primary CTA competes with three secondary buttons</h3>
+            <p><span class="fix">Fix:</span> Demote secondary actions to text links so "Add to cart" is the only filled button above the fold. Expected lift in click-through clarity.</p>
+          </div>
+        </li>
+        <li class="issue issue--high">
+          <span class="issue__sev" aria-label="High impact">HIGH</span>
+          <div>
+            <h3>Body text contrast fails AA on the hero</h3>
+            <p><span class="fix">Fix:</span> #8A8A8A on white reads 2.9:1. Darken to #595959 to clear the 4.5:1 threshold without touching the palette.</p>
+          </div>
+        </li>
+        <li class="issue issue--med">
+          <span class="issue__sev issue__sev--med" aria-label="Medium impact">MED</span>
+          <div>
+            <h3>Inconsistent spacing between sections</h3>
+            <p><span class="fix">Fix:</span> Three different vertical gaps (48 / 56 / 72px) read as accidental. Snap to an 8px scale — pick 64px and hold it.</p>
+          </div>
+        </li>
+        <li class="issue issue--low">
+          <span class="issue__sev issue__sev--low" aria-label="Low impact">LOW</span>
+          <div>
+            <h3>Focus state missing on the search field</h3>
+            <p><span class="fix">Fix:</span> Add a 2px visible focus ring so keyboard users can see where they are.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="cta-band" aria-labelledby="cta-title">
+    <div class="wrap cta-band__inner">
+      <h2 id="cta-title">Stop guessing what's wrong.<br>Measure it.</h2>
+      <a class="btn btn--solid btn--lg" href="#scan">Scan my design</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <div class="footer__brand">
+      <span class="brand__word">DesignScan</span>
+      <span class="footer__tag">Objective design analysis</span>
+    </div>
+    <nav class="footer__links" aria-label="Footer">
+      <a href="#">Privacy Policy</a><span aria-hidden="true">·</span><a href="#">Terms of Service</a>
+    </nav>
+    <span class="footer__ver">v1.0.0</span>
+  </div>
+</footer>
+
+<script>
+/* DesignScan — interaction & instrument rendering
+   Everything here is progressive enhancement: the page is fully
+   readable with JS disabled. JS adds the live gauge + demo scan. */
+(function () {
+  "use strict";
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var CX = 140, CY = 140, R = 92;
+  var A_MIN = -120, A_MAX = 120;          // sweep, degrees from 12 o'clock
+  var svgNS = "http://www.w3.org/2000/svg";
+
+  function valToAngle(v) { return A_MIN + (Math.max(0, Math.min(100, v)) / 100) * (A_MAX - A_MIN); }
+
+  // angle measured clockwise from top (12 o'clock = 0)
+  function polar(cx, cy, r, deg) {
+    var a = (deg) * Math.PI / 180;
+    return { x: cx + r * Math.sin(a), y: cy - r * Math.cos(a) };
+  }
+  function arcPath(r, a0, a1) {
+    var s = polar(CX, CY, r, a0), e = polar(CX, CY, r, a1);
+    var large = (a1 - a0) > 180 ? 1 : 0;
+    return "M " + s.x.toFixed(1) + " " + s.y.toFixed(1) +
+           " A " + r + " " + r + " 0 " + large + " 1 " + e.x.toFixed(1) + " " + e.y.toFixed(1);
+  }
+  function seg(d, color, w) {
+    var p = document.createElementNS(svgNS, "path");
+    p.setAttribute("d", d); p.setAttribute("fill", "none");
+    p.setAttribute("stroke", color); p.setAttribute("stroke-width", w || 12);
+    p.setAttribute("stroke-linecap", "round");
+    return p;
+  }
+
+  function drawGauge() {
+    var arc = document.getElementById("gauge-arc");
+    var ticks = document.getElementById("gauge-ticks");
+    if (!arc) return;
+
+    // track
+    arc.appendChild(seg(arcPath(R, A_MIN, A_MAX), "#E4E6E9", 12));
+    // semantic zones: red 0-50, amber 50-75, green 75-100
+    arc.appendChild(seg(arcPath(R, valToAngle(0),  valToAngle(50)),  "#E23A2E", 12));
+    arc.appendChild(seg(arcPath(R, valToAngle(50), valToAngle(75)),  "#E0A12B", 12));
+    arc.appendChild(seg(arcPath(R, valToAngle(75), valToAngle(100)), "#2E9E5B", 12));
+
+    // tick marks every 10 points
+    for (var v = 0; v <= 100; v += 10) {
+      var a = valToAngle(v);
+      var o = polar(CX, CY, R + 12, a), i = polar(CX, CY, R + (v % 50 === 0 ? 4 : 7), a);
+      var t = document.createElementNS(svgNS, "line");
+      t.setAttribute("x1", i.x.toFixed(1)); t.setAttribute("y1", i.y.toFixed(1));
+      t.setAttribute("x2", o.x.toFixed(1)); t.setAttribute("y2", o.y.toFixed(1));
+      t.setAttribute("stroke", "#11161A"); t.setAttribute("stroke-width", v % 50 === 0 ? 2 : 1);
+      t.setAttribute("opacity", v % 50 === 0 ? "0.8" : "0.35");
+      ticks.appendChild(t);
+    }
+  }
+
+  // animate a number + needle from 0 to target
+  function animateScore(target) {
+    var needle = document.getElementById("gauge-needle");
+    var scoreEl = document.getElementById("gauge-score");
+    var endA = valToAngle(target);
+    if (reduce) {
+      if (needle) needle.style.transform = "rotate(" + endA + "deg)";
+      if (scoreEl) scoreEl.textContent = target;
+      return;
+    }
+    var start = null, dur = 1400;
+    function frame(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
+      if (needle) needle.style.transform = "rotate(" + (A_MIN + (endA - A_MIN) * ease).toFixed(2) + "deg)";
+      if (scoreEl) scoreEl.textContent = Math.round(target * ease);
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // fill the criteria card meterlines when scrolled into view
+  function wireCards() {
+    var cards = document.querySelectorAll(".card");
+    if (!("IntersectionObserver" in window)) {
+      cards.forEach(function (c) { var i = c.querySelector(".meterline i"); if (i) i.style.width = (c.dataset.v || 0) + "%"; });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          var i = en.target.querySelector(".meterline i");
+          if (i) { i.style.transition = "width 1s cubic-bezier(.2,.7,.2,1)"; i.style.width = (en.target.dataset.v || 0) + "%"; }
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    cards.forEach(function (c) { io.observe(c); });
+  }
+
+  // generic scroll reveal
+  function wireReveal() {
+    var els = document.querySelectorAll(".sec-head, .step, .report__card, .readout");
+    els.forEach(function (e) { e.classList.add("reveal"); });
+    if (!("IntersectionObserver" in window) || reduce) { els.forEach(function (e) { e.classList.add("in"); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, { threshold: 0.15 });
+    els.forEach(function (e) { io.observe(e); });
+  }
+
+  // demo scan: validate-ish, run a believable read, update the readout
+  function wireScan() {
+    var form = document.getElementById("scan");
+    var input = document.getElementById("url");
+    var btn = document.getElementById("scan-btn");
+    var label = btn ? btn.querySelector(".btn__label") : null;
+    var src = document.getElementById("readout-src");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var url = (input.value || "").trim();
+      if (!url) { input.focus(); input.style.borderColor = "var(--ember)"; return; }
+      var host = url.replace(/^https?:\/\//, "").replace(/\/.*$/, "") || "your-site.com";
+
+      if (label) label.textContent = "Reading…";
+      btn.disabled = true;
+
+      // pseudo-random but stable-ish score from the hostname
+      var seed = 0; for (var k = 0; k < host.length; k++) seed += host.charCodeAt(k);
+      var score = 62 + (seed % 32); // 62–93
+
+      setTimeout(function () {
+        if (src) src.textContent = "demo · " + host;
+        // re-trigger gauge to new value
+        document.getElementById("gauge-needle").style.transform = "rotate(-120deg)";
+        document.getElementById("gauge-score").textContent = "0";
+        animateScore(score);
+        var grade = document.getElementById("gauge-grade");
+        if (grade) grade.textContent = score >= 85 ? "Strong — minor polish only"
+                       : score >= 70 ? "Good — three fixes from great"
+                       : "Needs work — clear wins available";
+        // nudge sub-meters
+        document.querySelectorAll(".sm").forEach(function (sm, idx) {
+          var base = [3, -6, -9, 7][idx] || 0;
+          var v = Math.max(40, Math.min(96, score + base));
+          sm.querySelector(".sm__val").textContent = v;
+          sm.querySelector(".sm__bar i").style.width = v + "%";
+        });
+        if (label) label.textContent = "Scan again";
+        btn.disabled = false;
+        document.querySelector(".readout").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+      }, reduce ? 50 : 900);
+    });
+  }
+
+  function init() {
+    drawGauge();
+    animateScore(78);
+    wireCards();
+    wireReveal();
+    wireScan();
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+
+</script>
+</body>
+</html>
