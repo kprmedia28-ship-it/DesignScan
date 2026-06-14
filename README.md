@@ -38,6 +38,10 @@ DesignMeter positioneert zich als *"objective UI/UX scores with actionable insig
 | **Transparante rubric** | Een sectie "Six things we measure" maakt expliciet waarop gescoord wordt — dat bouwt vertrouwen op dat het origineel impliciet laat. |
 | **Toegankelijkheid als basislijn** | Semantische HTML, skip-link, zichtbare focus-states, `aria-label` op de meter, voldoende contrast, en respect voor `prefers-reduced-motion`. |
 | **Concrete sample-report** | Issues gerangschikt op impact (HIGH/MED/LOW) met de exacte fix erbij — laat de belofte "actionable" zien in plaats van hem te claimen. |
+| **Echte werkende scan** | Een sectie "Scan your HTML" waar je écht HTML plakt of uploadt; de pagina parseert die client-side (`DOMParser`) en scoort op echte bevindingen — geen nepgetallen. |
+| **"Fix my website"-service** | Een uitlegsectie die de done-for-you service van het origineel naspeelt: 15 gerangschikte issues, levertijd, prijsindicatie en een duidelijke CTA. |
+| **Per-industrie weging** | Een sectie "What matters most in your industry" met 9 branches (e-commerce, SaaS, zorg, financieel, horeca, onderwijs, vastgoed, non-profit/overheid, agency/portfolio) die elk laten zien hoe de zes criteria anders wegen en welke extra checks gelden. |
+| **Industrie-bewuste scan** | De echte scanner heeft een branche-keuze. Per branche worden 2 extra, branche-specifieke checks uitgevoerd (bijv. trust-signalen bij e-commerce, leesbaarheid bij zorg/onderwijs, tel-link bij horeca) en wordt de eindscore herwogen volgens het profiel van die branche. |
 | **Performance** | Geen framework, geen build, ~3 kleine bestanden. Snelle first paint, stabiele layout. |
 
 ### Ontwerprichting — "The Readout"
@@ -75,4 +79,8 @@ DesignScan/
 └── README.md
 ```
 
-> De "scan" in deze demo draait client-side en genereert een voorbeeldscore. Koppel `app.js` aan een echte analyse-API om er een werkend product van te maken.
+> De "scan" in de hero draait client-side en genereert een voorbeeldscore. De sectie **"Scan your HTML — for real"** doet een echte analyse: hij parseert de geplakte/geüploade HTML met `DOMParser` en checkt o.a. ontbrekende `alt`-attributen, koppenhiërarchie (`h1`–`h6`), labels op formuliervelden, `lang`-attribuut, viewport-meta, vage link-/knoptekst (zoals "click here"), aantal concurrerende CTA's, inline-stijl-drift en `<img>` zonder `width`/`height`. Op basis daarvan wordt per criterium een score berekend en een issue-lijst met concrete fixes getoond — alles lokaal, niets wordt verzonden.
+
+> De **"Fix my website"**-sectie is een service-aanbod naar het voorbeeld van het origineel (15 issues, 4 dagen levertijd, prijsindicatie). De CTA-knop linkt naar een placeholder `mailto:`-adres — vervang `hello@designscan.example` in `index.html` door je eigen contactadres (of koppel later aan een echt formulier/checkout).
+
+> **Per industrie:** elk van de 9 profielen (in `INDUSTRY_PROFILES` in `app.js`) heeft eigen gewichten voor de zes criteria (sommen tot 100%) en — op "General" na — twee extra checks. Bijvoorbeeld: e-commerce checkt op trust-/retourtekst en een zoekveld; zorg en onderwijs checken de gemiddelde zinslengte (leesbaarheid); horeca checkt op een `tel:`-link en adres/openingstijden; agency/portfolio checkt het aantal losse inline-kleuren. Resultaten van die extra checks krijgen een "Industry"-label in de issue-lijst. Pas gewichten of checks aan door het betreffende object in `INDUSTRY_PROFILES` te bewerken.

@@ -37,6 +37,7 @@
     <nav class="nav" aria-label="Primary">
       <a href="#how">How it works</a>
       <a href="#criteria">What we measure</a>
+      <a href="#industries">By industry</a>
       <a href="#run-scan">Real scan</a>
       <a href="#report">Sample report</a>
     </nav>
@@ -179,6 +180,22 @@
 
   <div class="ruler" aria-hidden="true"></div>
 
+  <!-- PER INDUSTRY -->
+  <section class="industries wrap" id="industries" aria-labelledby="industries-title">
+    <header class="sec-head">
+      <p class="eyebrow">Same rubric, different stakes</p>
+      <h2 id="industries-title">What matters most in your industry</h2>
+      <p class="sec-sub">The six criteria stay the same everywhere — but how much each one weighs, and which extra checks apply, depends on what your visitors came to do.</p>
+    </header>
+
+    <div class="industries__panel">
+      <div class="industries__tabs" id="industry-tabs" role="tablist" aria-label="Industries"></div>
+      <div class="industries__content" id="industry-content" role="tabpanel" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <div class="ruler" aria-hidden="true"></div>
+
   <!-- REAL SCANNER -->
   <section class="scanner wrap" id="run-scan" aria-labelledby="scanner-title">
     <header class="sec-head">
@@ -193,18 +210,32 @@
         <textarea id="html-input" class="scanner__textarea" rows="8"
           placeholder="Right-click your page → View Page Source → copy/paste here. Or use the file picker below."></textarea>
         <div class="scanner__controls">
+          <label class="scan__label scan__label--inline" for="industry-select">Industry</label>
+          <select id="industry-select" class="scanner__select">
+            <option value="general">General (no industry focus)</option>
+            <option value="ecommerce">E-commerce / webshop</option>
+            <option value="saas">SaaS / software</option>
+            <option value="healthcare">Zorg &amp; gezondheid</option>
+            <option value="finance">Financiële diensten</option>
+            <option value="hospitality">Horeca &amp; lokale dienstverlening</option>
+            <option value="education">Onderwijs</option>
+            <option value="realestate">Vastgoed</option>
+            <option value="nonprofit">Non-profit &amp; overheid</option>
+            <option value="agency">Agency / portfolio</option>
+          </select>
           <label class="btn btn--ghost scanner__file">
             <input type="file" id="html-file" accept=".html,.htm,text/html" hidden />
             Choose .html file
           </label>
           <button class="btn btn--solid" id="run-scan-btn" type="button">Run real scan</button>
-          <span class="scanner__hint" id="scanner-hint"></span>
         </div>
+        <p class="scanner__hint" id="scanner-hint"></p>
       </div>
 
       <div class="scanner__results" id="scanner-results" hidden>
         <div class="report__bar">
           <span class="report__file" id="result-file">your-page.html</span>
+          <span class="report__industry" id="result-industry"></span>
           <span class="report__score">Overall <strong id="result-score">—</strong>/100</span>
         </div>
         <ul class="submeters" id="result-submeters" aria-label="Sub-scores by criterion"></ul>

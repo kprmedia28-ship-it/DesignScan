@@ -229,9 +229,14 @@ a { color: inherit; }
 /* ---------- Report ---------- */
 .report__card { background: var(--ink); color: #E9EBED; border-radius: var(--r); overflow: hidden; box-shadow: 0 30px 70px -40px rgba(17,22,26,.6); }
 .report__bar {
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
   padding: 14px 20px; background: #0B0F12; font-family: var(--mono); font-size: 13px;
   border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.report__industry { flex: 1; text-align: center; }
+@media (max-width: 560px) {
+  .report__bar { flex-wrap: wrap; justify-content: flex-start; }
+  .report__industry { flex: 1 0 100%; text-align: left; order: 3; }
 }
 .report__file { color: #8C949B; }
 .report__score strong { color: var(--ember); }
@@ -263,7 +268,63 @@ a { color: inherit; }
 .footer__links a { color: var(--ink-2); text-decoration: none; }
 .footer__links a:hover { color: var(--ink); }
 
-/* ---------- Real scanner ---------- */
+.scanner__select {
+  font-family: var(--sans); font-size: 14px; color: var(--ink);
+  padding: 11px 14px; border: 1.5px solid var(--line); border-radius: 10px;
+  background: var(--surface); cursor: pointer;
+}
+.scanner__select:focus-visible { outline: none; border-color: var(--ember); box-shadow: 0 0 0 3px rgba(226,86,42,.18); }
+.scan__label--inline { display: inline; margin-bottom: 0; margin-right: -2px; }
+.report__industry { font-family: var(--mono); font-size: 12px; color: #FF8559; }
+.issue__tag {
+  font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  color: var(--ember); border: 1px solid rgba(226,86,42,.4); background: rgba(226,86,42,.1);
+  border-radius: 6px; padding: 2px 6px; vertical-align: middle; text-transform: uppercase;
+}
+
+/* ---------- Per-industry tabs ---------- */
+.industries { padding-block: 76px; }
+.industries__panel { display: grid; gap: 0; }
+.industries__tabs {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;
+}
+.ind-tab {
+  font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--ink-2);
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px;
+  padding: 9px 18px; cursor: pointer; transition: all .15s var(--ease);
+}
+.ind-tab:hover { border-color: var(--ink-2); color: var(--ink); }
+.ind-tab--active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.ind-tab:focus-visible { outline: 3px solid var(--ember); outline-offset: 2px; }
+
+.industries__content {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 28px;
+}
+.ind-framing { font-size: 17px; color: var(--ink-2); max-width: 48em; margin-bottom: 24px; }
+.ind-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.ind-sub {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ember-2); margin-bottom: 14px; font-weight: 600;
+}
+.ind-weights { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.ind-weight { display: grid; grid-template-columns: 130px 1fr 40px; align-items: center; gap: 10px; }
+.ind-weight__name { font-size: 13px; color: var(--ink-2); }
+.ind-weight__bar { height: 7px; background: var(--paper-2); border-radius: 999px; overflow: hidden; }
+.ind-weight__bar i { display: block; height: 100%; background: var(--ink); border-radius: 999px; }
+.ind-weight__val { font-family: var(--mono); font-size: 13px; text-align: right; color: var(--ink); }
+.ind-focus { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.ind-focus li {
+  font-size: 15px; color: var(--ink-2); padding-left: 18px; position: relative;
+}
+.ind-focus li::before {
+  content: ""; position: absolute; left: 0; top: 9px; width: 8px; height: 2px; background: var(--ember);
+}
+
+@media (max-width: 800px) {
+  .ind-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+
+
 .scanner { padding-block: 76px; }
 .scanner__panel {
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
@@ -372,6 +433,7 @@ a { color: inherit; }
     <nav class="nav" aria-label="Primary">
       <a href="#how">How it works</a>
       <a href="#criteria">What we measure</a>
+      <a href="#industries">By industry</a>
       <a href="#run-scan">Real scan</a>
       <a href="#report">Sample report</a>
     </nav>
@@ -514,6 +576,22 @@ a { color: inherit; }
 
   <div class="ruler" aria-hidden="true"></div>
 
+  <!-- PER INDUSTRY -->
+  <section class="industries wrap" id="industries" aria-labelledby="industries-title">
+    <header class="sec-head">
+      <p class="eyebrow">Same rubric, different stakes</p>
+      <h2 id="industries-title">What matters most in your industry</h2>
+      <p class="sec-sub">The six criteria stay the same everywhere — but how much each one weighs, and which extra checks apply, depends on what your visitors came to do.</p>
+    </header>
+
+    <div class="industries__panel">
+      <div class="industries__tabs" id="industry-tabs" role="tablist" aria-label="Industries"></div>
+      <div class="industries__content" id="industry-content" role="tabpanel" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <div class="ruler" aria-hidden="true"></div>
+
   <!-- REAL SCANNER -->
   <section class="scanner wrap" id="run-scan" aria-labelledby="scanner-title">
     <header class="sec-head">
@@ -528,18 +606,32 @@ a { color: inherit; }
         <textarea id="html-input" class="scanner__textarea" rows="8"
           placeholder="Right-click your page → View Page Source → copy/paste here. Or use the file picker below."></textarea>
         <div class="scanner__controls">
+          <label class="scan__label scan__label--inline" for="industry-select">Industry</label>
+          <select id="industry-select" class="scanner__select">
+            <option value="general">General (no industry focus)</option>
+            <option value="ecommerce">E-commerce / webshop</option>
+            <option value="saas">SaaS / software</option>
+            <option value="healthcare">Zorg &amp; gezondheid</option>
+            <option value="finance">Financiële diensten</option>
+            <option value="hospitality">Horeca &amp; lokale dienstverlening</option>
+            <option value="education">Onderwijs</option>
+            <option value="realestate">Vastgoed</option>
+            <option value="nonprofit">Non-profit &amp; overheid</option>
+            <option value="agency">Agency / portfolio</option>
+          </select>
           <label class="btn btn--ghost scanner__file">
             <input type="file" id="html-file" accept=".html,.htm,text/html" hidden />
             Choose .html file
           </label>
           <button class="btn btn--solid" id="run-scan-btn" type="button">Run real scan</button>
-          <span class="scanner__hint" id="scanner-hint"></span>
         </div>
+        <p class="scanner__hint" id="scanner-hint"></p>
       </div>
 
       <div class="scanner__results" id="scanner-results" hidden>
         <div class="report__bar">
           <span class="report__file" id="result-file">your-page.html</span>
+          <span class="report__industry" id="result-industry"></span>
           <span class="report__score">Overall <strong id="result-score">—</strong>/100</span>
         </div>
         <ul class="submeters" id="result-submeters" aria-label="Sub-scores by criterion"></ul>
@@ -817,15 +909,261 @@ a { color: inherit; }
     });
   }
 
-  // ---------- Real scanner: parses pasted/uploaded HTML and scores it ----------
-  function runAnalysis(html, filename) {
+  // ---------- Industry profiles: weighting + extra checks + framing copy ----------
+  var CRIT_LABELS = { hierarchy: "Visual hierarchy", usability: "Usability", accessibility: "Accessibility", consistency: "Consistency", conversion: "Conversion clarity", performance: "Performance signals" };
+
+  function bodyTextOf(doc) {
+    return doc.body ? doc.body.textContent.replace(/\s+/g, " ").trim().toLowerCase() : "";
+  }
+  function textMatches(doc, list) {
+    var t = bodyTextOf(doc);
+    return list.some(function (w) { return t.indexOf(w) !== -1; });
+  }
+  function elementsMatchText(doc, selector, re) {
+    return Array.prototype.slice.call(doc.querySelectorAll(selector))
+      .filter(function (el) { return re.test((el.textContent || "").trim()); });
+  }
+  function avgSentenceLength(doc) {
+    var t = doc.body ? doc.body.textContent.replace(/\s+/g, " ").trim() : "";
+    var sentences = t.split(/[.!?]+/).map(function (s) { return s.trim(); }).filter(function (s) { return s.split(" ").length > 3; });
+    if (sentences.length < 3) return null;
+    var totalWords = sentences.reduce(function (sum, s) { return sum + s.split(/\s+/).length; }, 0);
+    return totalWords / sentences.length;
+  }
+
+  var INDUSTRY_PROFILES = {
+    general: {
+      label: "General (no industry focus)",
+      framing: "A balanced read across all six criteria — useful as a baseline before zooming in on what your sector cares about most.",
+      weights: { hierarchy: .18, usability: .18, accessibility: .22, consistency: .14, conversion: .16, performance: .12 },
+      focus: [
+        "Visual hierarchy, usability and accessibility carry the most weight by default.",
+        "Conversion and consistency matter, but rarely decide the outcome on their own.",
+        "Performance signals round out the picture without dominating it."
+      ],
+      checks: null
+    },
+    ecommerce: {
+      label: "E-commerce / webshop",
+      framing: "Every extra click, every unclear price and every missing trust signal costs sales directly. Conversion clarity carries the most weight here.",
+      weights: { hierarchy: .14, usability: .16, accessibility: .14, consistency: .10, conversion: .32, performance: .14 },
+      focus: [
+        "Conversion clarity is weighted heaviest — the path from product to checkout is the product.",
+        "We check for trust signals (shipping, returns, guarantees) near the call-to-action.",
+        "We check for a visible search field, since shoppers who can't find a product leave."
+      ],
+      checks: function (doc, push) {
+        if (!textMatches(doc, ["return", "retour", "shipping", "verzending", "guarantee", "garantie", "secure checkout", "veilig betalen", "warranty"])) {
+          push("conversion", 10, "med", "No shipping, returns or guarantee text detected",
+            "Add a short trust line near your call-to-action — free returns, delivery time or a guarantee. Shoppers look for this before they buy.");
+        }
+        var search = doc.querySelector('input[type="search"], input[name*="search" i], input[id*="search" i], input[placeholder*="search" i], input[placeholder*="zoek" i]');
+        if (!search) {
+          push("usability", 8, "low", "No search field detected",
+            "Add a visible search field. On a catalogue of any size, search is the fastest path to a product.");
+        }
+      }
+    },
+    saas: {
+      label: "SaaS / software",
+      framing: "Buyers compare you to three other tabs at once. Clarity on what it does, what it costs and how to try it decides whether they stay.",
+      weights: { hierarchy: .16, usability: .20, accessibility: .14, consistency: .14, conversion: .24, performance: .12 },
+      focus: [
+        "Conversion clarity and usability lead — the trial/demo path needs to be obvious within seconds.",
+        "We check for visible pricing or a clear link to it.",
+        "We check for a primary 'start trial / book demo' action, not just generic buttons."
+      ],
+      checks: function (doc, push) {
+        var pricingHeading = elementsMatchText(doc, "h1,h2,h3,a,button", /pricing|price|plan|\/\s*month|per\s*seat|\bprijs|\btarieven/i);
+        var hasTable = doc.querySelector("table");
+        if (!pricingHeading.length && !hasTable && !textMatches(doc, ["pricing", "€", "$", "/mo", "per month", "prijs"])) {
+          push("conversion", 10, "med", "No pricing information or pricing link detected",
+            "Show pricing, or at least a clear link to it. SaaS buyers expect to gauge cost before they invest time in a demo.");
+        }
+        var trialCta = elementsMatchText(doc, "a,button", /free trial|start trial|sign up|get started|book a demo|request a demo|probeer|gratis/i);
+        if (!trialCta.length) {
+          push("conversion", 8, "med", "No trial / sign-up / demo call-to-action detected",
+            "Add one primary action like \"Start free trial\" or \"Book a demo\" — make the next step unmistakable.");
+        }
+      }
+    },
+    healthcare: {
+      label: "Zorg & gezondheid",
+      framing: "Visitors are often stressed, time-pressed or have access needs. Accessibility and plain language aren't nice-to-haves here — they're the product.",
+      weights: { hierarchy: .14, usability: .18, accessibility: .32, consistency: .12, conversion: .10, performance: .14 },
+      focus: [
+        "Accessibility dominates the score — contrast, labels and structure for assistive tech.",
+        "We check sentence length: long, clinical sentences are a barrier for people under stress.",
+        "We check that contact or appointment information is easy to find."
+      ],
+      checks: function (doc, push) {
+        var avg = avgSentenceLength(doc);
+        if (avg && avg > 25) {
+          push("accessibility", 10, "med", "Body text averages over 25 words per sentence",
+            "Shorten sentences. Visitors reading about a health concern, often under stress, need plain, direct language.");
+        }
+        var tel = doc.querySelector('a[href^="tel:"]');
+        var contactWord = textMatches(doc, ["contact", "afspraak", "appointment", "spoed", "emergency", "telefoonnummer"]);
+        if (!tel && !contactWord) {
+          push("usability", 10, "med", "No visible contact or appointment information detected",
+            "Show a phone number or appointment link near the top. Many visitors arrive needing to act immediately.");
+        }
+      }
+    },
+    finance: {
+      label: "Financiële diensten",
+      framing: "People hesitate to hand over financial details to a page that feels uncertain. Trust signals and accessible, well-labelled forms carry real weight.",
+      weights: { hierarchy: .14, usability: .16, accessibility: .24, consistency: .14, conversion: .18, performance: .14 },
+      focus: [
+        "Accessibility and conversion clarity lead — forms must be both usable and trustworthy.",
+        "We check for security, privacy or regulatory trust signals (encryption, AVG/GDPR, licensing).",
+        "If the page has a form, we check it links to a privacy or terms policy."
+      ],
+      checks: function (doc, push) {
+        if (!textMatches(doc, ["ssl", "secure", "veilig", "privacy", "avg", "gdpr", "vergunning", "license", "dnb", "afm", "encrypt"])) {
+          push("conversion", 8, "med", "No security or regulatory trust signal detected",
+            "Mention encryption, your privacy approach, or relevant licensing (e.g. AFM/DNB) near forms — financial visitors look for this before entering data.");
+        }
+        var form = doc.querySelector("form");
+        var policyLink = elementsMatchText(doc, "a", /privacy|terms|voorwaarden|privacybeleid/i);
+        if (form && !policyLink.length) {
+          push("accessibility", 8, "med", "A form is present but no privacy/terms link was found",
+            "Link to your privacy policy near any form that collects data — for trust, and often for compliance.");
+        }
+      }
+    },
+    hospitality: {
+      label: "Horeca & lokale dienstverlening",
+      framing: "Most visits start on a phone, often while standing outside. Can they see your hours, find your address and call you in one tap?",
+      weights: { hierarchy: .14, usability: .18, accessibility: .14, consistency: .12, conversion: .24, performance: .18 },
+      focus: [
+        "Conversion clarity and performance lead — speed and a one-tap call matter most on mobile.",
+        "We check for a visible address or opening hours.",
+        "We check for a clickable phone number (tel: link) — the #1 local conversion."
+      ],
+      checks: function (doc, push) {
+        var hasAddress = doc.querySelector("address");
+        var hoursWord = textMatches(doc, ["open", "hours", "openingstijden", "geopend", "maandag", "monday"]);
+        var postcode = /\b\d{4}\s?[a-z]{2}\b/i.test(doc.body ? doc.body.textContent : "");
+        if (!hasAddress && !hoursWord && !postcode) {
+          push("usability", 10, "med", "No address or opening hours detected",
+            "Show your address and opening hours near the top. Local visitors decide in seconds whether to call or visit.");
+        }
+        var tel = doc.querySelector('a[href^="tel:"]');
+        if (!tel) {
+          push("conversion", 8, "med", "No clickable phone number (tel: link) detected",
+            "Add a tel: link to your phone number so mobile visitors can call you with one tap.");
+        }
+      }
+    },
+    education: {
+      label: "Onderwijs",
+      framing: "Prospective students are comparing programmes across multiple tabs and devices. Clear language and one obvious next step keep them from bouncing.",
+      weights: { hierarchy: .16, usability: .18, accessibility: .28, consistency: .12, conversion: .12, performance: .14 },
+      focus: [
+        "Accessibility leads — a diverse audience, often on varied devices and connections.",
+        "We check sentence length for plain, scannable copy.",
+        "We check for a clear enrol / apply / contact call-to-action."
+      ],
+      checks: function (doc, push) {
+        var avg = avgSentenceLength(doc);
+        if (avg && avg > 25) {
+          push("accessibility", 8, "med", "Body text averages over 25 words per sentence",
+            "Break up long, formal sentences. Prospective students scan — short, direct copy keeps them reading.");
+        }
+        var cta = elementsMatchText(doc, "a,button", /enroll|enrol|apply|inschrijv|aanmeld|open day|contact|info/i);
+        if (!cta.length) {
+          push("conversion", 8, "med", "No enrol / apply / contact call-to-action detected",
+            "Add a clear next step like \"Apply now\" or \"Request information\" — give visitors an obvious way forward.");
+        }
+      }
+    },
+    realestate: {
+      label: "Vastgoed",
+      framing: "Listings live or die on photos and the ability to narrow them down. Image quality, alt text and filtering decide whether people keep browsing.",
+      weights: { hierarchy: .16, usability: .18, accessibility: .14, consistency: .12, conversion: .20, performance: .20 },
+      focus: [
+        "Performance and conversion clarity lead — image-heavy pages must still load fast and stay browsable.",
+        "We check the share of property images missing descriptive alt text.",
+        "We check for search or filter controls so visitors can narrow listings."
+      ],
+      checks: function (doc, push) {
+        var imgs = Array.prototype.slice.call(doc.querySelectorAll("img"));
+        var noAlt = imgs.filter(function (i) { return !i.getAttribute("alt") || !i.getAttribute("alt").trim(); });
+        if (imgs.length >= 3 && noAlt.length / imgs.length > 0.3) {
+          push("accessibility", 10, "med", "Over 30% of images are missing descriptive alt text",
+            "Describe each property image (e.g. \"Living room with garden view\") — it helps screen readers and image search alike.");
+        }
+        var hasFilter = doc.querySelector('select, input[type="search"]');
+        if (!hasFilter) {
+          push("usability", 8, "low", "No search or filter controls detected",
+            "Let visitors filter by price, location or type — essential for browsing more than a handful of listings.");
+        }
+      }
+    },
+    nonprofit: {
+      label: "Non-profit & overheid",
+      framing: "These sites must work for everyone, often by law. Accessibility is the baseline, and the path to donate, register or find information must be unmistakable.",
+      weights: { hierarchy: .14, usability: .18, accessibility: .30, consistency: .12, conversion: .14, performance: .12 },
+      focus: [
+        "Accessibility leads by a wide margin — frequently a legal requirement (WCAG/EN 301 549).",
+        "We check sentence length for plain-language compliance.",
+        "We check for a clear donate / get-involved / contact call-to-action."
+      ],
+      checks: function (doc, push) {
+        var avg = avgSentenceLength(doc);
+        if (avg && avg > 25) {
+          push("accessibility", 10, "med", "Body text averages over 25 words per sentence",
+            "Use plain language — many public-sector guidelines require it, and it widens who can use the site.");
+        }
+        var cta = elementsMatchText(doc, "a,button", /donate|doneer|steun|support|volunteer|vrijwilliger|contact|aanvraag/i);
+        if (!cta.length) {
+          push("conversion", 8, "med", "No donate / get-involved / contact call-to-action detected",
+            "Add a clear way to act — donate, volunteer or get in touch. Visitors who arrive here are often ready to.");
+        }
+      }
+    },
+    agency: {
+      label: "Agency / portfolio",
+      framing: "The site is the work sample. Restraint, consistency and a fast route to your best projects say more than any case study text.",
+      weights: { hierarchy: .26, usability: .14, accessibility: .14, consistency: .22, conversion: .12, performance: .12 },
+      focus: [
+        "Visual hierarchy and consistency lead — judged as a craft sample, not just a brochure.",
+        "We check how many distinct colours are declared inline — restraint reads as intent.",
+        "We check for a one-click link to your work or case studies."
+      ],
+      checks: function (doc, push) {
+        var colors = {};
+        Array.prototype.slice.call(doc.querySelectorAll("[style]")).forEach(function (el) {
+          var style = el.getAttribute("style") || "";
+          var m = style.match(/(?:^|;)\s*(?:color|background-color)\s*:\s*([^;]+)/ig);
+          if (m) m.forEach(function (decl) {
+            var val = decl.split(":")[1].trim().toLowerCase();
+            colors[val] = true;
+          });
+        });
+        var n = Object.keys(colors).length;
+        if (n > 6) {
+          push("consistency", 12, "med", n + " distinct inline colour values found",
+            "Limit your palette to a handful of intentional colours. A portfolio is judged on restraint as much as range.");
+        }
+        var workLink = elementsMatchText(doc, "a", /work|project|portfolio|cases|case stud/i);
+        if (!workLink.length) {
+          push("conversion", 6, "low", "No link to work or case studies detected",
+            "Make your best work one click away from the homepage — it's usually the main reason people are here.");
+        }
+      }
+    }
+  };
+
+  function runAnalysis(html, filename, industryKey) {
     var doc = new DOMParser().parseFromString(html, "text/html");
-    var issues = [];   // { sev: 'high'|'med'|'low', title, fix }
+    var issues = [];   // { sev: 'high'|'med'|'low', title, fix, industry?: bool }
     var scores = { hierarchy: 100, usability: 100, accessibility: 100, consistency: 100, conversion: 100, performance: 100 };
 
-    function deduct(key, amount, sev, title, fix) {
+    function deduct(key, amount, sev, title, fix, industry) {
       scores[key] = Math.max(0, scores[key] - amount);
-      issues.push({ sev: sev, title: title, fix: fix });
+      issues.push({ sev: sev, title: title, fix: fix, industry: !!industry });
     }
 
     // --- Accessibility ---
@@ -949,17 +1287,27 @@ a { color: inherit; }
         "Set explicit width and height on <img> elements so the browser reserves space and avoids layout shift while images load.");
     }
 
-    if (issues.length === 0) {
-      issues.push({ sev: "low", title: "No structural issues detected in this static check",
-        fix: "Nice work. This client-side check covers structure and semantics — pair it with a visual review for contrast, spacing and copy." });
+    // --- Industry-specific checks ---
+    var profileKey = (industryKey && INDUSTRY_PROFILES[industryKey]) ? industryKey : "general";
+    var profile = INDUSTRY_PROFILES[profileKey];
+    if (profile.checks) {
+      profile.checks(doc, function (key, amount, sev, title, fix) {
+        deduct(key, amount, sev, title, fix, true);
+      });
     }
 
+    if (issues.length === 0) {
+      issues.push({ sev: "low", title: "No structural issues detected in this static check",
+        fix: "Nice work. This client-side check covers structure and semantics — pair it with a visual review for contrast, spacing and copy.", industry: false });
+    }
+
+    var w = profile.weights;
     var overall = Math.round(
-      scores.hierarchy * 0.18 + scores.usability * 0.18 + scores.accessibility * 0.22 +
-      scores.consistency * 0.14 + scores.conversion * 0.16 + scores.performance * 0.12
+      scores.hierarchy * w.hierarchy + scores.usability * w.usability + scores.accessibility * w.accessibility +
+      scores.consistency * w.consistency + scores.conversion * w.conversion + scores.performance * w.performance
     );
 
-    return { overall: overall, scores: scores, issues: issues, filename: filename || "your-page.html" };
+    return { overall: overall, scores: scores, issues: issues, filename: filename || "your-page.html", industryKey: profileKey, industryLabel: profile.label };
   }
 
   var SEV_ORDER = { high: 0, med: 1, low: 2 };
@@ -971,6 +1319,10 @@ a { color: inherit; }
     var box = document.getElementById("scanner-results");
     document.getElementById("result-file").textContent = result.filename;
     document.getElementById("result-score").textContent = result.overall;
+    var industryEl = document.getElementById("result-industry");
+    if (industryEl) {
+      industryEl.textContent = result.industryKey === "general" ? "" : "Weighted for " + result.industryLabel;
+    }
 
     var subWrap = document.getElementById("result-submeters");
     subWrap.innerHTML = "";
@@ -996,7 +1348,15 @@ a { color: inherit; }
       sevSpan.setAttribute("aria-label", it.sev + " impact");
       sevSpan.textContent = SEV_LABEL[it.sev];
       var content = document.createElement("div");
-      var h3 = document.createElement("h3"); h3.textContent = it.title;
+      var h3 = document.createElement("h3");
+      h3.textContent = it.title;
+      if (it.industry) {
+        var tag = document.createElement("span");
+        tag.className = "issue__tag";
+        tag.textContent = "Industry";
+        h3.appendChild(document.createTextNode(" "));
+        h3.appendChild(tag);
+      }
       var p = document.createElement("p");
       var fixLabel = document.createElement("span"); fixLabel.className = "fix"; fixLabel.textContent = "Fix:";
       p.appendChild(fixLabel); p.appendChild(document.createTextNode(" " + it.fix));
@@ -1020,6 +1380,7 @@ a { color: inherit; }
     var fileInput = document.getElementById("html-file");
     var btn = document.getElementById("run-scan-btn");
     var hint = document.getElementById("scanner-hint");
+    var industrySelect = document.getElementById("industry-select");
     if (!btn) return;
 
     var currentFilename = "";
@@ -1050,10 +1411,65 @@ a { color: inherit; }
         return;
       }
       hint.textContent = "";
-      var result = runAnalysis(html, currentFilename || "pasted-source.html");
+      var industryKey = industrySelect ? industrySelect.value : "general";
+      var result = runAnalysis(html, currentFilename || "pasted-source.html", industryKey);
       renderResults(result);
     });
   }
+
+  // ---------- Industry content section (tabs) ----------
+  function wireIndustryTabs() {
+    var tabsWrap = document.getElementById("industry-tabs");
+    var panel = document.getElementById("industry-content");
+    if (!tabsWrap || !panel) return;
+
+    var order = ["general", "ecommerce", "saas", "healthcare", "finance", "hospitality", "education", "realestate", "nonprofit", "agency"];
+
+    order.forEach(function (key, idx) {
+      var profile = INDUSTRY_PROFILES[key];
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "ind-tab";
+      b.id = "ind-tab-" + key;
+      b.setAttribute("role", "tab");
+      b.setAttribute("aria-selected", idx === 0 ? "true" : "false");
+      b.setAttribute("aria-controls", "industry-content");
+      b.textContent = profile.label;
+      b.addEventListener("click", function () { selectIndustry(key); });
+      tabsWrap.appendChild(b);
+    });
+
+    function selectIndustry(key) {
+      var profile = INDUSTRY_PROFILES[key];
+      tabsWrap.querySelectorAll(".ind-tab").forEach(function (b) {
+        var active = b.id === "ind-tab-" + key;
+        b.setAttribute("aria-selected", active ? "true" : "false");
+        b.classList.toggle("ind-tab--active", active);
+      });
+
+      var maxW = Math.max.apply(null, Object.values(profile.weights));
+      var barsHtml = Object.keys(CRIT_LABELS).map(function (ck) {
+        var w = profile.weights[ck];
+        var pct = Math.round((w / maxW) * 100);
+        return '<li class="ind-weight"><span class="ind-weight__name">' + CRIT_LABELS[ck] + '</span>' +
+          '<span class="ind-weight__bar"><i style="width:' + pct + '%"></i></span>' +
+          '<span class="ind-weight__val">' + Math.round(w * 100) + '%</span></li>';
+      }).join("");
+
+      var focusHtml = profile.focus.map(function (f) { return "<li>" + f + "</li>"; }).join("");
+
+      panel.innerHTML =
+        '<p class="ind-framing">' + profile.framing + '</p>' +
+        '<div class="ind-grid">' +
+          '<div><h3 class="ind-sub">Where the score weight goes</h3><ul class="ind-weights">' + barsHtml + '</ul></div>' +
+          '<div><h3 class="ind-sub">What the scan focuses on</h3><ul class="ind-focus">' + focusHtml + '</ul></div>' +
+        '</div>';
+    }
+
+    selectIndustry(order[0]);
+  }
+
+
 
   function init() {
     drawGauge();
@@ -1062,6 +1478,7 @@ a { color: inherit; }
     wireReveal();
     wireScan();
     wireRealScanner();
+    wireIndustryTabs();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
