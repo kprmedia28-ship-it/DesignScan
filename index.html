@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
 
 <header class="topbar">
   <div class="wrap topbar__inner">
@@ -35,13 +35,18 @@
       <span class="brand__word">DesignScan</span>
     </a>
     <nav class="nav" aria-label="Primary">
-      <a href="#how">How it works</a>
-      <a href="#criteria">What we measure</a>
-      <a href="#industries">By industry</a>
-      <a href="#run-scan">Real scan</a>
-      <a href="#report">Sample report</a>
+      <a href="#how" data-i18n="nav.how">How it works</a>
+      <a href="#criteria" data-i18n="nav.criteria">What we measure</a>
+      <a href="#industries" data-i18n="nav.industries">By industry</a>
+      <a href="#run-scan" data-i18n="nav.scan">Real scan</a>
+      <a href="#report" data-i18n="nav.report">Sample report</a>
     </nav>
-    <a class="btn btn--ghost nav__cta" href="#scan">Scan a page</a>
+    <a class="btn btn--ghost nav__cta" href="#scan" data-i18n="nav.cta">Scan a page</a>
+    <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch language / Wissel taal">
+      <span class="lang-toggle__opt lang-toggle__opt--active" data-lang="en">EN</span>
+      <span class="lang-toggle__sep">/</span>
+      <span class="lang-toggle__opt" data-lang="nl">NL</span>
+    </button>
   </div>
 </header>
 
@@ -51,33 +56,33 @@
   <!-- HERO -->
   <section class="hero wrap" aria-labelledby="hero-title">
     <div class="hero__copy">
-      <p class="eyebrow">Objective UI/UX measurement</p>
-      <h1 id="hero-title">How good is your<br>design, <span class="ink-em">really</span>?</h1>
-      <p class="lede">Paste a URL and DesignScan reads it the way a senior product designer would — six calibrated criteria, a single honest score, and the specific fixes that move the needle.</p>
+      <p class="eyebrow" data-i18n="hero.eyebrow">Objective UI/UX measurement</p>
+      <h1 id="hero-title" data-i18n="hero.title">How good is your<br>design, <span class="ink-em">really</span>?</h1>
+      <p class="lede" data-i18n="hero.lede">Paste a URL and DesignScan reads it the way a senior product designer would — six calibrated criteria, a single honest score, and the specific fixes that move the needle.</p>
 
       <form class="scan" id="scan" autocomplete="off" novalidate>
-        <label class="scan__label" for="url">Page to scan</label>
+        <label class="scan__label" for="url" data-i18n="hero.scanLabel">Page to scan</label>
         <div class="scan__row">
           <input class="scan__input" id="url" name="url" type="url" inputmode="url"
                  placeholder="https://your-site.com" aria-describedby="scan-note" />
           <button class="btn btn--solid" type="submit" id="scan-btn">
-            <span class="btn__label">Scan my design</span>
+            <span class="btn__label" data-i18n="hero.scanBtn">Scan my design</span>
           </button>
         </div>
-        <p class="scan__note" id="scan-note">Free preview · No sign-up · Result in seconds</p>
+        <p class="scan__note" id="scan-note" data-i18n="hero.scanNote">Free preview · No sign-up · Result in seconds</p>
       </form>
 
       <ul class="trust" aria-label="What the scan checks">
-        <li>Heuristic-based</li>
-        <li>Accessibility-aware</li>
-        <li>Conversion-focused</li>
+        <li data-i18n="hero.trust1">Heuristic-based</li>
+        <li data-i18n="hero.trust2">Accessibility-aware</li>
+        <li data-i18n="hero.trust3">Conversion-focused</li>
       </ul>
     </div>
 
     <!-- SIGNATURE: the gauge readout -->
     <div class="readout" role="group" aria-labelledby="readout-title">
       <div class="readout__head">
-        <span class="readout__tag" id="readout-title">LIVE&nbsp;READING</span>
+        <span class="readout__tag" id="readout-title" data-i18n="hero.live">LIVE&nbsp;READING</span>
         <span class="readout__src" id="readout-src">demo · sample-store.com</span>
       </div>
 
@@ -95,15 +100,15 @@
         <div class="gauge__readout">
           <span class="gauge__score" id="gauge-score" aria-hidden="true">78</span>
           <span class="gauge__of">/100</span>
-          <span class="gauge__grade" id="gauge-grade">Good — three fixes from great</span>
+          <span class="gauge__grade" id="gauge-grade" data-i18n="hero.grade">Good — three fixes from great</span>
         </div>
       </div>
 
       <ul class="submeters" id="submeters" aria-label="Sub-scores by criterion">
-        <li class="sm" data-score="82"><span class="sm__name">Visual hierarchy</span><span class="sm__bar"><i style="--v:82%"></i></span><span class="sm__val">82</span></li>
-        <li class="sm" data-score="71"><span class="sm__name">Usability</span><span class="sm__bar"><i style="--v:71%"></i></span><span class="sm__val">71</span></li>
-        <li class="sm" data-score="64"><span class="sm__name">Accessibility</span><span class="sm__bar"><i style="--v:64%"></i></span><span class="sm__val">64</span></li>
-        <li class="sm" data-score="88"><span class="sm__name">Consistency</span><span class="sm__bar"><i style="--v:88%"></i></span><span class="sm__val">88</span></li>
+        <li class="sm" data-score="82"><span class="sm__name" data-i18n="crit.hierarchy">Visual hierarchy</span><span class="sm__bar"><i style="--v:82%"></i></span><span class="sm__val">82</span></li>
+        <li class="sm" data-score="71"><span class="sm__name" data-i18n="crit.usability">Usability</span><span class="sm__bar"><i style="--v:71%"></i></span><span class="sm__val">71</span></li>
+        <li class="sm" data-score="64"><span class="sm__name" data-i18n="crit.accessibility">Accessibility</span><span class="sm__bar"><i style="--v:64%"></i></span><span class="sm__val">64</span></li>
+        <li class="sm" data-score="88"><span class="sm__name" data-i18n="crit.consistency">Consistency</span><span class="sm__bar"><i style="--v:88%"></i></span><span class="sm__val">88</span></li>
       </ul>
     </div>
   </section>
@@ -113,24 +118,24 @@
   <!-- HOW IT WORKS (a true sequence → numbering earns its place) -->
   <section class="how wrap" id="how" aria-labelledby="how-title">
     <header class="sec-head">
-      <p class="eyebrow">The method</p>
-      <h2 id="how-title">Three steps, no questionnaire</h2>
+      <p class="eyebrow" data-i18n="how.eyebrow">The method</p>
+      <h2 id="how-title" data-i18n="how.title">Three steps, no questionnaire</h2>
     </header>
     <ol class="steps">
       <li class="step">
         <span class="step__no">01</span>
-        <h3>Point it at a page</h3>
-        <p>Drop in a live URL or upload a screenshot. DesignScan captures the layout, type, color and structure as a real visitor receives it.</p>
+        <h3 data-i18n="how.s1.title">Point it at a page</h3>
+        <p data-i18n="how.s1.body">Drop in a live URL or upload a screenshot. DesignScan captures the layout, type, color and structure as a real visitor receives it.</p>
       </li>
       <li class="step">
         <span class="step__no">02</span>
-        <h3>It reads against the rubric</h3>
-        <p>Every element is checked against six calibrated criteria drawn from established usability heuristics and accessibility standards — not vibes.</p>
+        <h3 data-i18n="how.s2.title">It reads against the rubric</h3>
+        <p data-i18n="how.s2.body">Every element is checked against six calibrated criteria drawn from established usability heuristics and accessibility standards — not vibes.</p>
       </li>
       <li class="step">
         <span class="step__no">03</span>
-        <h3>You get the fixes</h3>
-        <p>A scored breakdown lands with the highest-impact issues first, each paired with a concrete change your team can ship today.</p>
+        <h3 data-i18n="how.s3.title">You get the fixes</h3>
+        <p data-i18n="how.s3.body">A scored breakdown lands with the highest-impact issues first, each paired with a concrete change your team can ship today.</p>
       </li>
     </ol>
   </section>
@@ -140,40 +145,40 @@
   <!-- WHAT WE MEASURE -->
   <section class="criteria wrap" id="criteria" aria-labelledby="crit-title">
     <header class="sec-head">
-      <p class="eyebrow">The rubric</p>
-      <h2 id="crit-title">Six things we measure</h2>
-      <p class="sec-sub">Each criterion is scored independently, so you see exactly where the points leak — and where you already win.</p>
+      <p class="eyebrow" data-i18n="criteria.eyebrow">The rubric</p>
+      <h2 id="crit-title" data-i18n="criteria.title">Six things we measure</h2>
+      <p class="sec-sub" data-i18n="criteria.sub">Each criterion is scored independently, so you see exactly where the points leak — and where you already win.</p>
     </header>
     <div class="grid">
       <article class="card" data-v="82">
-        <div class="card__top"><h3>Visual hierarchy</h3><span class="chip">82</span></div>
+        <div class="card__top"><h3 data-i18n="crit.hierarchy">Visual hierarchy</h3><span class="chip">82</span></div>
         <span class="meterline"><i></i></span>
-        <p>Does the eye land where it should? We check contrast, scale, spacing and grouping against the page's actual goal.</p>
+        <p data-i18n="criteria.hierarchy.body">Does the eye land where it should? We check contrast, scale, spacing and grouping against the page's actual goal.</p>
       </article>
       <article class="card" data-v="71">
-        <div class="card__top"><h3>Usability</h3><span class="chip">71</span></div>
+        <div class="card__top"><h3 data-i18n="crit.usability">Usability</h3><span class="chip">71</span></div>
         <span class="meterline"><i></i></span>
-        <p>Clear affordances, predictable navigation, forgiving interactions — measured against Nielsen's heuristics.</p>
+        <p data-i18n="criteria.usability.body">Clear affordances, predictable navigation, forgiving interactions — measured against Nielsen's heuristics.</p>
       </article>
       <article class="card" data-v="64">
-        <div class="card__top"><h3>Accessibility</h3><span class="chip chip--warn">64</span></div>
+        <div class="card__top"><h3 data-i18n="crit.accessibility">Accessibility</h3><span class="chip chip--warn">64</span></div>
         <span class="meterline"><i></i></span>
-        <p>Contrast ratios, focus order, target sizes and semantics, mapped to WCAG 2.2 AA where it matters most.</p>
+        <p data-i18n="criteria.accessibility.body">Contrast ratios, focus order, target sizes and semantics, mapped to WCAG 2.2 AA where it matters most.</p>
       </article>
       <article class="card" data-v="88">
-        <div class="card__top"><h3>Consistency</h3><span class="chip">88</span></div>
+        <div class="card__top"><h3 data-i18n="crit.consistency">Consistency</h3><span class="chip">88</span></div>
         <span class="meterline"><i></i></span>
-        <p>One type scale, one spacing system, one voice. We flag the drift that quietly erodes trust.</p>
+        <p data-i18n="criteria.consistency.body">One type scale, one spacing system, one voice. We flag the drift that quietly erodes trust.</p>
       </article>
       <article class="card" data-v="76">
-        <div class="card__top"><h3>Conversion clarity</h3><span class="chip">76</span></div>
+        <div class="card__top"><h3 data-i18n="crit.conversion">Conversion clarity</h3><span class="chip">76</span></div>
         <span class="meterline"><i></i></span>
-        <p>Is the next action obvious? We weigh CTA prominence, friction and the path from arrival to action.</p>
+        <p data-i18n="criteria.conversion.body">Is the next action obvious? We weigh CTA prominence, friction and the path from arrival to action.</p>
       </article>
       <article class="card" data-v="69">
-        <div class="card__top"><h3>Performance signals</h3><span class="chip">69</span></div>
+        <div class="card__top"><h3 data-i18n="crit.performance">Performance signals</h3><span class="chip">69</span></div>
         <span class="meterline"><i></i></span>
-        <p>Perceived speed, layout stability and the loading experience that shapes a first impression.</p>
+        <p data-i18n="criteria.performance.body">Perceived speed, layout stability and the loading experience that shapes a first impression.</p>
       </article>
     </div>
   </section>
@@ -183,9 +188,9 @@
   <!-- PER INDUSTRY -->
   <section class="industries wrap" id="industries" aria-labelledby="industries-title">
     <header class="sec-head">
-      <p class="eyebrow">Same rubric, different stakes</p>
-      <h2 id="industries-title">What matters most in your industry</h2>
-      <p class="sec-sub">The six criteria stay the same everywhere — but how much each one weighs, and which extra checks apply, depends on what your visitors came to do.</p>
+      <p class="eyebrow" data-i18n="industries.eyebrow">Same rubric, different stakes</p>
+      <h2 id="industries-title" data-i18n="industries.title">What matters most in your industry</h2>
+      <p class="sec-sub" data-i18n="industries.sub">The six criteria stay the same everywhere — but how much each one weighs, and which extra checks apply, depends on what your visitors came to do.</p>
     </header>
 
     <div class="industries__panel">
@@ -199,35 +204,24 @@
   <!-- REAL SCANNER -->
   <section class="scanner wrap" id="run-scan" aria-labelledby="scanner-title">
     <header class="sec-head">
-      <p class="eyebrow">Try it on your own page</p>
-      <h2 id="scanner-title">Scan your HTML — for real</h2>
-      <p class="sec-sub">Paste the page source or drop in an <code>.html</code> file. DesignScan reads it against the rubric right here in your browser — nothing is uploaded anywhere.</p>
+      <p class="eyebrow" data-i18n="scanner.eyebrow">Try it on your own page</p>
+      <h2 id="scanner-title" data-i18n="scanner.title">Scan your HTML — for real</h2>
+      <p class="sec-sub" data-i18n="scanner.sub">Paste the page source or drop in an <code>.html</code> file. DesignScan reads it against the rubric right here in your browser — nothing is uploaded anywhere.</p>
     </header>
 
     <div class="scanner__panel">
       <div class="scanner__input">
-        <label class="scan__label" for="html-input">Page source (HTML)</label>
+        <label class="scan__label" for="html-input" data-i18n="scanner.inputLabel">Page source (HTML)</label>
         <textarea id="html-input" class="scanner__textarea" rows="8"
-          placeholder="Right-click your page → View Page Source → copy/paste here. Or use the file picker below."></textarea>
+          data-i18n="scanner.placeholder" placeholder="Right-click your page → View Page Source → copy/paste here. Or use the file picker below."></textarea>
         <div class="scanner__controls">
-          <label class="scan__label scan__label--inline" for="industry-select">Industry</label>
-          <select id="industry-select" class="scanner__select">
-            <option value="general">General (no industry focus)</option>
-            <option value="ecommerce">E-commerce / webshop</option>
-            <option value="saas">SaaS / software</option>
-            <option value="healthcare">Zorg &amp; gezondheid</option>
-            <option value="finance">Financiële diensten</option>
-            <option value="hospitality">Horeca &amp; lokale dienstverlening</option>
-            <option value="education">Onderwijs</option>
-            <option value="realestate">Vastgoed</option>
-            <option value="nonprofit">Non-profit &amp; overheid</option>
-            <option value="agency">Agency / portfolio</option>
-          </select>
+          <label class="scan__label scan__label--inline" for="industry-select" data-i18n="scanner.industryLabel">Industry</label>
+          <select id="industry-select" class="scanner__select"></select>
           <label class="btn btn--ghost scanner__file">
             <input type="file" id="html-file" accept=".html,.htm,text/html" hidden />
-            Choose .html file
+            <span data-i18n="scanner.chooseFile">Choose .html file</span>
           </label>
-          <button class="btn btn--solid" id="run-scan-btn" type="button">Run real scan</button>
+          <button class="btn btn--solid" id="run-scan-btn" type="button" data-i18n="scanner.runBtn">Run real scan</button>
         </div>
         <p class="scanner__hint" id="scanner-hint"></p>
       </div>
@@ -236,10 +230,14 @@
         <div class="report__bar">
           <span class="report__file" id="result-file">your-page.html</span>
           <span class="report__industry" id="result-industry"></span>
-          <span class="report__score">Overall <strong id="result-score">—</strong>/100</span>
+          <span class="report__score"><span data-i18n="scanner.overall">Overall</span> <strong id="result-score">—</strong>/100</span>
         </div>
         <ul class="submeters" id="result-submeters" aria-label="Sub-scores by criterion"></ul>
         <ul class="issues" id="result-issues"></ul>
+        <div class="scanner__followup" id="scanner-followup" hidden>
+          <p data-i18n="scanner.followup.text">Want this turned into a plan your team can execute, with us reviewing it personally?</p>
+          <button class="btn btn--solid" id="open-fixit-from-scan" type="button" data-i18n="scanner.followup.btn">Request a Fix-it report for this scan</button>
+        </div>
       </div>
     </div>
   </section>
@@ -249,43 +247,43 @@
 
   <section class="report wrap" id="report" aria-labelledby="report-title">
     <header class="sec-head">
-      <p class="eyebrow">What lands in your inbox</p>
-      <h2 id="report-title">A report you can act on</h2>
-      <p class="sec-sub">Issues ranked by impact, each with the change to make. No 40-page PDF, no fluff.</p>
+      <p class="eyebrow" data-i18n="report.eyebrow">What lands in your inbox</p>
+      <h2 id="report-title" data-i18n="report.title">A report you can act on</h2>
+      <p class="sec-sub" data-i18n="report.sub">Issues ranked by impact, each with the change to make. No 40-page PDF, no fluff.</p>
     </header>
 
     <div class="report__card">
       <div class="report__bar">
         <span class="report__file">sample-store.com — report.txt</span>
-        <span class="report__score">Overall <strong>78</strong>/100</span>
+        <span class="report__score"><span data-i18n="scanner.overall">Overall</span> <strong>78</strong>/100</span>
       </div>
       <ul class="issues">
         <li class="issue issue--high">
           <span class="issue__sev" aria-label="High impact">HIGH</span>
           <div>
-            <h3>Primary CTA competes with three secondary buttons</h3>
-            <p><span class="fix">Fix:</span> Demote secondary actions to text links so "Add to cart" is the only filled button above the fold. Expected lift in click-through clarity.</p>
+            <h3 data-i18n="report.i1.title">Primary CTA competes with three secondary buttons</h3>
+            <p><span class="fix" data-i18n="report.fixLabel">Fix:</span> <span data-i18n="report.i1.fix">Demote secondary actions to text links so "Add to cart" is the only filled button above the fold. Expected lift in click-through clarity.</span></p>
           </div>
         </li>
         <li class="issue issue--high">
           <span class="issue__sev" aria-label="High impact">HIGH</span>
           <div>
-            <h3>Body text contrast fails AA on the hero</h3>
-            <p><span class="fix">Fix:</span> #8A8A8A on white reads 2.9:1. Darken to #595959 to clear the 4.5:1 threshold without touching the palette.</p>
+            <h3 data-i18n="report.i2.title">Body text contrast fails AA on the hero</h3>
+            <p><span class="fix" data-i18n="report.fixLabel">Fix:</span> <span data-i18n="report.i2.fix">#8A8A8A on white reads 2.9:1. Darken to #595959 to clear the 4.5:1 threshold without touching the palette.</span></p>
           </div>
         </li>
         <li class="issue issue--med">
           <span class="issue__sev issue__sev--med" aria-label="Medium impact">MED</span>
           <div>
-            <h3>Inconsistent spacing between sections</h3>
-            <p><span class="fix">Fix:</span> Three different vertical gaps (48 / 56 / 72px) read as accidental. Snap to an 8px scale — pick 64px and hold it.</p>
+            <h3 data-i18n="report.i3.title">Inconsistent spacing between sections</h3>
+            <p><span class="fix" data-i18n="report.fixLabel">Fix:</span> <span data-i18n="report.i3.fix">Three different vertical gaps (48 / 56 / 72px) read as accidental. Snap to an 8px scale — pick 64px and hold it.</span></p>
           </div>
         </li>
         <li class="issue issue--low">
           <span class="issue__sev issue__sev--low" aria-label="Low impact">LOW</span>
           <div>
-            <h3>Focus state missing on the search field</h3>
-            <p><span class="fix">Fix:</span> Add a 2px visible focus ring so keyboard users can see where they are.</p>
+            <h3 data-i18n="report.i4.title">Focus state missing on the search field</h3>
+            <p><span class="fix" data-i18n="report.fixLabel">Fix:</span> <span data-i18n="report.i4.fix">Add a 2px visible focus ring so keyboard users can see where they are.</span></p>
           </div>
         </li>
       </ul>
@@ -298,39 +296,86 @@
   <section class="fixit wrap" id="fix-my-website" aria-labelledby="fixit-title">
     <div class="fixit__card">
       <div class="fixit__main">
-        <p class="eyebrow eyebrow--light">Done for you</p>
-        <h2 id="fixit-title">Don't want to fix it yourself?<br>We will.</h2>
-        <p class="fixit__lede">A scan tells you what's wrong. The <strong>Fix my website</strong> service tells you exactly how to make it right — and gives your team a ready-to-build plan.</p>
+        <p class="eyebrow eyebrow--light" data-i18n="fixit.eyebrow">Done for you</p>
+        <h2 id="fixit-title" data-i18n="fixit.title">Don't want to fix it yourself?<br>We will.</h2>
+        <p class="fixit__lede" data-i18n="fixit.lede">A scan tells you what's wrong. The <strong>Fix my website</strong> service tells you exactly how to make it right — and gives your team a ready-to-build plan.</p>
 
         <ul class="fixit__list">
           <li>
             <span class="fixit__num">15</span>
             <div>
-              <h3>Core issues, ranked by impact</h3>
-              <p>The exact blockers hurting conversion, clarity and trust — not a generic checklist.</p>
+              <h3 data-i18n="fixit.f1.title">Core issues, ranked by impact</h3>
+              <p data-i18n="fixit.f1.body">The exact blockers hurting conversion, clarity and trust — not a generic checklist.</p>
             </div>
           </li>
           <li>
             <span class="fixit__num">4d</span>
             <div>
-              <h3>Turnaround</h3>
-              <p>Delivered within four working days, so you can act before more visitors leave.</p>
+              <h3 data-i18n="fixit.f2.title">Turnaround</h3>
+              <p data-i18n="fixit.f2.body">Delivered within four working days, so you can act before more visitors leave.</p>
             </div>
           </li>
           <li>
             <span class="fixit__num">1:1</span>
             <div>
-              <h3>Built for your team</h3>
-              <p>Each fix is written so a designer or developer can implement it the same day — copy, layout and code references included.</p>
+              <h3 data-i18n="fixit.f3.title">Built for your team</h3>
+              <p data-i18n="fixit.f3.body">Each fix is written so a designer or developer can implement it the same day — copy, layout and code references included.</p>
             </div>
           </li>
         </ul>
       </div>
 
       <div class="fixit__cta">
-        <p class="fixit__price">From <strong>€ 349</strong><span> · one-time</span></p>
-        <a class="btn btn--solid btn--lg" href="mailto:hello@designscan.example?subject=Fix%20my%20website">Get my Fix-it report</a>
-        <p class="fixit__note">Or run a free scan first — <a href="#run-scan">scan your HTML</a> or <a href="#scan">scan a URL</a>.</p>
+        <p class="fixit__price"><span data-i18n="fixit.priceFrom">From</span> <strong>€ 349</strong><span data-i18n="fixit.priceUnit"> · one-time</span></p>
+        <button class="btn btn--solid btn--lg" id="open-fixit-request" type="button" data-i18n="fixit.cta">Request my Fix-it report</button>
+        <p class="fixit__note" data-i18n="fixit.note">Or run a free scan first — <a href="#run-scan">scan your HTML</a> or <a href="#scan">scan a URL</a>.</p>
+      </div>
+    </div>
+
+    <!-- FIX-IT REQUEST PANEL -->
+    <div class="fixit-request" id="fixit-request" hidden>
+      <div class="fixit-request__card">
+        <button class="fixit-request__close" id="close-fixit-request" type="button" aria-label="Close">&times;</button>
+        <h3 data-i18n="fixitForm.title">Request a Fix-it report</h3>
+        <p class="fixit-request__intro" data-i18n="fixitForm.intro">Tell us a bit about the site and we'll prepare your ranked, ready-to-build plan within four working days.</p>
+
+        <form id="fixit-form" novalidate>
+          <div class="ff-row">
+            <label for="ff-name" data-i18n="fixitForm.name">Your name</label>
+            <input id="ff-name" name="name" type="text" required />
+          </div>
+          <div class="ff-row">
+            <label for="ff-email" data-i18n="fixitForm.email">Email address</label>
+            <input id="ff-email" name="email" type="email" required />
+          </div>
+          <div class="ff-row">
+            <label for="ff-url" data-i18n="fixitForm.url">Website URL</label>
+            <input id="ff-url" name="url" type="url" placeholder="https://" required />
+          </div>
+          <div class="ff-row">
+            <label for="ff-industry" data-i18n="fixitForm.industry">Industry</label>
+            <select id="ff-industry" name="industry"></select>
+          </div>
+          <div class="ff-row">
+            <label for="ff-notes" data-i18n="fixitForm.notes">Anything specific you'd like us to focus on? (optional)</label>
+            <textarea id="ff-notes" name="notes" rows="3"></textarea>
+          </div>
+          <div class="ff-row ff-row--summary" id="ff-summary" hidden>
+            <p class="ff-summary__label" data-i18n="fixitForm.attached">Attached scan summary:</p>
+            <pre class="ff-summary__pre" id="ff-summary-pre"></pre>
+          </div>
+          <div class="ff-actions">
+            <button class="btn btn--solid" type="submit" data-i18n="fixitForm.submit">Send request</button>
+            <span class="ff-hint" id="ff-hint"></span>
+          </div>
+          <p class="ff-disclaimer" data-i18n="fixitForm.disclaimer">This opens a pre-filled email to send to us — nothing is submitted automatically. No mail client? Use "Copy request" instead.</p>
+          <button class="ff-copy" id="ff-copy" type="button" data-i18n="fixitForm.copy">Copy request as text</button>
+        </form>
+
+        <div class="fixit-request__done" id="fixit-done" hidden>
+          <p data-i18n="fixitForm.doneTitle"><strong>Request ready.</strong></p>
+          <p data-i18n="fixitForm.doneBody">Your email client should have opened with everything filled in — just hit send. If nothing opened, use "Copy request as text" above and paste it into an email yourself.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -338,8 +383,8 @@
   <!-- CTA BAND -->
   <section class="cta-band" aria-labelledby="cta-title">
     <div class="wrap cta-band__inner">
-      <h2 id="cta-title">Stop guessing what's wrong.<br>Measure it.</h2>
-      <a class="btn btn--solid btn--lg" href="#scan">Scan my design</a>
+      <h2 id="cta-title" data-i18n="cta.title">Stop guessing what's wrong.<br>Measure it.</h2>
+      <a class="btn btn--solid btn--lg" href="#scan" data-i18n="cta.btn">Scan my design</a>
     </div>
   </section>
 </main>
@@ -348,10 +393,10 @@
   <div class="wrap footer__inner">
     <div class="footer__brand">
       <span class="brand__word">DesignScan</span>
-      <span class="footer__tag">Objective design analysis</span>
+      <span class="footer__tag" data-i18n="footer.tag">Objective design analysis</span>
     </div>
     <nav class="footer__links" aria-label="Footer">
-      <a href="#">Privacy Policy</a><span aria-hidden="true">·</span><a href="#">Terms of Service</a>
+      <a href="#" data-i18n="footer.privacy">Privacy Policy</a><span aria-hidden="true">·</span><a href="#" data-i18n="footer.terms">Terms of Service</a>
     </nav>
     <span class="footer__ver">v1.0.0</span>
   </div>
