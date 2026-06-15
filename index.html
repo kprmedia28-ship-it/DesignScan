@@ -69,6 +69,10 @@
             <span class="btn__label" data-i18n="hero.scanBtn">Scan my design</span>
           </button>
         </div>
+        <div class="scan__industry-row">
+          <label class="scan__label scan__label--inline" for="hero-industry-select" data-i18n="scanner.industryLabel">Industry</label>
+          <select id="hero-industry-select" class="scanner__select scanner__select--hero"></select>
+        </div>
         <p class="scan__note" id="scan-note" data-i18n="hero.scanNote">Free preview · No sign-up · Result in seconds</p>
       </form>
 
@@ -85,6 +89,7 @@
         <span class="readout__tag" id="readout-title" data-i18n="hero.live">LIVE&nbsp;READING</span>
         <span class="readout__src" id="readout-src">demo · sample-store.com</span>
       </div>
+      <p class="readout__industry-line" id="readout-industry-line" hidden></p>
 
       <div class="gauge" id="gauge">
         <svg class="gauge__svg" viewBox="0 0 280 210" role="img"

@@ -138,6 +138,12 @@ a { color: inherit; }
 .scan__input::placeholder { color: #9aa1a7; }
 .scan__input:focus-visible { outline: none; border-color: var(--ember); box-shadow: 0 0 0 3px rgba(226,86,42,.18); }
 .scan__note { font-family: var(--mono); font-size: 12px; color: var(--ink-2); margin-top: 12px; letter-spacing: .02em; }
+.scan__industry-row { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+.scanner__select--hero { padding: 9px 12px; font-size: 14px; }
+.readout__industry-line {
+  font-family: var(--mono); font-size: 11px; color: var(--ember-2); margin: 8px 0 0;
+  letter-spacing: .04em;
+}
 
 .trust { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 28px 0 0; }
 .trust li {
@@ -578,6 +584,10 @@ a { color: inherit; }
             <span class="btn__label" data-i18n="hero.scanBtn">Scan my design</span>
           </button>
         </div>
+        <div class="scan__industry-row">
+          <label class="scan__label scan__label--inline" for="hero-industry-select" data-i18n="scanner.industryLabel">Industry</label>
+          <select id="hero-industry-select" class="scanner__select scanner__select--hero"></select>
+        </div>
         <p class="scan__note" id="scan-note" data-i18n="hero.scanNote">Free preview · No sign-up · Result in seconds</p>
       </form>
 
@@ -594,6 +604,7 @@ a { color: inherit; }
         <span class="readout__tag" id="readout-title" data-i18n="hero.live">LIVE&nbsp;READING</span>
         <span class="readout__src" id="readout-src">demo · sample-store.com</span>
       </div>
+      <p class="readout__industry-line" id="readout-industry-line" hidden></p>
 
       <div class="gauge" id="gauge">
         <svg class="gauge__svg" viewBox="0 0 280 210" role="img"
@@ -1084,6 +1095,8 @@ a { color: inherit; }
     var btn = document.getElementById("scan-btn");
     var label = btn ? btn.querySelector(".btn__label") : null;
     var src = document.getElementById("readout-src");
+    var industrySelect = document.getElementById("hero-industry-select");
+    var industryLine = document.getElementById("readout-industry-line");
     if (!form) return;
 
     form.addEventListener("submit", function (e) {
@@ -1091,25 +1104,45 @@ a { color: inherit; }
       var url = (input.value || "").trim();
       if (!url) { input.focus(); input.style.borderColor = "var(--ember)"; return; }
       var host = url.replace(/^https?:\/\//, "").replace(/\/.*$/, "") || "your-site.com";
+      var industryKey = industrySelect ? industrySelect.value : "general";
+      var profile = INDUSTRY_PROFILES[industryKey] || INDUSTRY_PROFILES.general;
 
       if (label) label.textContent = t("hero.scanBtnLoading");
       btn.disabled = true;
 
+      // derive 4 pseudo category scores (62–96) from the hostname, deterministically
       var seed = 0; for (var k = 0; k < host.length; k++) seed += host.charCodeAt(k);
-      var score = 62 + (seed % 32); // 62–93
+      var catScores = {};
+      CATEGORY_KEYS.forEach(function (cat, idx) {
+        var offset = [0, 9, -7, 4][idx] || 0;
+        catScores[cat] = Math.max(55, Math.min(97, 62 + ((seed * (idx + 3)) % 32) + offset));
+      });
+      var w = profile.weights;
+      var score = Math.round(CATEGORY_KEYS.reduce(function (sum, cat) { return sum + catScores[cat] * w[cat]; }, 0));
 
       setTimeout(function () {
         if (src) src.textContent = "demo · " + host;
+        if (industryLine) {
+          if (industryKey === "general") {
+            industryLine.hidden = true;
+          } else {
+            industryLine.hidden = false;
+            industryLine.textContent = t("scanner.weightedFor", { industry: t(profile.labelKey) });
+          }
+        }
         document.getElementById("gauge-needle").style.transform = "rotate(-120deg)";
         document.getElementById("gauge-score").textContent = "0";
         animateScore(score);
         var grade = document.getElementById("gauge-grade");
-        if (grade) grade.textContent = score >= 85 ? t("hero.gradeStrong")
-                       : score >= 70 ? t("hero.gradeGood")
-                       : t("hero.gradeWeak");
-        document.querySelectorAll(".sm").forEach(function (sm, idx) {
-          var base = [3, -6, -9, 7][idx] || 0;
-          var v = Math.max(40, Math.min(96, score + base));
+        if (grade) {
+          grade.dataset.locked = "true";
+          grade.textContent = score >= 85 ? t("hero.gradeStrong")
+                         : score >= 70 ? t("hero.gradeGood")
+                         : t("hero.gradeWeak");
+        }
+        document.querySelectorAll("#submeters .sm").forEach(function (sm, idx) {
+          var cat = CATEGORY_KEYS[idx];
+          var v = Math.round(catScores[cat]);
           sm.querySelector(".sm__val").textContent = v;
           sm.querySelector(".sm__bar i").style.width = v + "%";
         });
@@ -1205,7 +1238,7 @@ a { color: inherit; }
       "fixit.cta": "Build my Fix-it brief",
       "fixit.note": 'Or run a free scan first — <a href="#run-scan">scan your HTML</a> or <a href="#scan">scan a URL</a>.',
       "fixitForm.title": "Build your Fix-it brief",
-      "fixitForm.intro": "Fill in a few details and we'll put together a ranked, ready-to-build brief based on this scan — no email required. Download it or copy it to share with your team.",
+      "fixitForm.intro": "Fill in a few details below. If you've run a scan, its full results — scores, fixes and ready-to-build plans for every issue — are bundled in automatically. No email required: download the brief or copy it to share with your team.",
       "fixitForm.name": "Your name", "fixitForm.url": "Website",
       "fixitForm.industry": "Industry", "fixitForm.notes": "Anything specific you'd like us to focus on? (optional)",
       "fixitForm.attached": "Attached scan summary:",
@@ -1221,6 +1254,11 @@ a { color: inherit; }
       "fixitForm.summaryScore": "Overall score",
       "fixitForm.summaryIndustry": "Industry",
       "fixitForm.summaryTopIssues": "Top issues",
+      "fixitForm.summaryMore": "...and {n} more issue(s) — full list included in the downloaded brief.",
+      "fixitForm.categoryScores": "Score breakdown",
+      "fixitForm.allIssues": "All issues, ranked by impact, with fixes and a ready-to-build plan",
+      "fixitForm.codeLabel": "Code",
+      "fixitForm.noScanYet": "No scan has been run yet. Run a real scan above, then come back here — your results, fixes and ready-to-build plans will be included in the brief automatically.",
       "cta.title": "Stop guessing what's wrong.<br>Measure it.", "cta.btn": "Scan my design",
       "footer.tag": "Objective design analysis", "footer.privacy": "Privacy Policy", "footer.terms": "Terms of Service",
       "issue.tag": "Industry",
@@ -1318,7 +1356,7 @@ a { color: inherit; }
       "fixit.cta": "Stel mijn Fix-it-brief samen",
       "fixit.note": 'Of draai eerst een gratis scan — <a href="#run-scan">scan je HTML</a> of <a href="#scan">scan een URL</a>.',
       "fixitForm.title": "Stel je Fix-it-brief samen",
-      "fixitForm.intro": "Vul een paar details in en wij stellen een gerangschikte, direct uitvoerbare brief samen op basis van deze scan — geen e-mail nodig. Download hem of kopieer hem om te delen met je team.",
+      "fixitForm.intro": "Vul hieronder een paar details in. Heb je een scan uitgevoerd? Dan worden de volledige resultaten — scores, fixes en direct uitvoerbare plannen per issue — automatisch toegevoegd. Geen e-mail nodig: download de brief of kopieer hem om te delen met je team.",
       "fixitForm.name": "Je naam", "fixitForm.url": "Website",
       "fixitForm.industry": "Branche", "fixitForm.notes": "Iets specifieks waar we op moeten focussen? (optioneel)",
       "fixitForm.attached": "Bijgevoegde scansamenvatting:",
@@ -1334,6 +1372,11 @@ a { color: inherit; }
       "fixitForm.summaryScore": "Totaalscore",
       "fixitForm.summaryIndustry": "Branche",
       "fixitForm.summaryTopIssues": "Belangrijkste issues",
+      "fixitForm.summaryMore": "...en nog {n} issue(s) — volledige lijst staat in de gedownloade brief.",
+      "fixitForm.categoryScores": "Score-uitsplitsing",
+      "fixitForm.allIssues": "Alle issues, gerangschikt op impact, met fixes en een direct uitvoerbaar plan",
+      "fixitForm.codeLabel": "Code",
+      "fixitForm.noScanYet": "Er is nog geen scan uitgevoerd. Voer hierboven een echte scan uit en kom dan terug — je resultaten, fixes en stappenplannen worden automatisch in de brief opgenomen.",
       "cta.title": "Stop met gokken wat er mis is.<br>Meet het.", "cta.btn": "Scan mijn design",
       "footer.tag": "Objectieve designanalyse", "footer.privacy": "Privacybeleid", "footer.terms": "Algemene voorwaarden",
       "issue.tag": "Branche",
@@ -2673,7 +2716,7 @@ a { color: inherit; }
   var INDUSTRY_ORDER = ["general", "ecommerce", "saas", "healthcare", "finance", "hospitality", "education", "realestate", "nonprofit", "agency"];
 
   function populateIndustrySelects() {
-    document.querySelectorAll("#industry-select, #ff-industry").forEach(function (select) {
+    document.querySelectorAll("#industry-select, #ff-industry, #hero-industry-select").forEach(function (select) {
       var current = select.value;
       select.innerHTML = "";
       INDUSTRY_ORDER.forEach(function (key) {
@@ -2761,6 +2804,62 @@ a { color: inherit; }
     sorted.slice(0, 6).forEach(function (it) {
       lines.push("- [" + SEV_LABEL[it.sev] + "] " + (it.title[LANG] || it.title.en));
     });
+    if (sorted.length > 6) {
+      lines.push("");
+      lines.push(t("fixitForm.summaryMore", { n: sorted.length - 6 }));
+    }
+    return lines.join("\n");
+  }
+
+  // Full report: overall + 4 category scores + every issue with fix and
+  // ready-to-build plan (steps + code). This is what goes into the
+  // downloadable/copyable Fix-it brief.
+  function buildFullReportText() {
+    if (!lastResult) return "";
+    var lines = [];
+    var divider = "----------------------------------------";
+
+    lines.push(t("fixitForm.summaryTitle"));
+    lines.push(divider);
+    lines.push(t("fixitForm.summaryScore") + ": " + lastResult.overall + "/100");
+    if (lastResult.industryKey !== "general") {
+      lines.push(t("fixitForm.summaryIndustry") + ": " + t(lastResult.profile.labelKey));
+    }
+    lines.push("");
+
+    lines.push(t("fixitForm.categoryScores") + ":");
+    CATEGORY_KEYS.forEach(function (cat) {
+      lines.push("- " + t("cat." + cat) + ": " + Math.round(lastResult.categoryScores[cat]) + "/100");
+      CATEGORY_CRITERIA[cat].forEach(function (key) {
+        lines.push("    · " + t("crit." + key) + ": " + Math.round(lastResult.scores[key]) + "/100");
+      });
+    });
+    lines.push("");
+
+    var sorted = lastResult.issues.slice().sort(function (a, b) { return SEV_ORDER[a.sev] - SEV_ORDER[b.sev]; });
+    lines.push(t("fixitForm.allIssues") + " (" + sorted.length + "):");
+    lines.push(divider);
+
+    sorted.forEach(function (it, idx) {
+      lines.push("");
+      lines.push((idx + 1) + ". [" + SEV_LABEL[it.sev] + "] " + (it.title[LANG] || it.title.en) + (it.industry ? " (" + t("issue.tag") + ")" : ""));
+      lines.push(t("report.fixLabel") + " " + (it.fix[LANG] || it.fix.en));
+      if (it.plan) {
+        lines.push("");
+        lines.push(t("issue.planHeading") + ":");
+        it.plan.steps.forEach(function (step, sIdx) {
+          lines.push("  " + (sIdx + 1) + ") " + (step[LANG] || step.en));
+        });
+        if (it.plan.code) {
+          lines.push("");
+          lines.push("  " + t("fixitForm.codeLabel") + ":");
+          it.plan.code.split("\n").forEach(function (codeLine) {
+            lines.push("  | " + codeLine);
+          });
+        }
+      }
+    });
+
     return lines.join("\n");
   }
 
@@ -2818,11 +2917,15 @@ a { color: inherit; }
         lines.push((LANG === "nl" ? "Opmerkingen" : "Notes") + ":");
         lines.push(notes);
       }
-      var summary = buildSummaryText();
-      if (summary) {
+      var report = buildFullReportText();
+      if (report) {
         lines.push("");
-        lines.push("---");
-        lines.push(summary);
+        lines.push("==========================================");
+        lines.push("");
+        lines.push(report);
+      } else {
+        lines.push("");
+        lines.push(t("fixitForm.noScanYet"));
       }
 
       var hostSlug = (url || "site").replace(/^https?:\/\//, "").replace(/[^a-z0-9.-]+/gi, "-").replace(/^-+|-+$/g, "") || "site";
