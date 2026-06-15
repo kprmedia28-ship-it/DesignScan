@@ -207,7 +207,7 @@
       "scanner.hintError": "Couldn't read that file. Try pasting the HTML instead.",
       "scanner.weightedFor": "Weighted for {industry}",
       "scanner.followup.text": "Want this turned into a plan your team can execute, with us reviewing it personally?",
-      "scanner.followup.btn": "Request a Fix-it report for this scan",
+      "scanner.followup.btn": "Fill in your Fix-it brief for this scan",
       "report.eyebrow": "What lands in your inbox", "report.title": "A report you can act on",
       "report.sub": "Issues ranked by impact, each with the change to make. No 40-page PDF, no fluff.",
       "report.fixLabel": "Fix:",
@@ -229,7 +229,7 @@
       "fixit.f3.title": "Built for your team",
       "fixit.f3.body": "Each fix is written so a designer or developer can implement it the same day — copy, layout and code references included.",
       "fixit.priceFrom": "From", "fixit.priceUnit": " · one-time",
-      "fixit.cta": "Request my Fix-it report",
+      "fixit.cta": "Build my Fix-it brief",
       "fixit.note": 'Or run a free scan first — <a href="#run-scan">scan your HTML</a> or <a href="#scan">scan a URL</a>.',
       "fixitForm.title": "Build your Fix-it brief",
       "fixitForm.intro": "Fill in a few details and we'll put together a ranked, ready-to-build brief based on this scan — no email required. Download it or copy it to share with your team.",
@@ -320,7 +320,7 @@
       "scanner.hintError": "Kon dat bestand niet lezen. Probeer de HTML te plakken.",
       "scanner.weightedFor": "Gewogen voor {industry}",
       "scanner.followup.text": "Hier een plan van willen waarmee je team aan de slag kan, persoonlijk door ons doorgenomen?",
-      "scanner.followup.btn": "Vraag een Fix-it-rapport aan voor deze scan",
+      "scanner.followup.btn": "Vul je Fix-it-brief in voor deze scan",
       "report.eyebrow": "Wat in je inbox landt", "report.title": "Een rapport waar je mee aan de slag kunt",
       "report.sub": "Issues gerangschikt op impact, elk met de aanpassing die nodig is. Geen rapport van 40 pagina's, geen ruis.",
       "report.fixLabel": "Fix:",
@@ -342,7 +342,7 @@
       "fixit.f3.title": "Gemaakt voor jouw team",
       "fixit.f3.body": "Elke fix is zo geschreven dat een designer of developer hem dezelfde dag kan doorvoeren — inclusief copy-, layout- en coderichtlijnen.",
       "fixit.priceFrom": "Vanaf", "fixit.priceUnit": " · eenmalig",
-      "fixit.cta": "Vraag mijn Fix-it-rapport aan",
+      "fixit.cta": "Stel mijn Fix-it-brief samen",
       "fixit.note": 'Of draai eerst een gratis scan — <a href="#run-scan">scan je HTML</a> of <a href="#scan">scan een URL</a>.',
       "fixitForm.title": "Stel je Fix-it-brief samen",
       "fixitForm.intro": "Vul een paar details in en wij stellen een gerangschikte, direct uitvoerbare brief samen op basis van deze scan — geen e-mail nodig. Download hem of kopieer hem om te delen met je team.",
@@ -1641,6 +1641,7 @@
     box.hidden = false;
     var followup = document.getElementById("scanner-followup");
     if (followup) followup.hidden = false;
+    if (wireFixitRequest.refreshSummary) wireFixitRequest.refreshSummary();
 
     requestAnimationFrame(function () {
       subWrap.querySelectorAll(".sm__bar i").forEach(function (i) {
@@ -1791,10 +1792,8 @@
   }
 
   function wireFixitRequest() {
-    var openBtn = document.getElementById("open-fixit-request");
     var openFromScan = document.getElementById("open-fixit-from-scan");
     var panel = document.getElementById("fixit-request");
-    var closeBtn = document.getElementById("close-fixit-request");
     var form = document.getElementById("fixit-form");
     var doneBox = document.getElementById("fixit-done");
     var summaryRow = document.getElementById("ff-summary");
@@ -1803,12 +1802,7 @@
     var copyBtn = document.getElementById("ff-copy");
     if (!panel) return;
 
-    function openPanel() {
-      panel.hidden = false;
-      form.hidden = false;
-      doneBox.hidden = true;
-      hint.textContent = "";
-      hint.className = "ff-hint";
+    function refreshSummary() {
       var summary = buildSummaryText();
       if (summary) {
         summaryRow.hidden = false;
@@ -1816,20 +1810,23 @@
       } else {
         summaryRow.hidden = true;
       }
-      var nameEl = document.getElementById("ff-name");
-      if (nameEl) nameEl.focus();
-      document.body.style.overflow = "hidden";
-    }
-    function closePanel() {
-      panel.hidden = true;
-      document.body.style.overflow = "";
     }
 
-    if (openBtn) openBtn.addEventListener("click", openPanel);
-    if (openFromScan) openFromScan.addEventListener("click", openPanel);
-    if (closeBtn) closeBtn.addEventListener("click", closePanel);
-    panel.addEventListener("click", function (e) { if (e.target === panel) closePanel(); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panel.hidden) closePanel(); });
+    function scrollToForm() {
+      refreshSummary();
+      form.hidden = false;
+      doneBox.hidden = true;
+      hint.textContent = "";
+      hint.className = "ff-hint";
+      panel.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      var nameEl = document.getElementById("ff-name");
+      if (nameEl) nameEl.focus({ preventScroll: true });
+    }
+
+    if (openFromScan) openFromScan.addEventListener("click", scrollToForm);
+
+    // expose so language toggle / scan completion can refresh the attached summary
+    wireFixitRequest.refreshSummary = refreshSummary;
 
     function buildBrief() {
       var name = document.getElementById("ff-name").value.trim();

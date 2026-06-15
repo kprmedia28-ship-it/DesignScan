@@ -333,25 +333,16 @@ a { color: inherit; }
 .scanner__followup p { color: #AEB5BB; font-size: 15px; max-width: 36em; margin: 0; }
 .scanner__results .issues { border-radius: 0; }
 
-/* ---------- Fix-it request panel ---------- */
+/* ---------- Fix-it brief form (inline, on-page) ---------- */
 .fixit-request {
-  position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center;
-  background: rgba(11,15,18,.6); padding: 20px;
+  background: var(--surface); color: var(--ink); border-radius: var(--r);
+  margin-top: 28px; padding: 32px;
+  box-shadow: 0 30px 60px -40px rgba(17,22,26,.45);
 }
-.fixit-request__card {
-  position: relative; background: var(--surface); color: var(--ink); border-radius: var(--r);
-  max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 32px;
-  box-shadow: 0 40px 90px -40px rgba(17,22,26,.6);
-}
-.fixit-request__card h3 { font-size: 24px; margin-bottom: 10px; }
-.fixit-request__intro { color: var(--ink-2); font-size: 15px; margin-bottom: 22px; }
-.fixit-request__close {
-  position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 8px;
-  border: 1px solid var(--line); background: var(--surface); font-size: 20px; line-height: 1;
-  cursor: pointer; color: var(--ink-2);
-}
-.fixit-request__close:hover { color: var(--ink); border-color: var(--ink-2); }
+.fixit-request h3 { font-size: 24px; margin-bottom: 10px; }
+.fixit-request__intro { color: var(--ink-2); font-size: 15px; margin-bottom: 22px; max-width: 48em; }
 
+.ff-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 16px; }
 .ff-row { display: grid; gap: 6px; margin-bottom: 14px; }
 .ff-row label { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
 .ff-row input, .ff-row select, .ff-row textarea {
@@ -382,8 +373,9 @@ a { color: inherit; }
 .fixit-request__done p { color: var(--ink-2); font-size: 15px; }
 .fixit-request__done p:first-child { color: var(--ink); }
 
-@media (max-width: 560px) {
-  .fixit-request__card { padding: 22px; }
+@media (max-width: 700px) {
+  .ff-grid { grid-template-columns: 1fr; }
+  .fixit-request { padding: 22px; }
 }
 
 .scanner__select {
@@ -908,19 +900,18 @@ a { color: inherit; }
 
       <div class="fixit__cta">
         <p class="fixit__price"><span data-i18n="fixit.priceFrom">From</span> <strong>€ 349</strong><span data-i18n="fixit.priceUnit"> · one-time</span></p>
-        <button class="btn btn--solid btn--lg" id="open-fixit-request" type="button" data-i18n="fixit.cta">Request my Fix-it report</button>
+        <a class="btn btn--solid btn--lg" href="#fixit-form" data-i18n="fixit.cta">Build my Fix-it brief</a>
         <p class="fixit__note" data-i18n="fixit.note">Or run a free scan first — <a href="#run-scan">scan your HTML</a> or <a href="#scan">scan a URL</a>.</p>
       </div>
     </div>
 
-    <!-- FIX-IT BRIEF PANEL -->
-    <div class="fixit-request" id="fixit-request" hidden>
-      <div class="fixit-request__card">
-        <button class="fixit-request__close" id="close-fixit-request" type="button" aria-label="Close">&times;</button>
-        <h3 data-i18n="fixitForm.title">Build your Fix-it brief</h3>
-        <p class="fixit-request__intro" data-i18n="fixitForm.intro">Fill in a few details and we'll put together a ranked, ready-to-build brief based on this scan — no email required. Download it or copy it to share with your team.</p>
+    <!-- FIX-IT BRIEF FORM (inline, on-page) -->
+    <div class="fixit-request" id="fixit-request">
+      <h3 data-i18n="fixitForm.title">Build your Fix-it brief</h3>
+      <p class="fixit-request__intro" data-i18n="fixitForm.intro">Fill in a few details and we'll put together a ranked, ready-to-build brief based on this scan — no email required. Download it or copy it to share with your team.</p>
 
-        <form id="fixit-form" novalidate>
+      <form id="fixit-form" novalidate>
+        <div class="ff-grid">
           <div class="ff-row">
             <label for="ff-name" data-i18n="fixitForm.name">Your name</label>
             <input id="ff-name" name="name" type="text" required />
@@ -933,26 +924,26 @@ a { color: inherit; }
             <label for="ff-industry" data-i18n="fixitForm.industry">Industry</label>
             <select id="ff-industry" name="industry"></select>
           </div>
-          <div class="ff-row">
-            <label for="ff-notes" data-i18n="fixitForm.notes">Anything specific you'd like us to focus on? (optional)</label>
-            <textarea id="ff-notes" name="notes" rows="3"></textarea>
-          </div>
-          <div class="ff-row ff-row--summary" id="ff-summary" hidden>
-            <p class="ff-summary__label" data-i18n="fixitForm.attached">Attached scan summary:</p>
-            <pre class="ff-summary__pre" id="ff-summary-pre"></pre>
-          </div>
-          <div class="ff-actions">
-            <button class="btn btn--solid" type="submit" data-i18n="fixitForm.submit">Download brief</button>
-            <span class="ff-hint" id="ff-hint"></span>
-          </div>
-          <p class="ff-disclaimer" data-i18n="fixitForm.disclaimer">Everything stays on your device — nothing is sent anywhere. The brief downloads as a text file you can share however you like.</p>
-          <button class="ff-copy" id="ff-copy" type="button" data-i18n="fixitForm.copy">Copy brief as text</button>
-        </form>
-
-        <div class="fixit-request__done" id="fixit-done" hidden>
-          <p data-i18n="fixitForm.doneTitle"><strong>Brief ready.</strong></p>
-          <p data-i18n="fixitForm.doneBody">Your brief has downloaded as a text file. Open it, attach it to an email, or paste it wherever you need it — share it with your team or agency to get started.</p>
         </div>
+        <div class="ff-row">
+          <label for="ff-notes" data-i18n="fixitForm.notes">Anything specific you'd like us to focus on? (optional)</label>
+          <textarea id="ff-notes" name="notes" rows="3"></textarea>
+        </div>
+        <div class="ff-row ff-row--summary" id="ff-summary" hidden>
+          <p class="ff-summary__label" data-i18n="fixitForm.attached">Attached scan summary:</p>
+          <pre class="ff-summary__pre" id="ff-summary-pre"></pre>
+        </div>
+        <div class="ff-actions">
+          <button class="btn btn--solid" type="submit" data-i18n="fixitForm.submit">Download brief</button>
+          <span class="ff-hint" id="ff-hint"></span>
+        </div>
+        <p class="ff-disclaimer" data-i18n="fixitForm.disclaimer">Everything stays on your device — nothing is sent anywhere. The brief downloads as a text file you can share however you like.</p>
+        <button class="ff-copy" id="ff-copy" type="button" data-i18n="fixitForm.copy">Copy brief as text</button>
+      </form>
+
+      <div class="fixit-request__done" id="fixit-done" hidden>
+        <p data-i18n="fixitForm.doneTitle"><strong>Brief ready.</strong></p>
+        <p data-i18n="fixitForm.doneBody">Your brief has downloaded as a text file. Open it, attach it to an email, or paste it wherever you need it — share it with your team or agency to get started.</p>
       </div>
     </div>
   </section>
@@ -1189,7 +1180,7 @@ a { color: inherit; }
       "scanner.hintError": "Couldn't read that file. Try pasting the HTML instead.",
       "scanner.weightedFor": "Weighted for {industry}",
       "scanner.followup.text": "Want this turned into a plan your team can execute, with us reviewing it personally?",
-      "scanner.followup.btn": "Request a Fix-it report for this scan",
+      "scanner.followup.btn": "Fill in your Fix-it brief for this scan",
       "report.eyebrow": "What lands in your inbox", "report.title": "A report you can act on",
       "report.sub": "Issues ranked by impact, each with the change to make. No 40-page PDF, no fluff.",
       "report.fixLabel": "Fix:",
@@ -1211,7 +1202,7 @@ a { color: inherit; }
       "fixit.f3.title": "Built for your team",
       "fixit.f3.body": "Each fix is written so a designer or developer can implement it the same day — copy, layout and code references included.",
       "fixit.priceFrom": "From", "fixit.priceUnit": " · one-time",
-      "fixit.cta": "Request my Fix-it report",
+      "fixit.cta": "Build my Fix-it brief",
       "fixit.note": 'Or run a free scan first — <a href="#run-scan">scan your HTML</a> or <a href="#scan">scan a URL</a>.',
       "fixitForm.title": "Build your Fix-it brief",
       "fixitForm.intro": "Fill in a few details and we'll put together a ranked, ready-to-build brief based on this scan — no email required. Download it or copy it to share with your team.",
@@ -1302,7 +1293,7 @@ a { color: inherit; }
       "scanner.hintError": "Kon dat bestand niet lezen. Probeer de HTML te plakken.",
       "scanner.weightedFor": "Gewogen voor {industry}",
       "scanner.followup.text": "Hier een plan van willen waarmee je team aan de slag kan, persoonlijk door ons doorgenomen?",
-      "scanner.followup.btn": "Vraag een Fix-it-rapport aan voor deze scan",
+      "scanner.followup.btn": "Vul je Fix-it-brief in voor deze scan",
       "report.eyebrow": "Wat in je inbox landt", "report.title": "Een rapport waar je mee aan de slag kunt",
       "report.sub": "Issues gerangschikt op impact, elk met de aanpassing die nodig is. Geen rapport van 40 pagina's, geen ruis.",
       "report.fixLabel": "Fix:",
@@ -1324,7 +1315,7 @@ a { color: inherit; }
       "fixit.f3.title": "Gemaakt voor jouw team",
       "fixit.f3.body": "Elke fix is zo geschreven dat een designer of developer hem dezelfde dag kan doorvoeren — inclusief copy-, layout- en coderichtlijnen.",
       "fixit.priceFrom": "Vanaf", "fixit.priceUnit": " · eenmalig",
-      "fixit.cta": "Vraag mijn Fix-it-rapport aan",
+      "fixit.cta": "Stel mijn Fix-it-brief samen",
       "fixit.note": 'Of draai eerst een gratis scan — <a href="#run-scan">scan je HTML</a> of <a href="#scan">scan een URL</a>.',
       "fixitForm.title": "Stel je Fix-it-brief samen",
       "fixitForm.intro": "Vul een paar details in en wij stellen een gerangschikte, direct uitvoerbare brief samen op basis van deze scan — geen e-mail nodig. Download hem of kopieer hem om te delen met je team.",
@@ -2623,6 +2614,7 @@ a { color: inherit; }
     box.hidden = false;
     var followup = document.getElementById("scanner-followup");
     if (followup) followup.hidden = false;
+    if (wireFixitRequest.refreshSummary) wireFixitRequest.refreshSummary();
 
     requestAnimationFrame(function () {
       subWrap.querySelectorAll(".sm__bar i").forEach(function (i) {
@@ -2773,10 +2765,8 @@ a { color: inherit; }
   }
 
   function wireFixitRequest() {
-    var openBtn = document.getElementById("open-fixit-request");
     var openFromScan = document.getElementById("open-fixit-from-scan");
     var panel = document.getElementById("fixit-request");
-    var closeBtn = document.getElementById("close-fixit-request");
     var form = document.getElementById("fixit-form");
     var doneBox = document.getElementById("fixit-done");
     var summaryRow = document.getElementById("ff-summary");
@@ -2785,12 +2775,7 @@ a { color: inherit; }
     var copyBtn = document.getElementById("ff-copy");
     if (!panel) return;
 
-    function openPanel() {
-      panel.hidden = false;
-      form.hidden = false;
-      doneBox.hidden = true;
-      hint.textContent = "";
-      hint.className = "ff-hint";
+    function refreshSummary() {
       var summary = buildSummaryText();
       if (summary) {
         summaryRow.hidden = false;
@@ -2798,20 +2783,23 @@ a { color: inherit; }
       } else {
         summaryRow.hidden = true;
       }
-      var nameEl = document.getElementById("ff-name");
-      if (nameEl) nameEl.focus();
-      document.body.style.overflow = "hidden";
-    }
-    function closePanel() {
-      panel.hidden = true;
-      document.body.style.overflow = "";
     }
 
-    if (openBtn) openBtn.addEventListener("click", openPanel);
-    if (openFromScan) openFromScan.addEventListener("click", openPanel);
-    if (closeBtn) closeBtn.addEventListener("click", closePanel);
-    panel.addEventListener("click", function (e) { if (e.target === panel) closePanel(); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panel.hidden) closePanel(); });
+    function scrollToForm() {
+      refreshSummary();
+      form.hidden = false;
+      doneBox.hidden = true;
+      hint.textContent = "";
+      hint.className = "ff-hint";
+      panel.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      var nameEl = document.getElementById("ff-name");
+      if (nameEl) nameEl.focus({ preventScroll: true });
+    }
+
+    if (openFromScan) openFromScan.addEventListener("click", scrollToForm);
+
+    // expose so language toggle / scan completion can refresh the attached summary
+    wireFixitRequest.refreshSummary = refreshSummary;
 
     function buildBrief() {
       var name = document.getElementById("ff-name").value.trim();

@@ -391,19 +391,18 @@
 
       <div class="fixit__cta">
         <p class="fixit__price"><span data-i18n="fixit.priceFrom">From</span> <strong>€ 349</strong><span data-i18n="fixit.priceUnit"> · one-time</span></p>
-        <button class="btn btn--solid btn--lg" id="open-fixit-request" type="button" data-i18n="fixit.cta">Request my Fix-it report</button>
+        <a class="btn btn--solid btn--lg" href="#fixit-form" data-i18n="fixit.cta">Build my Fix-it brief</a>
         <p class="fixit__note" data-i18n="fixit.note">Or run a free scan first — <a href="#run-scan">scan your HTML</a> or <a href="#scan">scan a URL</a>.</p>
       </div>
     </div>
 
-    <!-- FIX-IT BRIEF PANEL -->
-    <div class="fixit-request" id="fixit-request" hidden>
-      <div class="fixit-request__card">
-        <button class="fixit-request__close" id="close-fixit-request" type="button" aria-label="Close">&times;</button>
-        <h3 data-i18n="fixitForm.title">Build your Fix-it brief</h3>
-        <p class="fixit-request__intro" data-i18n="fixitForm.intro">Fill in a few details and we'll put together a ranked, ready-to-build brief based on this scan — no email required. Download it or copy it to share with your team.</p>
+    <!-- FIX-IT BRIEF FORM (inline, on-page) -->
+    <div class="fixit-request" id="fixit-request">
+      <h3 data-i18n="fixitForm.title">Build your Fix-it brief</h3>
+      <p class="fixit-request__intro" data-i18n="fixitForm.intro">Fill in a few details and we'll put together a ranked, ready-to-build brief based on this scan — no email required. Download it or copy it to share with your team.</p>
 
-        <form id="fixit-form" novalidate>
+      <form id="fixit-form" novalidate>
+        <div class="ff-grid">
           <div class="ff-row">
             <label for="ff-name" data-i18n="fixitForm.name">Your name</label>
             <input id="ff-name" name="name" type="text" required />
@@ -416,26 +415,26 @@
             <label for="ff-industry" data-i18n="fixitForm.industry">Industry</label>
             <select id="ff-industry" name="industry"></select>
           </div>
-          <div class="ff-row">
-            <label for="ff-notes" data-i18n="fixitForm.notes">Anything specific you'd like us to focus on? (optional)</label>
-            <textarea id="ff-notes" name="notes" rows="3"></textarea>
-          </div>
-          <div class="ff-row ff-row--summary" id="ff-summary" hidden>
-            <p class="ff-summary__label" data-i18n="fixitForm.attached">Attached scan summary:</p>
-            <pre class="ff-summary__pre" id="ff-summary-pre"></pre>
-          </div>
-          <div class="ff-actions">
-            <button class="btn btn--solid" type="submit" data-i18n="fixitForm.submit">Download brief</button>
-            <span class="ff-hint" id="ff-hint"></span>
-          </div>
-          <p class="ff-disclaimer" data-i18n="fixitForm.disclaimer">Everything stays on your device — nothing is sent anywhere. The brief downloads as a text file you can share however you like.</p>
-          <button class="ff-copy" id="ff-copy" type="button" data-i18n="fixitForm.copy">Copy brief as text</button>
-        </form>
-
-        <div class="fixit-request__done" id="fixit-done" hidden>
-          <p data-i18n="fixitForm.doneTitle"><strong>Brief ready.</strong></p>
-          <p data-i18n="fixitForm.doneBody">Your brief has downloaded as a text file. Open it, attach it to an email, or paste it wherever you need it — share it with your team or agency to get started.</p>
         </div>
+        <div class="ff-row">
+          <label for="ff-notes" data-i18n="fixitForm.notes">Anything specific you'd like us to focus on? (optional)</label>
+          <textarea id="ff-notes" name="notes" rows="3"></textarea>
+        </div>
+        <div class="ff-row ff-row--summary" id="ff-summary" hidden>
+          <p class="ff-summary__label" data-i18n="fixitForm.attached">Attached scan summary:</p>
+          <pre class="ff-summary__pre" id="ff-summary-pre"></pre>
+        </div>
+        <div class="ff-actions">
+          <button class="btn btn--solid" type="submit" data-i18n="fixitForm.submit">Download brief</button>
+          <span class="ff-hint" id="ff-hint"></span>
+        </div>
+        <p class="ff-disclaimer" data-i18n="fixitForm.disclaimer">Everything stays on your device — nothing is sent anywhere. The brief downloads as a text file you can share however you like.</p>
+        <button class="ff-copy" id="ff-copy" type="button" data-i18n="fixitForm.copy">Copy brief as text</button>
+      </form>
+
+      <div class="fixit-request__done" id="fixit-done" hidden>
+        <p data-i18n="fixitForm.doneTitle"><strong>Brief ready.</strong></p>
+        <p data-i18n="fixitForm.doneBody">Your brief has downloaded as a text file. Open it, attach it to an email, or paste it wherever you need it — share it with your team or agency to get started.</p>
       </div>
     </div>
   </section>
