@@ -104,11 +104,11 @@
         </div>
       </div>
 
-      <ul class="submeters" id="submeters" aria-label="Sub-scores by criterion">
-        <li class="sm" data-score="82"><span class="sm__name" data-i18n="crit.hierarchy">Visual hierarchy</span><span class="sm__bar"><i style="--v:82%"></i></span><span class="sm__val">82</span></li>
-        <li class="sm" data-score="71"><span class="sm__name" data-i18n="crit.usability">Usability</span><span class="sm__bar"><i style="--v:71%"></i></span><span class="sm__val">71</span></li>
-        <li class="sm" data-score="64"><span class="sm__name" data-i18n="crit.accessibility">Accessibility</span><span class="sm__bar"><i style="--v:64%"></i></span><span class="sm__val">64</span></li>
-        <li class="sm" data-score="88"><span class="sm__name" data-i18n="crit.consistency">Consistency</span><span class="sm__bar"><i style="--v:88%"></i></span><span class="sm__val">88</span></li>
+      <ul class="submeters" id="submeters" aria-label="Sub-scores by category">
+        <li class="sm" data-score="82"><span class="sm__name" data-i18n="cat.ux">UX</span><span class="sm__bar"><i style="--v:82%"></i></span><span class="sm__val">82</span></li>
+        <li class="sm" data-score="71"><span class="sm__name" data-i18n="cat.ui">UI</span><span class="sm__bar"><i style="--v:71%"></i></span><span class="sm__val">71</span></li>
+        <li class="sm" data-score="64"><span class="sm__name" data-i18n="cat.journey">Journey Score</span><span class="sm__bar"><i style="--v:64%"></i></span><span class="sm__val">64</span></li>
+        <li class="sm" data-score="88"><span class="sm__name" data-i18n="cat.engagement">Engagement Score</span><span class="sm__bar"><i style="--v:88%"></i></span><span class="sm__val">88</span></li>
       </ul>
     </div>
   </section>
@@ -146,40 +146,104 @@
   <section class="criteria wrap" id="criteria" aria-labelledby="crit-title">
     <header class="sec-head">
       <p class="eyebrow" data-i18n="criteria.eyebrow">The rubric</p>
-      <h2 id="crit-title" data-i18n="criteria.title">Six things we measure</h2>
-      <p class="sec-sub" data-i18n="criteria.sub">Each criterion is scored independently, so you see exactly where the points leak — and where you already win.</p>
+      <h2 id="crit-title" data-i18n="criteria.title">Four scores, twelve signals</h2>
+      <p class="sec-sub" data-i18n="criteria.sub">Every page is read against twelve signals, grouped into four scores. You see exactly where the points leak — and where you already win.</p>
     </header>
-    <div class="grid">
-      <article class="card" data-v="82">
-        <div class="card__top"><h3 data-i18n="crit.hierarchy">Visual hierarchy</h3><span class="chip">82</span></div>
-        <span class="meterline"><i></i></span>
-        <p data-i18n="criteria.hierarchy.body">Does the eye land where it should? We check contrast, scale, spacing and grouping against the page's actual goal.</p>
-      </article>
-      <article class="card" data-v="71">
-        <div class="card__top"><h3 data-i18n="crit.usability">Usability</h3><span class="chip">71</span></div>
-        <span class="meterline"><i></i></span>
-        <p data-i18n="criteria.usability.body">Clear affordances, predictable navigation, forgiving interactions — measured against Nielsen's heuristics.</p>
-      </article>
-      <article class="card" data-v="64">
-        <div class="card__top"><h3 data-i18n="crit.accessibility">Accessibility</h3><span class="chip chip--warn">64</span></div>
-        <span class="meterline"><i></i></span>
-        <p data-i18n="criteria.accessibility.body">Contrast ratios, focus order, target sizes and semantics, mapped to WCAG 2.2 AA where it matters most.</p>
-      </article>
-      <article class="card" data-v="88">
-        <div class="card__top"><h3 data-i18n="crit.consistency">Consistency</h3><span class="chip">88</span></div>
-        <span class="meterline"><i></i></span>
-        <p data-i18n="criteria.consistency.body">One type scale, one spacing system, one voice. We flag the drift that quietly erodes trust.</p>
-      </article>
-      <article class="card" data-v="76">
-        <div class="card__top"><h3 data-i18n="crit.conversion">Conversion clarity</h3><span class="chip">76</span></div>
-        <span class="meterline"><i></i></span>
-        <p data-i18n="criteria.conversion.body">Is the next action obvious? We weigh CTA prominence, friction and the path from arrival to action.</p>
-      </article>
-      <article class="card" data-v="69">
-        <div class="card__top"><h3 data-i18n="crit.performance">Performance signals</h3><span class="chip">69</span></div>
-        <span class="meterline"><i></i></span>
-        <p data-i18n="criteria.performance.body">Perceived speed, layout stability and the loading experience that shapes a first impression.</p>
-      </article>
+
+    <div class="cat-group">
+      <div class="cat-group__head">
+        <h3 data-i18n="cat.ux">UX</h3>
+        <p data-i18n="cat.ux.body">Can people understand and operate the page without extra effort?</p>
+      </div>
+      <div class="grid grid--3">
+        <article class="card" data-v="71">
+          <div class="card__top"><h3 data-i18n="crit.interactionClarity">Interaction clarity</h3><span class="chip">71</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.interactionClarity.body">Are links, buttons and navigation labelled clearly enough to act on without guessing?</p>
+        </article>
+        <article class="card" data-v="68">
+          <div class="card__top"><h3 data-i18n="crit.cognitiveLoad">Cognitive load</h3><span class="chip chip--warn">68</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.cognitiveLoad.body">Is content broken into digestible pieces, or does it ask too much at once?</p>
+        </article>
+        <article class="card" data-v="64">
+          <div class="card__top"><h3 data-i18n="crit.accessibilityBasics">Accessibility basics</h3><span class="chip chip--warn">64</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.accessibilityBasics.body">Alt text, labels, language and semantics — the foundations assistive tech relies on.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="cat-group">
+      <div class="cat-group__head">
+        <h3 data-i18n="cat.ui">UI</h3>
+        <p data-i18n="cat.ui.body">Does the page look intentional — structured, legible and consistent?</p>
+      </div>
+      <div class="grid grid--3">
+        <article class="card" data-v="82">
+          <div class="card__top"><h3 data-i18n="crit.visualHierarchy">Visual hierarchy</h3><span class="chip">82</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.visualHierarchy.body">Does the eye land where it should? We check headings, scale, spacing and grouping against the page's actual goal.</p>
+        </article>
+        <article class="card" data-v="73">
+          <div class="card__top"><h3 data-i18n="crit.colorContrast">Color &amp; contrast</h3><span class="chip">73</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.colorContrast.body">Do text/background pairs meet WCAG contrast thresholds, so content is legible for everyone?</p>
+        </article>
+        <article class="card" data-v="88">
+          <div class="card__top"><h3 data-i18n="crit.typography">Typography</h3><span class="chip">88</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.typography.body">One type scale, one set of voices. We flag the drift that quietly erodes trust.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="cat-group">
+      <div class="cat-group__head">
+        <h3 data-i18n="cat.journey">Journey Score</h3>
+        <p data-i18n="cat.journey.body">Does the page actually move people from arrival to the action that matters?</p>
+      </div>
+      <div class="grid grid--3">
+        <article class="card" data-v="76">
+          <div class="card__top"><h3 data-i18n="crit.flowToAction">Flow from entry to action</h3><span class="chip">76</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.flowToAction.body">Is the next action obvious, singular and reachable from where people land?</p>
+        </article>
+        <article class="card" data-v="70">
+          <div class="card__top"><h3 data-i18n="crit.frictionPoints">Friction points</h3><span class="chip">70</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.frictionPoints.body">Long forms, missing search, hidden contact details — the small costs that add up.</p>
+        </article>
+        <article class="card" data-v="69">
+          <div class="card__top"><h3 data-i18n="crit.dropOffRisk">Drop-off risk</h3><span class="chip">69</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.dropOffRisk.body">Technical signals — scripts, image weight, layout stability — that predict who leaves early.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="cat-group">
+      <div class="cat-group__head">
+        <h3 data-i18n="cat.engagement">Engagement Score</h3>
+        <p data-i18n="cat.engagement.body">Does the page respond, reassure and motivate people to keep going?</p>
+      </div>
+      <div class="grid grid--3">
+        <article class="card" data-v="74">
+          <div class="card__top"><h3 data-i18n="crit.feedbackLoops">Feedback loops</h3><span class="chip">74</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.feedbackLoops.body">Does the page confirm what just happened, especially after a form is submitted?</p>
+        </article>
+        <article class="card" data-v="79">
+          <div class="card__top"><h3 data-i18n="crit.motivation">Motivation</h3><span class="chip">79</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.motivation.body">Trust signals, social proof and reassurance that make people comfortable continuing.</p>
+        </article>
+        <article class="card" data-v="66">
+          <div class="card__top"><h3 data-i18n="crit.progressSignals">Progress signals</h3><span class="chip chip--warn">66</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.progressSignals.body">For longer tasks, can people see how far they are and how much remains?</p>
+        </article>
+      </div>
     </div>
   </section>
 

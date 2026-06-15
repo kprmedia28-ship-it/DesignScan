@@ -171,6 +171,17 @@ a { color: inherit; }
 .gauge__grade { display: block; font-family: var(--sans); font-size: 14px; color: var(--ink-2); margin-top: 6px; }
 
 .submeters { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 11px; }
+.sm-group {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-top: 14px; padding-bottom: 4px; border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+}
+.sm-group:first-child { margin-top: 0; }
+.sm-group__name { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ember-2); font-weight: 700; }
+.sm-group__val { font-size: 15px; color: var(--ink); font-weight: 700; }
+.scanner__results .sm-group { border-color: rgba(255,255,255,.12); }
+.scanner__results .sm-group__name { color: #FF8559; }
+.scanner__results .sm-group__val { color: #fff; }
 .sm { display: grid; grid-template-columns: 120px 1fr 34px; align-items: center; gap: 12px; }
 .sm__name { font-size: 13px; color: var(--ink-2); }
 .sm__bar { height: 7px; background: var(--paper-2); border-radius: 999px; overflow: hidden; }
@@ -209,6 +220,16 @@ a { color: inherit; }
 
 /* ---------- Criteria grid ---------- */
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+
+.cat-group { margin-bottom: 44px; }
+.cat-group:last-child { margin-bottom: 0; }
+.cat-group__head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+.cat-group__head h3 {
+  font-family: var(--disp); font-size: 22px; font-weight: 700; color: var(--ink);
+  flex: none;
+}
+.cat-group__head p { color: var(--ink-2); font-size: 15px; margin: 0; }
 .card {
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
   padding: 24px; transition: transform .2s var(--ease), box-shadow .2s;
@@ -600,11 +621,11 @@ a { color: inherit; }
         </div>
       </div>
 
-      <ul class="submeters" id="submeters" aria-label="Sub-scores by criterion">
-        <li class="sm" data-score="82"><span class="sm__name" data-i18n="crit.hierarchy">Visual hierarchy</span><span class="sm__bar"><i style="--v:82%"></i></span><span class="sm__val">82</span></li>
-        <li class="sm" data-score="71"><span class="sm__name" data-i18n="crit.usability">Usability</span><span class="sm__bar"><i style="--v:71%"></i></span><span class="sm__val">71</span></li>
-        <li class="sm" data-score="64"><span class="sm__name" data-i18n="crit.accessibility">Accessibility</span><span class="sm__bar"><i style="--v:64%"></i></span><span class="sm__val">64</span></li>
-        <li class="sm" data-score="88"><span class="sm__name" data-i18n="crit.consistency">Consistency</span><span class="sm__bar"><i style="--v:88%"></i></span><span class="sm__val">88</span></li>
+      <ul class="submeters" id="submeters" aria-label="Sub-scores by category">
+        <li class="sm" data-score="82"><span class="sm__name" data-i18n="cat.ux">UX</span><span class="sm__bar"><i style="--v:82%"></i></span><span class="sm__val">82</span></li>
+        <li class="sm" data-score="71"><span class="sm__name" data-i18n="cat.ui">UI</span><span class="sm__bar"><i style="--v:71%"></i></span><span class="sm__val">71</span></li>
+        <li class="sm" data-score="64"><span class="sm__name" data-i18n="cat.journey">Journey Score</span><span class="sm__bar"><i style="--v:64%"></i></span><span class="sm__val">64</span></li>
+        <li class="sm" data-score="88"><span class="sm__name" data-i18n="cat.engagement">Engagement Score</span><span class="sm__bar"><i style="--v:88%"></i></span><span class="sm__val">88</span></li>
       </ul>
     </div>
   </section>
@@ -642,40 +663,104 @@ a { color: inherit; }
   <section class="criteria wrap" id="criteria" aria-labelledby="crit-title">
     <header class="sec-head">
       <p class="eyebrow" data-i18n="criteria.eyebrow">The rubric</p>
-      <h2 id="crit-title" data-i18n="criteria.title">Six things we measure</h2>
-      <p class="sec-sub" data-i18n="criteria.sub">Each criterion is scored independently, so you see exactly where the points leak — and where you already win.</p>
+      <h2 id="crit-title" data-i18n="criteria.title">Four scores, twelve signals</h2>
+      <p class="sec-sub" data-i18n="criteria.sub">Every page is read against twelve signals, grouped into four scores. You see exactly where the points leak — and where you already win.</p>
     </header>
-    <div class="grid">
-      <article class="card" data-v="82">
-        <div class="card__top"><h3 data-i18n="crit.hierarchy">Visual hierarchy</h3><span class="chip">82</span></div>
-        <span class="meterline"><i></i></span>
-        <p data-i18n="criteria.hierarchy.body">Does the eye land where it should? We check contrast, scale, spacing and grouping against the page's actual goal.</p>
-      </article>
-      <article class="card" data-v="71">
-        <div class="card__top"><h3 data-i18n="crit.usability">Usability</h3><span class="chip">71</span></div>
-        <span class="meterline"><i></i></span>
-        <p data-i18n="criteria.usability.body">Clear affordances, predictable navigation, forgiving interactions — measured against Nielsen's heuristics.</p>
-      </article>
-      <article class="card" data-v="64">
-        <div class="card__top"><h3 data-i18n="crit.accessibility">Accessibility</h3><span class="chip chip--warn">64</span></div>
-        <span class="meterline"><i></i></span>
-        <p data-i18n="criteria.accessibility.body">Contrast ratios, focus order, target sizes and semantics, mapped to WCAG 2.2 AA where it matters most.</p>
-      </article>
-      <article class="card" data-v="88">
-        <div class="card__top"><h3 data-i18n="crit.consistency">Consistency</h3><span class="chip">88</span></div>
-        <span class="meterline"><i></i></span>
-        <p data-i18n="criteria.consistency.body">One type scale, one spacing system, one voice. We flag the drift that quietly erodes trust.</p>
-      </article>
-      <article class="card" data-v="76">
-        <div class="card__top"><h3 data-i18n="crit.conversion">Conversion clarity</h3><span class="chip">76</span></div>
-        <span class="meterline"><i></i></span>
-        <p data-i18n="criteria.conversion.body">Is the next action obvious? We weigh CTA prominence, friction and the path from arrival to action.</p>
-      </article>
-      <article class="card" data-v="69">
-        <div class="card__top"><h3 data-i18n="crit.performance">Performance signals</h3><span class="chip">69</span></div>
-        <span class="meterline"><i></i></span>
-        <p data-i18n="criteria.performance.body">Perceived speed, layout stability and the loading experience that shapes a first impression.</p>
-      </article>
+
+    <div class="cat-group">
+      <div class="cat-group__head">
+        <h3 data-i18n="cat.ux">UX</h3>
+        <p data-i18n="cat.ux.body">Can people understand and operate the page without extra effort?</p>
+      </div>
+      <div class="grid grid--3">
+        <article class="card" data-v="71">
+          <div class="card__top"><h3 data-i18n="crit.interactionClarity">Interaction clarity</h3><span class="chip">71</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.interactionClarity.body">Are links, buttons and navigation labelled clearly enough to act on without guessing?</p>
+        </article>
+        <article class="card" data-v="68">
+          <div class="card__top"><h3 data-i18n="crit.cognitiveLoad">Cognitive load</h3><span class="chip chip--warn">68</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.cognitiveLoad.body">Is content broken into digestible pieces, or does it ask too much at once?</p>
+        </article>
+        <article class="card" data-v="64">
+          <div class="card__top"><h3 data-i18n="crit.accessibilityBasics">Accessibility basics</h3><span class="chip chip--warn">64</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.accessibilityBasics.body">Alt text, labels, language and semantics — the foundations assistive tech relies on.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="cat-group">
+      <div class="cat-group__head">
+        <h3 data-i18n="cat.ui">UI</h3>
+        <p data-i18n="cat.ui.body">Does the page look intentional — structured, legible and consistent?</p>
+      </div>
+      <div class="grid grid--3">
+        <article class="card" data-v="82">
+          <div class="card__top"><h3 data-i18n="crit.visualHierarchy">Visual hierarchy</h3><span class="chip">82</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.visualHierarchy.body">Does the eye land where it should? We check headings, scale, spacing and grouping against the page's actual goal.</p>
+        </article>
+        <article class="card" data-v="73">
+          <div class="card__top"><h3 data-i18n="crit.colorContrast">Color &amp; contrast</h3><span class="chip">73</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.colorContrast.body">Do text/background pairs meet WCAG contrast thresholds, so content is legible for everyone?</p>
+        </article>
+        <article class="card" data-v="88">
+          <div class="card__top"><h3 data-i18n="crit.typography">Typography</h3><span class="chip">88</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.typography.body">One type scale, one set of voices. We flag the drift that quietly erodes trust.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="cat-group">
+      <div class="cat-group__head">
+        <h3 data-i18n="cat.journey">Journey Score</h3>
+        <p data-i18n="cat.journey.body">Does the page actually move people from arrival to the action that matters?</p>
+      </div>
+      <div class="grid grid--3">
+        <article class="card" data-v="76">
+          <div class="card__top"><h3 data-i18n="crit.flowToAction">Flow from entry to action</h3><span class="chip">76</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.flowToAction.body">Is the next action obvious, singular and reachable from where people land?</p>
+        </article>
+        <article class="card" data-v="70">
+          <div class="card__top"><h3 data-i18n="crit.frictionPoints">Friction points</h3><span class="chip">70</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.frictionPoints.body">Long forms, missing search, hidden contact details — the small costs that add up.</p>
+        </article>
+        <article class="card" data-v="69">
+          <div class="card__top"><h3 data-i18n="crit.dropOffRisk">Drop-off risk</h3><span class="chip">69</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.dropOffRisk.body">Technical signals — scripts, image weight, layout stability — that predict who leaves early.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="cat-group">
+      <div class="cat-group__head">
+        <h3 data-i18n="cat.engagement">Engagement Score</h3>
+        <p data-i18n="cat.engagement.body">Does the page respond, reassure and motivate people to keep going?</p>
+      </div>
+      <div class="grid grid--3">
+        <article class="card" data-v="74">
+          <div class="card__top"><h3 data-i18n="crit.feedbackLoops">Feedback loops</h3><span class="chip">74</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.feedbackLoops.body">Does the page confirm what just happened, especially after a form is submitted?</p>
+        </article>
+        <article class="card" data-v="79">
+          <div class="card__top"><h3 data-i18n="crit.motivation">Motivation</h3><span class="chip">79</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.motivation.body">Trust signals, social proof and reassurance that make people comfortable continuing.</p>
+        </article>
+        <article class="card" data-v="66">
+          <div class="card__top"><h3 data-i18n="crit.progressSignals">Progress signals</h3><span class="chip chip--warn">66</span></div>
+          <span class="meterline"><i></i></span>
+          <p data-i18n="criteria.progressSignals.body">For longer tasks, can people see how far they are and how much remains?</p>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -1064,8 +1149,11 @@ a { color: inherit; }
       "hero.trust1": "Heuristic-based", "hero.trust2": "Accessibility-aware", "hero.trust3": "Conversion-focused",
       "hero.live": "LIVE&nbsp;READING", "hero.grade": "Good — three fixes from great",
       "hero.gradeStrong": "Strong — minor polish only", "hero.gradeGood": "Good — three fixes from great", "hero.gradeWeak": "Needs work — clear wins available",
-      "crit.hierarchy": "Visual hierarchy", "crit.usability": "Usability", "crit.accessibility": "Accessibility",
-      "crit.consistency": "Consistency", "crit.conversion": "Conversion clarity", "crit.performance": "Performance signals",
+      "cat.ux": "UX", "cat.ui": "UI", "cat.journey": "Journey Score", "cat.engagement": "Engagement Score",
+      "crit.interactionClarity": "Interaction clarity", "crit.cognitiveLoad": "Cognitive load", "crit.accessibilityBasics": "Accessibility basics",
+      "crit.visualHierarchy": "Visual hierarchy", "crit.colorContrast": "Color & contrast", "crit.typography": "Typography",
+      "crit.flowToAction": "Flow from entry to action", "crit.frictionPoints": "Friction points", "crit.dropOffRisk": "Drop-off risk",
+      "crit.feedbackLoops": "Feedback loops", "crit.motivation": "Motivation", "crit.progressSignals": "Progress signals",
       "how.eyebrow": "The method", "how.title": "Three steps, no questionnaire",
       "how.s1.title": "Point it at a page",
       "how.s1.body": "Drop in a live URL or upload a screenshot. DesignScan captures the layout, type, color and structure as a real visitor receives it.",
@@ -1073,14 +1161,24 @@ a { color: inherit; }
       "how.s2.body": "Every element is checked against six calibrated criteria drawn from established usability heuristics and accessibility standards — not vibes.",
       "how.s3.title": "You get the fixes",
       "how.s3.body": "A scored breakdown lands with the highest-impact issues first, each paired with a concrete change your team can ship today.",
-      "criteria.eyebrow": "The rubric", "criteria.title": "Six things we measure",
-      "criteria.sub": "Each criterion is scored independently, so you see exactly where the points leak — and where you already win.",
-      "criteria.hierarchy.body": "Does the eye land where it should? We check contrast, scale, spacing and grouping against the page's actual goal.",
-      "criteria.usability.body": "Clear affordances, predictable navigation, forgiving interactions — measured against Nielsen's heuristics.",
-      "criteria.accessibility.body": "Contrast ratios, focus order, target sizes and semantics, mapped to WCAG 2.2 AA where it matters most.",
-      "criteria.consistency.body": "One type scale, one spacing system, one voice. We flag the drift that quietly erodes trust.",
-      "criteria.conversion.body": "Is the next action obvious? We weigh CTA prominence, friction and the path from arrival to action.",
-      "criteria.performance.body": "Perceived speed, layout stability and the loading experience that shapes a first impression.",
+      "criteria.eyebrow": "The rubric", "criteria.title": "Four scores, twelve signals",
+      "criteria.sub": "Every page is read against twelve signals, grouped into four scores. You see exactly where the points leak — and where you already win.",
+      "cat.ux.body": "Can people understand and operate the page without extra effort?",
+      "cat.ui.body": "Does the page look intentional — structured, legible and consistent?",
+      "cat.journey.body": "Does the page actually move people from arrival to the action that matters?",
+      "cat.engagement.body": "Does the page respond, reassure and motivate people to keep going?",
+      "criteria.interactionClarity.body": "Are links, buttons and navigation labelled clearly enough to act on without guessing?",
+      "criteria.cognitiveLoad.body": "Is content broken into digestible pieces, or does it ask too much at once?",
+      "criteria.accessibilityBasics.body": "Alt text, labels, language and semantics — the foundations assistive tech relies on.",
+      "criteria.visualHierarchy.body": "Does the eye land where it should? We check headings, scale, spacing and grouping against the page's actual goal.",
+      "criteria.colorContrast.body": "Do text/background pairs meet WCAG contrast thresholds, so content is legible for everyone?",
+      "criteria.typography.body": "One type scale, one set of voices. We flag the drift that quietly erodes trust.",
+      "criteria.flowToAction.body": "Is the next action obvious, singular and reachable from where people land?",
+      "criteria.frictionPoints.body": "Long forms, missing search, hidden contact details — the small costs that add up.",
+      "criteria.dropOffRisk.body": "Technical signals — scripts, image weight, layout stability — that predict who leaves early.",
+      "criteria.feedbackLoops.body": "Does the page confirm what just happened, especially after a form is submitted?",
+      "criteria.motivation.body": "Trust signals, social proof and reassurance that make people comfortable continuing.",
+      "criteria.progressSignals.body": "For longer tasks, can people see how far they are and how much remains?",
       "industries.eyebrow": "Same rubric, different stakes", "industries.title": "What matters most in your industry",
       "industries.sub": "The six criteria stay the same everywhere — but how much each one weighs, and which extra checks apply, depends on what your visitors came to do.",
       "ind.weightsHeading": "Where the score weight goes", "ind.focusHeading": "What the scan focuses on",
@@ -1164,8 +1262,11 @@ a { color: inherit; }
       "hero.trust1": "Heuristiek-gebaseerd", "hero.trust2": "Toegankelijkheidsbewust", "hero.trust3": "Conversiegericht",
       "hero.live": "LIVE&nbsp;METING", "hero.grade": "Goed — drie fixes van geweldig",
       "hero.gradeStrong": "Sterk — alleen kleine puntjes op de i", "hero.gradeGood": "Goed — drie fixes van geweldig", "hero.gradeWeak": "Werk aan de winkel — duidelijke quick wins",
-      "crit.hierarchy": "Visuele hiërarchie", "crit.usability": "Bruikbaarheid", "crit.accessibility": "Toegankelijkheid",
-      "crit.consistency": "Consistentie", "crit.conversion": "Conversiehelderheid", "crit.performance": "Performance-signalen",
+      "cat.ux": "UX", "cat.ui": "UI", "cat.journey": "Journey Score", "cat.engagement": "Engagement Score",
+      "crit.interactionClarity": "Interactiehelderheid", "crit.cognitiveLoad": "Cognitieve belasting", "crit.accessibilityBasics": "Toegankelijkheidsbasis",
+      "crit.visualHierarchy": "Visuele hiërarchie", "crit.colorContrast": "Kleur & contrast", "crit.typography": "Typografie",
+      "crit.flowToAction": "Pad van binnenkomst naar actie", "crit.frictionPoints": "Frictiepunten", "crit.dropOffRisk": "Afhaakrisico",
+      "crit.feedbackLoops": "Feedbackloops", "crit.motivation": "Motivatie", "crit.progressSignals": "Voortgangssignalen",
       "how.eyebrow": "De methode", "how.title": "Drie stappen, geen vragenlijst",
       "how.s1.title": "Richt het op een pagina",
       "how.s1.body": "Voer een live URL in of upload een screenshot. DesignScan legt de layout, typografie, kleur en structuur vast zoals een echte bezoeker die ziet.",
@@ -1173,14 +1274,24 @@ a { color: inherit; }
       "how.s2.body": "Elk element wordt getoetst aan zes gecalibreerde criteria, gebaseerd op gangbare usability-heuristieken en toegankelijkheidsstandaarden — geen onderbuikgevoel.",
       "how.s3.title": "Je krijgt de fixes",
       "how.s3.body": "Je krijgt een gescoorde uitsplitsing met de issues met de meeste impact eerst, elk gekoppeld aan een concrete wijziging die je team vandaag kan doorvoeren.",
-      "criteria.eyebrow": "De rubric", "criteria.title": "Zes dingen die we meten",
-      "criteria.sub": "Elk criterium krijgt een eigen score, zodat je precies ziet waar punten weglekken — en waar je al goed scoort.",
-      "criteria.hierarchy.body": "Landt het oog waar het moet? We checken contrast, schaal, ruimte en groepering tegen het feitelijke doel van de pagina.",
-      "criteria.usability.body": "Duidelijke affordances, voorspelbare navigatie, vergevingsgezinde interacties — getoetst aan Nielsens heuristieken.",
-      "criteria.accessibility.body": "Contrastverhoudingen, focusvolgorde, klikgrootte en semantiek, afgezet tegen WCAG 2.2 AA waar het er het meest toe doet.",
-      "criteria.consistency.body": "Één type-schaal, één spacing-systeem, één stem. We signaleren de afwijkingen die langzaam vertrouwen ondermijnen.",
-      "criteria.conversion.body": "Is de volgende stap duidelijk? We wegen CTA-prominentie, frictie en het pad van binnenkomst tot actie.",
-      "criteria.performance.body": "Ervaren snelheid, layout-stabiliteit en de laadervaring die een eerste indruk vormt.",
+      "criteria.eyebrow": "De rubric", "criteria.title": "Vier scores, twaalf signalen",
+      "criteria.sub": "Elke pagina wordt getoetst op twaalf signalen, gegroepeerd in vier scores. Je ziet precies waar punten weglekken — en waar je al goed scoort.",
+      "cat.ux.body": "Kunnen mensen de pagina begrijpen en bedienen zonder extra moeite?",
+      "cat.ui.body": "Oogt de pagina doordacht — gestructureerd, leesbaar en consistent?",
+      "cat.journey.body": "Beweegt de pagina mensen écht van binnenkomst naar de actie die telt?",
+      "cat.engagement.body": "Reageert de pagina, stelt ze gerust en motiveert ze mensen om door te gaan?",
+      "criteria.interactionClarity.body": "Zijn links, knoppen en navigatie duidelijk genoeg gelabeld om zonder gokken te gebruiken?",
+      "criteria.cognitiveLoad.body": "Is de inhoud opgedeeld in behapbare stukken, of vraagt het te veel in één keer?",
+      "criteria.accessibilityBasics.body": "Alt-tekst, labels, taal en semantiek — de basis waarop hulptechnologie steunt.",
+      "criteria.visualHierarchy.body": "Landt het oog waar het moet? We checken koppen, schaal, ruimte en groepering tegen het feitelijke doel van de pagina.",
+      "criteria.colorContrast.body": "Voldoen tekst/achtergrond-combinaties aan WCAG-contrastdrempels, zodat inhoud voor iedereen leesbaar is?",
+      "criteria.typography.body": "Eén type-schaal, één stem. We signaleren de afwijkingen die langzaam vertrouwen ondermijnen.",
+      "criteria.flowToAction.body": "Is de volgende actie duidelijk, enkelvoudig en bereikbaar vanaf het punt van binnenkomst?",
+      "criteria.frictionPoints.body": "Lange formulieren, geen zoekfunctie, verstopte contactgegevens — de kleine kosten die optellen.",
+      "criteria.dropOffRisk.body": "Technische signalen — scripts, beeldgewicht, layout-stabiliteit — die voorspellen wie vroeg afhaakt.",
+      "criteria.feedbackLoops.body": "Bevestigt de pagina wat er net is gebeurd, vooral na het versturen van een formulier?",
+      "criteria.motivation.body": "Vertrouwenssignalen, social proof en geruststelling die mensen comfortabel laten doorgaan.",
+      "criteria.progressSignals.body": "Kunnen mensen bij langere taken zien hoe ver ze zijn en hoeveel er nog rest?",
       "industries.eyebrow": "Dezelfde rubric, andere belangen", "industries.title": "Wat het meest telt in jouw branche",
       "industries.sub": "De zes criteria blijven overal hetzelfde — maar hoe zwaar elk criterium telt, en welke extra checks gelden, hangt af van waarvoor je bezoekers komen.",
       "ind.weightsHeading": "Waar het scoregewicht naartoe gaat", "ind.focusHeading": "Waar de scan extra op focust",
@@ -1280,7 +1391,21 @@ a { color: inherit; }
   //  Industry profiles: weighting + extra checks + framing copy
   //  All copy is bilingual: { en: "...", nl: "..." }
   // ================================================================
-  var CRIT_KEYS = ["hierarchy", "usability", "accessibility", "consistency", "conversion", "performance"];
+  // New rubric: 4 categories, each with 3 sub-criteria (12 dimensions total)
+  var CATEGORY_KEYS = ["ux", "ui", "journey", "engagement"];
+  var CATEGORY_CRITERIA = {
+    ux:         ["interactionClarity", "cognitiveLoad", "accessibilityBasics"],
+    ui:         ["visualHierarchy", "colorContrast", "typography"],
+    journey:    ["flowToAction", "frictionPoints", "dropOffRisk"],
+    engagement: ["feedbackLoops", "motivation", "progressSignals"]
+  };
+  var CRIT_KEYS = CATEGORY_KEYS.reduce(function (acc, cat) { return acc.concat(CATEGORY_CRITERIA[cat]); }, []);
+  function categoryOf(critKey) {
+    for (var i = 0; i < CATEGORY_KEYS.length; i++) {
+      if (CATEGORY_CRITERIA[CATEGORY_KEYS[i]].indexOf(critKey) !== -1) return CATEGORY_KEYS[i];
+    }
+    return null;
+  }
 
   function bodyTextOf(doc) {
     return doc.body ? doc.body.textContent.replace(/\s+/g, " ").trim().toLowerCase() : "";
@@ -1301,6 +1426,42 @@ a { color: inherit; }
     return totalWords / sentences.length;
   }
 
+  // ---- Color/contrast helpers (WCAG 2.x relative luminance) ----
+  var NAMED_COLORS = {
+    white: "#ffffff", black: "#000000", red: "#ff0000", green: "#008000", blue: "#0000ff",
+    gray: "#808080", grey: "#808080", silver: "#c0c0c0", yellow: "#ffff00", orange: "#ffa500",
+    purple: "#800080", pink: "#ffc0cb", brown: "#a52a2a", navy: "#000080", teal: "#008080"
+  };
+  function parseColor(val) {
+    val = val.trim().toLowerCase();
+    if (NAMED_COLORS[val]) val = NAMED_COLORS[val];
+    var m = val.match(/^#([0-9a-f]{3})$/);
+    if (m) {
+      var s = m[1];
+      return [parseInt(s[0]+s[0],16), parseInt(s[1]+s[1],16), parseInt(s[2]+s[2],16)];
+    }
+    m = val.match(/^#([0-9a-f]{6})$/);
+    if (m) {
+      var h = m[1];
+      return [parseInt(h.substr(0,2),16), parseInt(h.substr(2,2),16), parseInt(h.substr(4,2),16)];
+    }
+    m = val.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if (m) return [parseInt(m[1],10), parseInt(m[2],10), parseInt(m[3],10)];
+    return null;
+  }
+  function relLuminance(rgb) {
+    var c = rgb.map(function (v) {
+      v = v / 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  function contrastRatio(rgb1, rgb2) {
+    var l1 = relLuminance(rgb1), l2 = relLuminance(rgb2);
+    var lighter = Math.max(l1, l2), darker = Math.min(l1, l2);
+    return (lighter + 0.05) / (darker + 0.05);
+  }
+
   // bi(en, nl) -> { en, nl } shorthand
   function bi(en, nl) { return { en: en, nl: nl }; }
 
@@ -1311,7 +1472,7 @@ a { color: inherit; }
         "A balanced read across all six criteria — useful as a baseline before zooming in on what your sector cares about most.",
         "Een evenwichtige meting over alle zes criteria — een goede basis voordat je inzoomt op wat in jouw branche het meest telt."
       ),
-      weights: { hierarchy: .18, usability: .18, accessibility: .22, consistency: .14, conversion: .16, performance: .12 },
+      weights: { ux: 0.28, ui: 0.24, journey: 0.26, engagement: 0.22 },
       focus: [
         bi("Visual hierarchy, usability and accessibility carry the most weight by default.",
            "Visuele hiërarchie, bruikbaarheid en toegankelijkheid wegen standaard het zwaarst."),
@@ -1328,7 +1489,7 @@ a { color: inherit; }
         "Every extra click, every unclear price and every missing trust signal costs sales directly. Conversion clarity carries the most weight here.",
         "Elke extra klik, elke onduidelijke prijs en elk ontbrekend vertrouwenssignaal kost direct omzet. Conversiehelderheid weegt hier het zwaarst."
       ),
-      weights: { hierarchy: .14, usability: .16, accessibility: .14, consistency: .10, conversion: .32, performance: .14 },
+      weights: { ux: 0.20, ui: 0.18, journey: 0.36, engagement: 0.26 },
       focus: [
         bi("Conversion clarity is weighted heaviest — the path from product to checkout is the product.",
            "Conversiehelderheid weegt het zwaarst — het pad van product naar checkout is hét product."),
@@ -1339,7 +1500,7 @@ a { color: inherit; }
       ],
       checks: function (doc, push) {
         if (!textMatches(doc, ["return", "retour", "shipping", "verzending", "guarantee", "garantie", "secure checkout", "veilig betalen", "warranty"])) {
-          push("conversion", 10, "med",
+          push("motivation", 10, "med",
             bi("No shipping, returns or guarantee text detected", "Geen tekst over verzending, retour of garantie gevonden"),
             bi("Add a short trust line near your call-to-action — free returns, delivery time or a guarantee. Shoppers look for this before they buy.",
                "Voeg een korte vertrouwensregel toe bij je call-to-action — gratis retour, levertijd of garantie. Shoppers zoeken hier vóór ze kopen naar."),
@@ -1357,7 +1518,7 @@ a { color: inherit; }
         }
         var search = doc.querySelector('input[type="search"], input[name*="search" i], input[id*="search" i], input[placeholder*="search" i], input[placeholder*="zoek" i]');
         if (!search) {
-          push("usability", 8, "low",
+          push("frictionPoints", 8, "low",
             bi("No search field detected", "Geen zoekveld gevonden"),
             bi("Add a visible search field. On a catalogue of any size, search is the fastest path to a product.",
                "Voeg een zichtbaar zoekveld toe. Bij elke catalogusgrootte is zoeken de snelste route naar een product."),
@@ -1381,7 +1542,7 @@ a { color: inherit; }
         "Buyers compare you to three other tabs at once. Clarity on what it does, what it costs and how to try it decides whether they stay.",
         "Kopers vergelijken je met drie andere tabbladen tegelijk. Duidelijkheid over wat het doet, wat het kost en hoe je het uitprobeert bepaalt of ze blijven."
       ),
-      weights: { hierarchy: .16, usability: .20, accessibility: .14, consistency: .14, conversion: .24, performance: .12 },
+      weights: { ux: 0.22, ui: 0.20, journey: 0.30, engagement: 0.28 },
       focus: [
         bi("Conversion clarity and usability lead — the trial/demo path needs to be obvious within seconds.",
            "Conversiehelderheid en bruikbaarheid voorop — het trial/demo-pad moet binnen seconden duidelijk zijn."),
@@ -1394,7 +1555,7 @@ a { color: inherit; }
         var pricingHeading = elementsMatchText(doc, "h1,h2,h3,a,button", /pricing|price|plan|\/\s*month|per\s*seat|\bprijs|\btarieven/i);
         var hasTable = doc.querySelector("table");
         if (!pricingHeading.length && !hasTable && !textMatches(doc, ["pricing", "€", "$", "/mo", "per month", "prijs"])) {
-          push("conversion", 10, "med",
+          push("flowToAction", 10, "med",
             bi("No pricing information or pricing link detected", "Geen prijsinformatie of prijslink gevonden"),
             bi("Show pricing, or at least a clear link to it. SaaS buyers expect to gauge cost before they invest time in a demo.",
                "Toon prijzen, of in elk geval een duidelijke link daarnaartoe. SaaS-kopers willen kosten kunnen inschatten voordat ze tijd in een demo steken."),
@@ -1412,7 +1573,7 @@ a { color: inherit; }
         }
         var trialCta = elementsMatchText(doc, "a,button", /free trial|start trial|sign up|get started|book a demo|request a demo|probeer|gratis/i);
         if (!trialCta.length) {
-          push("conversion", 8, "med",
+          push("flowToAction", 8, "med",
             bi("No trial / sign-up / demo call-to-action detected", "Geen trial-, sign-up- of demo-CTA gevonden"),
             bi("Add one primary action like \"Start free trial\" or \"Book a demo\" — make the next step unmistakable.",
                "Voeg één primaire actie toe, zoals \"Start gratis trial\" of \"Plan een demo\" — maak de volgende stap onmiskenbaar."),
@@ -1436,7 +1597,7 @@ a { color: inherit; }
         "Visitors are often stressed, time-pressed or have access needs. Accessibility and plain language aren't nice-to-haves here — they're the product.",
         "Bezoekers zijn vaak gestrest, hebben weinig tijd of hebben toegankelijkheidsbehoeften. Toegankelijkheid en duidelijke taal zijn hier geen extraatje — het is het product."
       ),
-      weights: { hierarchy: .14, usability: .18, accessibility: .32, consistency: .12, conversion: .10, performance: .14 },
+      weights: { ux: 0.40, ui: 0.18, journey: 0.24, engagement: 0.18 },
       focus: [
         bi("Accessibility dominates the score — contrast, labels and structure for assistive tech.",
            "Toegankelijkheid domineert de score — contrast, labels en structuur voor hulptechnologie."),
@@ -1448,7 +1609,7 @@ a { color: inherit; }
       checks: function (doc, push) {
         var avg = avgSentenceLength(doc);
         if (avg && avg > 25) {
-          push("accessibility", 10, "med",
+          push("cognitiveLoad", 10, "med",
             bi("Body text averages over 25 words per sentence", "Bodytekst telt gemiddeld meer dan 25 woorden per zin"),
             bi("Shorten sentences. Visitors reading about a health concern, often under stress, need plain, direct language.",
                "Maak zinnen korter. Bezoekers die over een gezondheidskwestie lezen, vaak onder druk, hebben behoefte aan duidelijke, directe taal."),
@@ -1467,7 +1628,7 @@ a { color: inherit; }
         var tel = doc.querySelector('a[href^="tel:"]');
         var contactWord = textMatches(doc, ["contact", "afspraak", "appointment", "spoed", "emergency", "telefoonnummer"]);
         if (!tel && !contactWord) {
-          push("usability", 10, "med",
+          push("frictionPoints", 10, "med",
             bi("No visible contact or appointment information detected", "Geen zichtbare contact- of afsprakeninformatie gevonden"),
             bi("Show a phone number or appointment link near the top. Many visitors arrive needing to act immediately.",
                "Toon een telefoonnummer of afsprakenlink dicht bij de top. Veel bezoekers komen met de behoefte om direct te handelen."),
@@ -1491,7 +1652,7 @@ a { color: inherit; }
         "People hesitate to hand over financial details to a page that feels uncertain. Trust signals and accessible, well-labelled forms carry real weight.",
         "Mensen aarzelen om financiële gegevens te delen op een pagina die onzeker aanvoelt. Vertrouwenssignalen en toegankelijke, goed gelabelde formulieren wegen hier zwaar."
       ),
-      weights: { hierarchy: .14, usability: .16, accessibility: .24, consistency: .14, conversion: .18, performance: .14 },
+      weights: { ux: 0.34, ui: 0.18, journey: 0.28, engagement: 0.20 },
       focus: [
         bi("Accessibility and conversion clarity lead — forms must be both usable and trustworthy.",
            "Toegankelijkheid en conversiehelderheid voorop — formulieren moeten zowel bruikbaar als betrouwbaar zijn."),
@@ -1502,7 +1663,7 @@ a { color: inherit; }
       ],
       checks: function (doc, push) {
         if (!textMatches(doc, ["ssl", "secure", "veilig", "privacy", "avg", "gdpr", "vergunning", "license", "dnb", "afm", "encrypt"])) {
-          push("conversion", 8, "med",
+          push("motivation", 8, "med",
             bi("No security or regulatory trust signal detected", "Geen security- of toezicht-signaal gevonden"),
             bi("Mention encryption, your privacy approach, or relevant licensing (e.g. AFM/DNB) near forms — financial visitors look for this before entering data.",
                "Vermeld encryptie, je privacy-aanpak of relevante vergunning (bv. AFM/DNB) bij formulieren — financiële bezoekers zoeken hier naar voordat ze gegevens invoeren."),
@@ -1521,7 +1682,7 @@ a { color: inherit; }
         var form = doc.querySelector("form");
         var policyLink = elementsMatchText(doc, "a", /privacy|terms|voorwaarden|privacybeleid/i);
         if (form && !policyLink.length) {
-          push("accessibility", 8, "med",
+          push("feedbackLoops", 8, "med",
             bi("A form is present but no privacy/terms link was found", "Er is een formulier, maar geen privacy-/voorwaardenlink gevonden"),
             bi("Link to your privacy policy near any form that collects data — for trust, and often for compliance.",
                "Link naar je privacybeleid bij elk formulier dat gegevens verzamelt — voor vertrouwen, en vaak ook verplicht."),
@@ -1545,7 +1706,7 @@ a { color: inherit; }
         "Most visits start on a phone, often while standing outside. Can they see your hours, find your address and call you in one tap?",
         "De meeste bezoeken starten op een telefoon, vaak terwijl iemand buiten staat. Zie je in één oogopslag de openingstijden, het adres, en kun je met één tik bellen?"
       ),
-      weights: { hierarchy: .14, usability: .18, accessibility: .14, consistency: .12, conversion: .24, performance: .18 },
+      weights: { ux: 0.22, ui: 0.18, journey: 0.38, engagement: 0.22 },
       focus: [
         bi("Conversion clarity and performance lead — speed and a one-tap call matter most on mobile.",
            "Conversiehelderheid en performance voorop — snelheid en één-tik-bellen tellen het meest op mobiel."),
@@ -1559,7 +1720,7 @@ a { color: inherit; }
         var hoursWord = textMatches(doc, ["open", "hours", "openingstijden", "geopend", "maandag", "monday"]);
         var postcode = /\b\d{4}\s?[a-z]{2}\b/i.test(doc.body ? doc.body.textContent : "");
         if (!hasAddress && !hoursWord && !postcode) {
-          push("usability", 10, "med",
+          push("frictionPoints", 10, "med",
             bi("No address or opening hours detected", "Geen adres of openingstijden gevonden"),
             bi("Show your address and opening hours near the top. Local visitors decide in seconds whether to call or visit.",
                "Toon je adres en openingstijden dicht bij de top. Lokale bezoekers besluiten binnen seconden of ze bellen of langskomen."),
@@ -1577,7 +1738,7 @@ a { color: inherit; }
         }
         var tel = doc.querySelector('a[href^="tel:"]');
         if (!tel) {
-          push("conversion", 8, "med",
+          push("flowToAction", 8, "med",
             bi("No clickable phone number (tel: link) detected", "Geen klikbaar telefoonnummer (tel:-link) gevonden"),
             bi("Add a tel: link to your phone number so mobile visitors can call you with one tap.",
                "Voeg een tel:-link toe aan je telefoonnummer, zodat mobiele bezoekers met één tik kunnen bellen."),
@@ -1601,7 +1762,7 @@ a { color: inherit; }
         "Prospective students are comparing programmes across multiple tabs and devices. Clear language and one obvious next step keep them from bouncing.",
         "Potentiële studenten vergelijken opleidingen via meerdere tabbladen en apparaten. Duidelijke taal en één voor de hand liggende volgende stap voorkomen afhakers."
       ),
-      weights: { hierarchy: .16, usability: .18, accessibility: .28, consistency: .12, conversion: .12, performance: .14 },
+      weights: { ux: 0.36, ui: 0.18, journey: 0.26, engagement: 0.20 },
       focus: [
         bi("Accessibility leads — a diverse audience, often on varied devices and connections.",
            "Toegankelijkheid voorop — een divers publiek, vaak op uiteenlopende apparaten en verbindingen."),
@@ -1613,7 +1774,7 @@ a { color: inherit; }
       checks: function (doc, push) {
         var avg = avgSentenceLength(doc);
         if (avg && avg > 25) {
-          push("accessibility", 8, "med",
+          push("cognitiveLoad", 8, "med",
             bi("Body text averages over 25 words per sentence", "Bodytekst telt gemiddeld meer dan 25 woorden per zin"),
             bi("Break up long, formal sentences. Prospective students scan — short, direct copy keeps them reading.",
                "Breek lange, formele zinnen op. Potentiële studenten scannen — korte, directe tekst houdt ze lezend."),
@@ -1631,7 +1792,7 @@ a { color: inherit; }
         }
         var cta = elementsMatchText(doc, "a,button", /enroll|enrol|apply|inschrijv|aanmeld|open day|contact|info/i);
         if (!cta.length) {
-          push("conversion", 8, "med",
+          push("flowToAction", 8, "med",
             bi("No enrol / apply / contact call-to-action detected", "Geen inschrijf-/aanmeld-/contact-CTA gevonden"),
             bi("Add a clear next step like \"Apply now\" or \"Request information\" — give visitors an obvious way forward.",
                "Voeg een duidelijke volgende stap toe, zoals \"Nu aanmelden\" of \"Vraag informatie aan\" — geef bezoekers een duidelijk vervolg."),
@@ -1655,7 +1816,7 @@ a { color: inherit; }
         "Listings live or die on photos and the ability to narrow them down. Image quality, alt text and filtering decide whether people keep browsing.",
         "Aanbod leeft of sterft op foto's en de mogelijkheid om te filteren. Beeldkwaliteit, alt-tekst en filters bepalen of mensen blijven bladeren."
       ),
-      weights: { hierarchy: .16, usability: .18, accessibility: .14, consistency: .12, conversion: .20, performance: .20 },
+      weights: { ux: 0.22, ui: 0.22, journey: 0.34, engagement: 0.22 },
       focus: [
         bi("Performance and conversion clarity lead — image-heavy pages must still load fast and stay browsable.",
            "Performance en conversiehelderheid voorop — beeldzware pagina's moeten toch snel laden en doorbladerbaar blijven."),
@@ -1668,7 +1829,7 @@ a { color: inherit; }
         var imgs = Array.prototype.slice.call(doc.querySelectorAll("img"));
         var noAlt = imgs.filter(function (i) { return !i.getAttribute("alt") || !i.getAttribute("alt").trim(); });
         if (imgs.length >= 3 && noAlt.length / imgs.length > 0.3) {
-          push("accessibility", 10, "med",
+          push("accessibilityBasics", 10, "med",
             bi("Over 30% of images are missing descriptive alt text", "Meer dan 30% van de afbeeldingen mist beschrijvende alt-tekst"),
             bi("Describe each property image (e.g. \"Living room with garden view\") — it helps screen readers and image search alike.",
                "Beschrijf elke objectfoto (bv. \"Woonkamer met uitzicht op tuin\") — dit helpt screenreaders én beeldzoekmachines."),
@@ -1686,7 +1847,7 @@ a { color: inherit; }
         }
         var hasFilter = doc.querySelector('select, input[type="search"]');
         if (!hasFilter) {
-          push("usability", 8, "low",
+          push("frictionPoints", 8, "low",
             bi("No search or filter controls detected", "Geen zoek- of filteropties gevonden"),
             bi("Let visitors filter by price, location or type — essential for browsing more than a handful of listings.",
                "Laat bezoekers filteren op prijs, locatie of type — essentieel bij meer dan een handvol aanbod."),
@@ -1710,7 +1871,7 @@ a { color: inherit; }
         "These sites must work for everyone, often by law. Accessibility is the baseline, and the path to donate, register or find information must be unmistakable.",
         "Deze sites moeten voor iedereen werken, vaak verplicht. Toegankelijkheid is de basis, en het pad naar doneren, aanmelden of informatie moet onmiskenbaar zijn."
       ),
-      weights: { hierarchy: .14, usability: .18, accessibility: .30, consistency: .12, conversion: .14, performance: .12 },
+      weights: { ux: 0.38, ui: 0.16, journey: 0.26, engagement: 0.20 },
       focus: [
         bi("Accessibility leads by a wide margin — frequently a legal requirement (WCAG/EN 301 549).",
            "Toegankelijkheid voert met afstand de boventoon — vaak een wettelijke eis (WCAG/EN 301 549)."),
@@ -1722,7 +1883,7 @@ a { color: inherit; }
       checks: function (doc, push) {
         var avg = avgSentenceLength(doc);
         if (avg && avg > 25) {
-          push("accessibility", 10, "med",
+          push("cognitiveLoad", 10, "med",
             bi("Body text averages over 25 words per sentence", "Bodytekst telt gemiddeld meer dan 25 woorden per zin"),
             bi("Use plain language — many public-sector guidelines require it, and it widens who can use the site.",
                "Gebruik klare taal — veel richtlijnen voor de publieke sector vereisen dit, en het maakt de site voor meer mensen bruikbaar."),
@@ -1740,7 +1901,7 @@ a { color: inherit; }
         }
         var cta = elementsMatchText(doc, "a,button", /donate|doneer|steun|support|volunteer|vrijwilliger|contact|aanvraag/i);
         if (!cta.length) {
-          push("conversion", 8, "med",
+          push("flowToAction", 8, "med",
             bi("No donate / get-involved / contact call-to-action detected", "Geen doneer-/betrokken-raken-/contact-CTA gevonden"),
             bi("Add a clear way to act — donate, volunteer or get in touch. Visitors who arrive here are often ready to.",
                "Voeg een duidelijke manier toe om te handelen — doneren, vrijwilligerswerk of contact. Bezoekers die hier komen, zijn daar vaak al klaar voor."),
@@ -1764,7 +1925,7 @@ a { color: inherit; }
         "The site is the work sample. Restraint, consistency and a fast route to your best projects say more than any case study text.",
         "De site is het werkmonster. Terughoudendheid, consistentie en een snelle route naar je beste projecten zeggen meer dan welke case-tekst dan ook."
       ),
-      weights: { hierarchy: .26, usability: .14, accessibility: .14, consistency: .22, conversion: .12, performance: .12 },
+      weights: { ux: 0.20, ui: 0.38, journey: 0.22, engagement: 0.20 },
       focus: [
         bi("Visual hierarchy and consistency lead — judged as a craft sample, not just a brochure.",
            "Visuele hiërarchie en consistentie voorop — beoordeeld als vakwerk, niet alleen als brochure."),
@@ -1785,7 +1946,7 @@ a { color: inherit; }
         });
         var n = Object.keys(colors).length;
         if (n > 6) {
-          push("consistency", 12, "med",
+          push("colorContrast", 12, "med",
             bi(n + " distinct inline colour values found", n + " losse, inline gedeclareerde kleurwaarden gevonden"),
             bi("Limit your palette to a handful of intentional colours. A portfolio is judged on restraint as much as range.",
                "Beperk je palet tot een handvol bewuste kleuren. Een portfolio wordt net zo goed beoordeeld op terughoudendheid als op variatie."),
@@ -1803,7 +1964,7 @@ a { color: inherit; }
         }
         var workLink = elementsMatchText(doc, "a", /work|project|portfolio|cases|case stud/i);
         if (!workLink.length) {
-          push("conversion", 6, "low",
+          push("flowToAction", 6, "low",
             bi("No link to work or case studies detected", "Geen link naar werk of cases gevonden"),
             bi("Make your best work one click away from the homepage — it's usually the main reason people are here.",
                "Maak je beste werk bereikbaar binnen één klik vanaf de homepage — dat is meestal de hoofdreden dat mensen er zijn."),
@@ -1830,7 +1991,8 @@ a { color: inherit; }
   function runAnalysis(html, filename, industryKey) {
     var doc = new DOMParser().parseFromString(html, "text/html");
     var issues = [];   // { sev, title:{en,nl}, fix:{en,nl}, plan:{steps:[{en,nl}], code}|null, industry }
-    var scores = { hierarchy: 100, usability: 100, accessibility: 100, consistency: 100, conversion: 100, performance: 100 };
+    var scores = {};
+    CRIT_KEYS.forEach(function (k) { scores[k] = 100; });
 
     function deduct(key, amount, sev, title, fix, plan, industry) {
       scores[key] = Math.max(0, scores[key] - amount);
@@ -1842,7 +2004,7 @@ a { color: inherit; }
     var imgsNoAlt = imgs.filter(function (i) { return !i.hasAttribute("alt"); });
     if (imgsNoAlt.length) {
       var n1 = imgsNoAlt.length;
-      deduct("accessibility", Math.min(30, n1 * 6), n1 > 2 ? "high" : "med",
+      deduct("accessibilityBasics", Math.min(30, n1 * 6), n1 > 2 ? "high" : "med",
         bi(n1 + " image" + (n1 > 1 ? "s" : "") + " missing an alt attribute",
            n1 + " afbeelding" + (n1 > 1 ? "en" : "") + " zonder alt-attribuut"),
         bi("Add a short, descriptive alt text to every <img> (or alt=\"\" for purely decorative images) so screen readers can describe them.",
@@ -1860,7 +2022,7 @@ a { color: inherit; }
         });
     }
     if (!doc.documentElement.getAttribute("lang")) {
-      deduct("accessibility", 10, "med",
+      deduct("accessibilityBasics", 10, "med",
         bi("No lang attribute on <html>", "Geen lang-attribuut op <html>"),
         bi("Add lang=\"en\" (or the page's language) to <html> so assistive tech and translators pick the right language.",
            "Voeg lang=\"nl\" (of de taal van de pagina) toe aan <html>, zodat hulptechnologie en vertalers de juiste taal kiezen."),
@@ -1886,7 +2048,7 @@ a { color: inherit; }
     });
     if (unlabelled.length) {
       var n2 = unlabelled.length;
-      deduct("accessibility", Math.min(25, n2 * 8), "high",
+      deduct("accessibilityBasics", Math.min(25, n2 * 8), "high",
         bi(n2 + " form field" + (n2 > 1 ? "s" : "") + " without a label", n2 + " formuliervelden zonder label"),
         bi("Give each input a <label for=\"...\"> (or aria-label) so people using screen readers know what to enter.",
            "Geef elk invoerveld een <label for=\"...\"> (of aria-label), zodat screenreadergebruikers weten wat ze moeten invullen."),
@@ -1904,7 +2066,7 @@ a { color: inherit; }
     }
     var viewport = doc.querySelector('meta[name="viewport"]');
     if (!viewport) {
-      deduct("accessibility", 10, "med",
+      deduct("accessibilityBasics", 10, "med",
         bi("No viewport meta tag", "Geen viewport-metatag"),
         bi("Add <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> so the page scales correctly on phones.",
            "Voeg <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> toe, zodat de pagina correct schaalt op telefoons."),
@@ -1918,7 +2080,7 @@ a { color: inherit; }
           ],
           code: '<meta name="viewport" content="width=device-width, initial-scale=1">'
         });
-      deduct("performance", 5, "low",
+      deduct("dropOffRisk", 5, "low",
         bi("Missing viewport meta may affect mobile rendering", "Ontbrekende viewport-meta kan mobiele weergave beïnvloeden"),
         bi("Same fix as above — it also keeps mobile layout stable.", "Zelfde fix als hierboven — dit houdt ook de mobiele layout stabiel."),
         null);
@@ -1927,7 +2089,7 @@ a { color: inherit; }
     // --- Visual hierarchy ---
     var h1s = doc.querySelectorAll("h1");
     if (h1s.length === 0) {
-      deduct("hierarchy", 20, "high",
+      deduct("visualHierarchy", 20, "high",
         bi("No <h1> on the page", "Geen <h1> op de pagina"),
         bi("Give the page a single, clear <h1> that states what it's for — it anchors the visual and semantic hierarchy.",
            "Geef de pagina één duidelijke <h1> die zegt waar de pagina voor is — dit verankert de visuele en semantische hiërarchie."),
@@ -1943,7 +2105,7 @@ a { color: inherit; }
           code: '<h1>Fresh pasta, made daily</h1>'
         });
     } else if (h1s.length > 1) {
-      deduct("hierarchy", 12, "med",
+      deduct("visualHierarchy", 12, "med",
         bi(h1s.length + " <h1> elements found", h1s.length + " <h1>-elementen gevonden"),
         bi("Keep one <h1> per page. Demote the others to <h2>/<h3> based on their place in the structure.",
            "Houd één <h1> per pagina aan. Demoot de andere naar <h2>/<h3>, passend bij hun plek in de structuur."),
@@ -1967,7 +2129,7 @@ a { color: inherit; }
       lastLevel = lvl;
     });
     if (skipped) {
-      deduct("hierarchy", 10, "med",
+      deduct("visualHierarchy", 10, "med",
         bi("Heading levels skip a step (e.g. h2 → h4)", "Koppenniveaus slaan een stap over (bv. h2 → h4)"),
         bi("Keep heading levels sequential. Skipping levels breaks the outline for screen-reader users and signals an unplanned structure.",
            "Houd koppenniveaus opeenvolgend. Het overslaan van niveaus breekt de structuur voor screenreadergebruikers en wijst op een ongeplande opbouw."),
@@ -1986,7 +2148,7 @@ a { color: inherit; }
 
     // --- Usability: interaction clarity ---
     if (!doc.querySelector("nav")) {
-      deduct("usability", 8, "low",
+      deduct("interactionClarity", 8, "low",
         bi("No <nav> landmark found", "Geen <nav>-landmark gevonden"),
         bi("Wrap the primary navigation in <nav> so it's identifiable as a navigation region.",
            "Plaats de hoofdnavigatie in <nav>, zodat deze herkenbaar is als navigatiegebied."),
@@ -2007,7 +2169,7 @@ a { color: inherit; }
     var vagueLinks = links.filter(function (el) { return genericText.test((el.textContent || "").trim()); });
     if (vagueLinks.length) {
       var n3 = vagueLinks.length;
-      deduct("usability", Math.min(20, n3 * 5), "med",
+      deduct("interactionClarity", Math.min(20, n3 * 5), "med",
         bi(n3 + " link" + (n3 > 1 ? "s" : "") + "/button" + (n3 > 1 ? "s" : "") + " use vague text like \"click here\"",
            n3 + " link" + (n3 > 1 ? "s" : "") + "/knop" + (n3 > 1 ? "pen" : "") + " met vage tekst zoals \"klik hier\""),
         bi("Rewrite link and button text so it describes the destination or action on its own, e.g. \"Download the report\" instead of \"Click here\".",
@@ -2027,7 +2189,7 @@ a { color: inherit; }
     var titleEl = doc.querySelector("title");
     var titleText = titleEl ? titleEl.textContent.trim() : "";
     if (!titleText) {
-      deduct("usability", 8, "med",
+      deduct("interactionClarity", 8, "med",
         bi("Missing or empty <title>", "Ontbrekende of lege <title>"),
         bi("Add a descriptive <title> — it's the first thing people see in tabs, bookmarks and search results.",
            "Voeg een beschrijvende <title> toe — dit is het eerste dat mensen zien in tabbladen, bladwijzers en zoekresultaten."),
@@ -2042,7 +2204,7 @@ a { color: inherit; }
           code: '<title>Pricing — DesignScan</title>'
         });
     } else if (titleText.length > 60) {
-      deduct("usability", 4, "low",
+      deduct("interactionClarity", 4, "low",
         bi("<title> is longer than 60 characters", "<title> is langer dan 60 tekens"),
         bi("Shorten the page title so it doesn't get truncated in browser tabs and search results.",
            "Maak de paginatitel korter, zodat deze niet wordt afgekapt in tabbladen en zoekresultaten."),
@@ -2064,7 +2226,7 @@ a { color: inherit; }
     });
     if (iconOnly.length) {
       var n6 = iconOnly.length;
-      deduct("usability", Math.min(15, n6 * 5), "med",
+      deduct("interactionClarity", Math.min(15, n6 * 5), "med",
         bi(n6 + " icon-only link" + (n6 > 1 ? "s" : "") + "/button" + (n6 > 1 ? "s" : "") + " with no accessible label",
            n6 + " link" + (n6 > 1 ? "s" : "") + "/knop" + (n6 > 1 ? "pen" : "") + " met alleen een icoon en geen toegankelijk label"),
         bi("Add an aria-label (or visually-hidden text) describing the action — icons alone are ambiguous for everyone, not just screen readers.",
@@ -2086,7 +2248,7 @@ a { color: inherit; }
     var inlineStyled = doc.querySelectorAll("[style]");
     if (inlineStyled.length > 8) {
       var n4 = inlineStyled.length;
-      deduct("consistency", Math.min(20, Math.floor(n4 / 4)), "low",
+      deduct("typography", Math.min(20, Math.floor(n4 / 4)), "low",
         bi(n4 + " elements use inline style attributes", n4 + " elementen gebruiken inline style-attributen"),
         bi("Move repeated inline styles into shared CSS classes so spacing, color and type stay consistent across the page.",
            "Verplaats herhaalde inline stijlen naar gedeelde CSS-classes, zodat ruimte, kleur en typografie consistent blijven."),
@@ -2109,7 +2271,7 @@ a { color: inherit; }
     });
     var fontCount = Object.keys(fontFamilies).length;
     if (fontCount > 2) {
-      deduct("consistency", Math.min(15, (fontCount - 2) * 5), "med",
+      deduct("typography", Math.min(15, (fontCount - 2) * 5), "med",
         bi(fontCount + " different font-family declarations found inline", fontCount + " verschillende font-family-declaraties inline gevonden"),
         bi("Standardise on one display and one body typeface (set globally via CSS) so the page reads as one product.",
            "Kies één displayfont en één bodyfont (globaal ingesteld via CSS), zodat de pagina als één geheel oogt."),
@@ -2130,7 +2292,7 @@ a { color: inherit; }
     var buttons = Array.prototype.slice.call(doc.querySelectorAll("button, a.btn, input[type=submit], .button, .cta"));
     var ctaCandidates = buttons.length ? buttons : links;
     if (ctaCandidates.length === 0) {
-      deduct("conversion", 25, "high",
+      deduct("flowToAction", 25, "high",
         bi("No buttons or call-to-action elements found", "Geen knoppen of call-to-action-elementen gevonden"),
         bi("Add at least one clear, primary call-to-action that tells visitors exactly what to do next.",
            "Voeg minstens één duidelijke, primaire call-to-action toe die bezoekers precies vertelt wat de volgende stap is."),
@@ -2146,7 +2308,7 @@ a { color: inherit; }
           code: '<a class="btn btn-primary" href="/contact">Get in touch</a>'
         });
     } else if (ctaCandidates.length > 6) {
-      deduct("conversion", 12, "med",
+      deduct("flowToAction", 12, "med",
         bi(ctaCandidates.length + " competing call-to-action elements found", ctaCandidates.length + " concurrerende call-to-action-elementen gevonden"),
         bi("Pick one primary action per view. Demote the rest to text links or secondary buttons so the main CTA stands out.",
            "Kies één primaire actie per scherm. Demoot de rest tot tekstlinks of secundaire knoppen, zodat de hoofd-CTA opvalt."),
@@ -2169,7 +2331,7 @@ a { color: inherit; }
     });
     var subheadingCount = doc.querySelectorAll("h2, h3").length;
     if (longParas.length > 0 && subheadingCount < 2) {
-      deduct("usability", 8, "low",
+      deduct("cognitiveLoad", 8, "low",
         bi("Long blocks of text with few subheadings", "Lange tekstblokken met weinig subkoppen"),
         bi("Break long paragraphs into shorter chunks and add subheadings every few paragraphs — it lowers cognitive load and makes the page scannable.",
            "Breek lange alinea's op in kortere stukken en voeg om de paar alinea's een subkop toe — dit verlaagt de cognitieve belasting en maakt de pagina scanbaar."),
@@ -2189,7 +2351,7 @@ a { color: inherit; }
     // --- Performance signals ---
     var scripts = doc.querySelectorAll("script");
     if (scripts.length > 10) {
-      deduct("performance", Math.min(20, scripts.length), "med",
+      deduct("dropOffRisk", Math.min(20, scripts.length), "med",
         bi(scripts.length + " <script> tags found", scripts.length + " <script>-tags gevonden"),
         bi("Bundle and defer non-critical scripts. Each extra <script> tag adds a render-blocking risk on first load.",
            "Bundel en stel niet-kritieke scripts uit. Elke extra <script>-tag vergroot het risico op een render-blokkade bij de eerste load."),
@@ -2208,7 +2370,7 @@ a { color: inherit; }
     var imgsNoSize = imgs.filter(function (i) { return !i.hasAttribute("width") || !i.hasAttribute("height"); });
     if (imgsNoSize.length) {
       var n5 = imgsNoSize.length;
-      deduct("performance", Math.min(20, n5 * 4), "med",
+      deduct("dropOffRisk", Math.min(20, n5 * 4), "med",
         bi(n5 + " image" + (n5 > 1 ? "s" : "") + " missing width/height", n5 + " afbeelding" + (n5 > 1 ? "en" : "") + " zonder width/height"),
         bi("Set explicit width and height on <img> elements so the browser reserves space and avoids layout shift while images load.",
            "Geef <img>-elementen een expliciete width en height, zodat de browser ruimte reserveert en layout shift voorkomt tijdens het laden."),
@@ -2223,6 +2385,85 @@ a { color: inherit; }
           ],
           code: '<img src="hero.jpg" alt="Product hero shot" width="1200" height="800">'
         });
+    }
+
+    // --- UI: color & contrast (inline color/background pairs) ---
+    var lowContrastFound = false, lowestRatio = null;
+    Array.prototype.slice.call(doc.querySelectorAll("[style]")).forEach(function (el) {
+      var style = el.getAttribute("style") || "";
+      var fg = style.match(/(?:^|;)\s*color\s*:\s*([^;]+)/i);
+      var bg = style.match(/(?:^|;)\s*background(?:-color)?\s*:\s*([^;]+)/i);
+      if (!fg || !bg) return;
+      var rgb1 = parseColor(fg[1]), rgb2 = parseColor(bg[1]);
+      if (!rgb1 || !rgb2) return;
+      var ratio = contrastRatio(rgb1, rgb2);
+      if (ratio < 4.5) {
+        lowContrastFound = true;
+        if (lowestRatio === null || ratio < lowestRatio) lowestRatio = ratio;
+      }
+    });
+    if (lowContrastFound) {
+      var ratioStr = lowestRatio.toFixed(1);
+      deduct("colorContrast", 14, lowestRatio < 3 ? "high" : "med",
+        bi("Text/background colour pair found with a contrast ratio around " + ratioStr + ":1",
+           "Tekst/achtergrond-kleurcombinatie gevonden met een contrastratio van ongeveer " + ratioStr + ":1"),
+        bi("WCAG AA requires at least 4.5:1 for normal text. Darken the text or lighten the background until the ratio clears that threshold.",
+           "WCAG AA vereist minimaal 4,5:1 voor normale tekst. Maak de tekst donkerder of de achtergrond lichter totdat de ratio die drempel haalt."),
+        {
+          steps: [
+            bi("Find the element(s) with this inline color/background combination (devtools → search styles for \"color:\" near \"background\").",
+               "Zoek het element/de elementen met deze inline kleurcombinatie (devtools → zoek stijlen op \"color:\" naast \"background\")."),
+            bi("Run the two colours through a contrast checker (e.g. WebAIM) and adjust one until it reaches 4.5:1 (3:1 for large text).",
+               "Voer de twee kleuren door een contrastchecker (bv. WebAIM) en pas er één aan tot 4,5:1 (3:1 voor grote tekst)."),
+            bi("Re-check any related states (hover, disabled, placeholder) — they often inherit the same low-contrast pairing.",
+               "Controleer ook gerelateerde staten (hover, disabled, placeholder) — die erven vaak dezelfde lage contrastcombinatie.")
+          ],
+          code: '/* before: #999999 on #FFFFFF ≈ 2.8:1 */\ncolor: #595959; /* on #FFFFFF ≈ 7:1 */'
+        }, false);
+    }
+
+    // --- Engagement: feedback loops (forms without live validation feedback) ---
+    var anyForm = doc.querySelector("form");
+    var hasLiveRegion = doc.querySelector('[aria-live], [role="alert"], [role="status"]');
+    if (anyForm && !hasLiveRegion) {
+      deduct("feedbackLoops", 10, "med",
+        bi("Form present but no live-feedback region (aria-live / role=\"alert\") detected",
+           "Formulier aanwezig, maar geen live-feedbackregio (aria-live / role=\"alert\") gevonden"),
+        bi("Add a region that announces success or validation errors as they happen — silent forms leave people unsure whether anything worked.",
+           "Voeg een regio toe die succes of validatiefouten direct aankondigt — stille formulieren laten mensen in onzekerheid of er iets is gebeurd."),
+        {
+          steps: [
+            bi("Add an empty container near the form with role=\"status\" (for success) or role=\"alert\" (for errors).",
+               "Voeg een leeg containerelement toe bij het formulier met role=\"status\" (voor succes) of role=\"alert\" (voor fouten)."),
+            bi("On submit, populate that container with a short message (\"Message sent\", \"Please fill in your email\").",
+               "Vul dat element bij verzenden met een korte melding (\"Bericht verstuurd\", \"Vul je e-mailadres in\")."),
+            bi("Keep the message in the DOM (don't remove it instantly) so screen readers have time to announce it.",
+               "Laat de melding even in de DOM staan (niet direct verwijderen), zodat screenreaders de tijd hebben om het aan te kondigen.")
+          ],
+          code: '<form>\n  ...\n  <div role="status" aria-live="polite" id="form-feedback"></div>\n</form>'
+        }, false);
+    }
+
+    // --- Engagement: progress signals (long forms without a stepper/progress indicator) ---
+    var formFieldCount = inputs.length;
+    var hasProgressIndicator = doc.querySelector('progress, [role="progressbar"], [class*="step" i], [class*="progress" i]');
+    if (anyForm && formFieldCount > 5 && !hasProgressIndicator) {
+      deduct("progressSignals", 10, "low",
+        bi("Form with " + formFieldCount + " fields has no progress or step indicator",
+           "Formulier met " + formFieldCount + " velden heeft geen voortgangs- of stapindicator"),
+        bi("Long forms feel shorter when people can see how far they are. Break it into steps with a visible progress indicator, or show a field count.",
+           "Lange formulieren voelen korter aan als mensen kunnen zien hoe ver ze zijn. Verdeel het in stappen met een zichtbare voortgangsindicator, of toon een veldenteller."),
+        {
+          steps: [
+            bi("Group related fields into 2-4 logical steps (e.g. \"Your details\", \"Address\", \"Payment\").",
+               "Groepeer gerelateerde velden in 2-4 logische stappen (bv. \"Jouw gegevens\", \"Adres\", \"Betaling\")."),
+            bi("Add a simple step indicator (\"Step 2 of 3\") or a <progress> element above the form.",
+               "Voeg een eenvoudige stapindicator toe (\"Stap 2 van 3\") of een <progress>-element boven het formulier."),
+            bi("If a single-page form is preferred, at least show a live count of completed vs. remaining required fields.",
+               "Geef bij een formulier op één pagina in elk geval een live telling van ingevulde vs. resterende verplichte velden.")
+          ],
+          code: '<p aria-live="polite">Step 2 of 3</p>\n<progress value="2" max="3"></progress>'
+        }, false);
     }
 
     // --- Industry-specific checks ---
@@ -2244,13 +2485,22 @@ a { color: inherit; }
       });
     }
 
+    var categoryScores = {};
+    CATEGORY_KEYS.forEach(function (cat) {
+      var subs = CATEGORY_CRITERIA[cat];
+      var sum = subs.reduce(function (s, k) { return s + scores[k]; }, 0);
+      categoryScores[cat] = sum / subs.length;
+    });
+
     var w = profile.weights;
     var overall = Math.round(
-      scores.hierarchy * w.hierarchy + scores.usability * w.usability + scores.accessibility * w.accessibility +
-      scores.consistency * w.consistency + scores.conversion * w.conversion + scores.performance * w.performance
+      CATEGORY_KEYS.reduce(function (sum, cat) { return sum + categoryScores[cat] * w[cat]; }, 0)
     );
 
-    return { overall: overall, scores: scores, issues: issues, filename: filename || "your-page.html", industryKey: profileKey, profile: profile };
+    return {
+      overall: overall, scores: scores, categoryScores: categoryScores, issues: issues,
+      filename: filename || "your-page.html", industryKey: profileKey, profile: profile
+    };
   }
 
 
@@ -2278,14 +2528,23 @@ a { color: inherit; }
 
     var subWrap = document.getElementById("result-submeters");
     subWrap.innerHTML = "";
-    CRIT_KEYS.forEach(function (key) {
-      var v = Math.round(result.scores[key]);
-      var li = document.createElement("li");
-      li.className = "sm";
-      li.innerHTML = '<span class="sm__name">' + t("crit." + key) + '</span>' +
-        '<span class="sm__bar"><i style="--v:' + v + '%"></i></span>' +
-        '<span class="sm__val">' + v + '</span>';
-      subWrap.appendChild(li);
+    CATEGORY_KEYS.forEach(function (cat) {
+      var catScore = Math.round(result.categoryScores[cat]);
+      var groupLi = document.createElement("li");
+      groupLi.className = "sm-group";
+      groupLi.innerHTML = '<span class="sm-group__name">' + t("cat." + cat) + '</span>' +
+        '<span class="sm-group__val">' + catScore + '</span>';
+      subWrap.appendChild(groupLi);
+
+      CATEGORY_CRITERIA[cat].forEach(function (key) {
+        var v = Math.round(result.scores[key]);
+        var li = document.createElement("li");
+        li.className = "sm";
+        li.innerHTML = '<span class="sm__name">' + t("crit." + key) + '</span>' +
+          '<span class="sm__bar"><i style="--v:' + v + '%"></i></span>' +
+          '<span class="sm__val">' + v + '</span>';
+        subWrap.appendChild(li);
+      });
     });
 
     var issuesWrap = document.getElementById("result-issues");
@@ -2466,10 +2725,10 @@ a { color: inherit; }
     function renderPanel() {
       var profile = INDUSTRY_PROFILES[activeKey];
       var maxW = Math.max.apply(null, Object.values(profile.weights));
-      var barsHtml = CRIT_KEYS.map(function (ck) {
+      var barsHtml = CATEGORY_KEYS.map(function (ck) {
         var w = profile.weights[ck];
         var pct = Math.round((w / maxW) * 100);
-        return '<li class="ind-weight"><span class="ind-weight__name">' + t("crit." + ck) + '</span>' +
+        return '<li class="ind-weight"><span class="ind-weight__name">' + t("cat." + ck) + '</span>' +
           '<span class="ind-weight__bar"><i style="width:' + pct + '%"></i></span>' +
           '<span class="ind-weight__val">' + Math.round(w * 100) + '%</span></li>';
       }).join("");
