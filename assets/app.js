@@ -55,6 +55,13 @@
     }
   }
 
+  function updateGaugeAriaLabel(score) {
+    var svg = document.querySelector(".gauge__svg");
+    if (!svg) return;
+    var gradeKey = score >= 85 ? "hero.gradeStrong" : score >= 70 ? "hero.gradeGood" : "hero.gradeWeak";
+    svg.setAttribute("aria-label", t("aria.gaugeLabel", { score: score, grade: t(gradeKey) }));
+  }
+
   function animateScore(target) {
     var needle = document.getElementById("gauge-needle");
     var scoreEl = document.getElementById("gauge-score");
@@ -62,6 +69,7 @@
     if (reduce) {
       if (needle) needle.style.transform = "rotate(" + endA + "deg)";
       if (scoreEl) scoreEl.textContent = target;
+      updateGaugeAriaLabel(target);
       return;
     }
     var start = null, dur = 1400;
@@ -72,6 +80,7 @@
       if (needle) needle.style.transform = "rotate(" + (A_MIN + (endA - A_MIN) * ease).toFixed(2) + "deg)";
       if (scoreEl) scoreEl.textContent = Math.round(target * ease);
       if (p < 1) requestAnimationFrame(frame);
+      else updateGaugeAriaLabel(target);
     }
     requestAnimationFrame(frame);
   }
@@ -113,12 +122,30 @@
     var src = document.getElementById("readout-src");
     var industrySelect = document.getElementById("hero-industry-select");
     var industryLine = document.getElementById("readout-industry-line");
+    var errorEl = document.getElementById("url-error");
+    var bridge = document.getElementById("hero-bridge");
     if (!form) return;
+
+    if (input && errorEl) {
+      input.addEventListener("input", function () {
+        if (input.getAttribute("aria-invalid") === "true") {
+          input.removeAttribute("aria-invalid");
+          errorEl.hidden = true;
+        }
+      });
+    }
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var url = (input.value || "").trim();
-      if (!url) { input.focus(); input.style.borderColor = "var(--ember)"; return; }
+      if (!url) {
+        input.setAttribute("aria-invalid", "true");
+        if (errorEl) { errorEl.textContent = t("field.urlRequired"); errorEl.hidden = false; }
+        input.focus();
+        return;
+      }
+      input.removeAttribute("aria-invalid");
+      if (errorEl) errorEl.hidden = true;
       var host = url.replace(/^https?:\/\//, "").replace(/\/.*$/, "") || "your-site.com";
       var industryKey = industrySelect ? industrySelect.value : "general";
       var profile = INDUSTRY_PROFILES[industryKey] || INDUSTRY_PROFILES.general;
@@ -164,6 +191,15 @@
         });
         if (label) label.textContent = t("hero.scanBtnAgain");
         btn.disabled = false;
+        if (bridge) { bridge.innerHTML = t("hero.bridge"); bridge.hidden = false; }
+        // make this URL available to the Fix-it brief without retyping
+        var ffUrlInput = document.getElementById("ff-url");
+        if (ffUrlInput && (!ffUrlInput.value.trim() || ffUrlInput.dataset.autofilled === "true")) {
+          ffUrlInput.value = url;
+          ffUrlInput.dataset.autofilled = "true";
+          var prefillNote = document.getElementById("ff-prefill-note");
+          if (prefillNote) prefillNote.hidden = false;
+        }
         document.querySelector(".readout").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
       }, reduce ? 50 : 900);
     });
@@ -175,6 +211,7 @@
   var I18N = {
     en: {
       "skip": "Skip to content",
+      "aria.gaugeLabel": "Overall design score: {score} out of 100, rated {grade}",
       "nav.how": "How it works", "nav.criteria": "What we measure", "nav.industries": "By industry",
       "nav.scan": "Real scan", "nav.report": "Sample report", "nav.cta": "Scan a page",
       "hero.eyebrow": "Objective UI/UX measurement",
@@ -182,6 +219,8 @@
       "hero.lede": "Paste a URL and DesignScan reads it the way a senior product designer would — six calibrated criteria, a single honest score, and the specific fixes that move the needle.",
       "hero.scanLabel": "Page to scan", "hero.scanBtn": "Scan my design", "hero.scanBtnLoading": "Reading…", "hero.scanBtnAgain": "Scan again",
       "hero.scanNote": "Free preview · No sign-up · Result in seconds",
+      "field.urlRequired": "Enter a URL so DesignScan knows what to read.",
+      "hero.bridge": 'Want the real analysis, not a demo? <a href="#run-scan">Paste your page HTML below</a> — your industry choice carries over.',
       "hero.trust1": "Heuristic-based", "hero.trust2": "Accessibility-aware", "hero.trust3": "Conversion-focused",
       "hero.live": "LIVE&nbsp;READING", "hero.grade": "Good — three fixes from great",
       "hero.gradeStrong": "Strong — minor polish only", "hero.gradeGood": "Good — three fixes from great", "hero.gradeWeak": "Needs work — clear wins available",
@@ -223,9 +262,11 @@
       "scanner.inputLabel": "Page source (HTML)",
       "scanner.placeholder": "Right-click your page → View Page Source → copy/paste here. Or use the file picker below.",
       "scanner.industryLabel": "Industry", "scanner.chooseFile": "Choose .html file", "scanner.runBtn": "Run real scan",
+      "scanner.loadSample": "Try a sample",
       "scanner.overall": "Overall",
       "scanner.hintEmpty": "Paste some HTML or choose a file first.",
       "scanner.hintLoaded": "Loaded {file} — click \"Run real scan\".",
+      "scanner.hintSampleLoaded": "Sample page loaded — click \"Run real scan\" to see it in action.",
       "scanner.hintError": "Couldn't read that file. Try pasting the HTML instead.",
       "scanner.weightedFor": "Weighted for {industry}",
       "scanner.followup.text": "Want this turned into a plan your team can execute, with us reviewing it personally?",
@@ -258,6 +299,7 @@
       "fixitForm.name": "Your name", "fixitForm.url": "Website",
       "fixitForm.industry": "Industry", "fixitForm.notes": "Anything specific you'd like us to focus on? (optional)",
       "fixitForm.attached": "Attached scan summary:",
+      "fixitForm.prefillNote": "Website and industry are filled in from your scan above — change them here if needed.",
       "fixitForm.submit": "Download brief", "fixitForm.copy": "Copy brief as text",
       "fixitForm.disclaimer": "Everything stays on your device — nothing is sent anywhere. The brief downloads as a text file you can share however you like.",
       "fixitForm.doneTitle": "<strong>Brief ready.</strong>",
@@ -293,6 +335,7 @@
     },
     nl: {
       "skip": "Naar de inhoud",
+      "aria.gaugeLabel": "Algemene designscore: {score} van de 100, beoordeeld als {grade}",
       "nav.how": "Hoe het werkt", "nav.criteria": "Wat we meten", "nav.industries": "Per branche",
       "nav.scan": "Echte scan", "nav.report": "Voorbeeldrapport", "nav.cta": "Scan een pagina",
       "hero.eyebrow": "Objectieve UI/UX-meting",
@@ -300,6 +343,8 @@
       "hero.lede": "Plak een URL en DesignScan leest je pagina zoals een senior productdesigner dat zou doen — zes gecalibreerde criteria, één eerlijke score, en de exacte fixes die het verschil maken.",
       "hero.scanLabel": "Pagina om te scannen", "hero.scanBtn": "Scan mijn design", "hero.scanBtnLoading": "Aan het lezen…", "hero.scanBtnAgain": "Opnieuw scannen",
       "hero.scanNote": "Gratis preview · Geen account · Resultaat in seconden",
+      "field.urlRequired": "Vul een URL in zodat DesignScan weet wat te lezen.",
+      "hero.bridge": 'Liever een echte analyse dan een demo? <a href="#run-scan">Plak de HTML van je pagina hieronder</a> — je branchekeuze blijft behouden.',
       "hero.trust1": "Heuristiek-gebaseerd", "hero.trust2": "Toegankelijkheidsbewust", "hero.trust3": "Conversiegericht",
       "hero.live": "LIVE&nbsp;METING", "hero.grade": "Goed — drie fixes van geweldig",
       "hero.gradeStrong": "Sterk — alleen kleine puntjes op de i", "hero.gradeGood": "Goed — drie fixes van geweldig", "hero.gradeWeak": "Werk aan de winkel — duidelijke quick wins",
@@ -341,9 +386,11 @@
       "scanner.inputLabel": "Paginabron (HTML)",
       "scanner.placeholder": "Rechtsklik je pagina → Paginabron weergeven → kopieer/plak hier. Of gebruik de bestandskiezer hieronder.",
       "scanner.industryLabel": "Branche", "scanner.chooseFile": "Kies .html-bestand", "scanner.runBtn": "Voer echte scan uit",
+      "scanner.loadSample": "Probeer een voorbeeld",
       "scanner.overall": "Totaal",
       "scanner.hintEmpty": "Plak eerst HTML of kies een bestand.",
       "scanner.hintLoaded": "{file} geladen — klik op \"Voer echte scan uit\".",
+      "scanner.hintSampleLoaded": "Voorbeeldpagina geladen — klik op \"Voer echte scan uit\" om te zien hoe het werkt.",
       "scanner.hintError": "Kon dat bestand niet lezen. Probeer de HTML te plakken.",
       "scanner.weightedFor": "Gewogen voor {industry}",
       "scanner.followup.text": "Hier een plan van willen waarmee je team aan de slag kan, persoonlijk door ons doorgenomen?",
@@ -376,6 +423,7 @@
       "fixitForm.name": "Je naam", "fixitForm.url": "Website",
       "fixitForm.industry": "Branche", "fixitForm.notes": "Iets specifieks waar we op moeten focussen? (optioneel)",
       "fixitForm.attached": "Bijgevoegde scansamenvatting:",
+      "fixitForm.prefillNote": "Website en branche zijn overgenomen van je scan hierboven — pas ze hier aan indien nodig.",
       "fixitForm.submit": "Download brief", "fixitForm.copy": "Kopieer brief als tekst",
       "fixitForm.disclaimer": "Alles blijft op je eigen apparaat — er wordt niets verzonden. De brief downloadt als tekstbestand dat je kunt delen zoals jij wilt.",
       "fixitForm.doneTitle": "<strong>Brief gereed.</strong>",
@@ -1694,6 +1742,20 @@
 
     var currentFilename = "";
 
+    var SAMPLE_HTML = '<!DOCTYPE html>\n<html>\n<head>\n<title>Sample Bakery Website With A Title That Runs On For Quite A While</title>\n</head>\n<body>\n<div style="color:#999999;background:#ffffff;font-family:Georgia;">\n<h1>Welcome</h1>\n<h1>Fresh bread every day</h1>\n<h3>Our story</h3>\n<p>' +
+      'Founded in 1998 our bakery has been serving the neighbourhood with fresh bread, pastries and cakes made from scratch every single morning using traditional techniques passed down through generations of bakers who cared deeply about quality and flavour and the community we are proud to be part of and we hope you will visit us soon to taste the difference that real craftsmanship makes every single day of the week. '.repeat(2) +
+      '</p>\n<img src="bread.jpg">\n<img src="shop.jpg" style="font-family:Verdana;">\n<a href="#">click here</a>\n<a href="#menu">Menu</a>\n<a href="#about">About</a>\n<a href="#contact">Contact</a>\n<a href="#jobs">Jobs</a>\n<a href="#press">Press</a>\n<a href="#faq">FAQ</a>\n<a href="#blog">Blog</a>\n<form>\n<input type="text" name="name" required>\n<input type="email" name="email" required>\n<input type="tel" name="phone" required>\n<input type="text" name="address" required>\n<input type="text" name="city" required>\n<input type="text" name="zip" required>\n<button type="submit">Submit</button>\n</form>\n</div>\n</body>\n</html>';
+
+    function loadSample() {
+      textarea.value = SAMPLE_HTML;
+      currentFilename = "sample-bakery.html";
+      hint.textContent = t("scanner.hintSampleLoaded");
+      hint.className = "scanner__hint";
+      textarea.focus();
+    }
+    var sampleBtn = document.getElementById("load-sample-btn");
+    if (sampleBtn) sampleBtn.addEventListener("click", loadSample);
+
     fileInput.addEventListener("change", function () {
       var file = fileInput.files && fileInput.files[0];
       if (!file) return;
@@ -1727,9 +1789,43 @@
   }
 
   // ================================================================
-  //  Industry content section (tabs) + populate <select> elements
+  //  Industry order, shared field sync, and <select> population
   // ================================================================
   var INDUSTRY_ORDER = ["general", "ecommerce", "saas", "healthcare", "finance", "hospitality", "education", "realestate", "nonprofit", "agency"];
+
+  // ================================================================
+  //  Field sync — don't make people re-enter the same thing twice.
+  //  The hero URL pre-fills the Fix-it brief's Website field, but
+  //  stops overriding it the moment the person edits it themselves.
+  //  (The three "Industry" selects are synced separately, via
+  //  wireIndustrySync.)
+  // ================================================================
+  function wireFieldSync() {
+    var heroUrl = document.getElementById("url");
+    var ffUrl = document.getElementById("ff-url");
+    var prefillNote = document.getElementById("ff-prefill-note");
+
+    if (heroUrl && ffUrl) {
+      function applyHeroUrlToBrief() {
+        var val = heroUrl.value.trim();
+        if (!val) return;
+        if (!ffUrl.value.trim() || ffUrl.dataset.autofilled === "true") {
+          ffUrl.value = val;
+          ffUrl.dataset.autofilled = "true";
+          if (prefillNote) prefillNote.hidden = false;
+        }
+      }
+      heroUrl.addEventListener("change", applyHeroUrlToBrief);
+      heroUrl.addEventListener("blur", applyHeroUrlToBrief);
+
+      // Once the person edits the brief's website field themselves,
+      // stop overwriting it from the hero field.
+      ffUrl.addEventListener("input", function () {
+        ffUrl.dataset.autofilled = "false";
+        if (prefillNote) prefillNote.hidden = true;
+      });
+    }
+  }
 
   function populateIndustrySelects() {
     document.querySelectorAll("#industry-select, #ff-industry, #hero-industry-select").forEach(function (select) {
@@ -2021,10 +2117,51 @@
       // gauge grade re-translate if it's still the default
       var grade = document.getElementById("gauge-grade");
       if (grade && grade.dataset.locked !== "true") grade.textContent = t("hero.grade");
+      var scoreEl = document.getElementById("gauge-score");
+      if (scoreEl) updateGaugeAriaLabel(parseInt(scoreEl.textContent, 10) || 78);
     }
 
     btn.addEventListener("click", function () {
       setLang(LANG === "en" ? "nl" : "en");
+    });
+  }
+
+  function wireMobileMenu() {
+    var btn = document.getElementById("menu-toggle");
+    var panel = document.getElementById("mobile-nav");
+    if (!btn || !panel) return;
+
+    function close() {
+      panel.classList.remove("is-open");
+      panel.hidden = true;
+      btn.setAttribute("aria-expanded", "false");
+    }
+    function open() {
+      panel.hidden = false;
+      panel.classList.add("is-open");
+      btn.setAttribute("aria-expanded", "true");
+    }
+
+    btn.addEventListener("click", function () {
+      if (panel.classList.contains("is-open")) close(); else open();
+    });
+    panel.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", close);
+    });
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 900) close();
+    });
+  }
+
+  function wireIndustrySync() {
+    var selects = Array.prototype.slice.call(document.querySelectorAll("#hero-industry-select, #industry-select, #ff-industry"));
+    selects.forEach(function (select) {
+      select.addEventListener("change", function () {
+        var val = select.value;
+        selects.forEach(function (other) {
+          if (other !== select) other.value = val;
+        });
+      });
     });
   }
 
@@ -2035,10 +2172,13 @@
     wireReveal();
     wireScan();
     populateIndustrySelects();
+    wireIndustrySync();
+    wireFieldSync();
     wireRealScanner();
     wireIndustryTabs();
     wireFixitRequest();
     wireLangToggle();
+    wireMobileMenu();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

@@ -42,8 +42,16 @@ DesignMeter positioneert zich als *"objective UI/UX scores with actionable insig
 | **"Fix my website"-service** | Een uitlegsectie die de done-for-you service van het origineel naspeelt: 15 gerangschikte issues, levertijd, prijsindicatie en een duidelijke CTA. |
 | **Per-industrie weging** | Een sectie "What matters most in your industry" met 9 branches (e-commerce, SaaS, zorg, financieel, horeca, onderwijs, vastgoed, non-profit/overheid, agency/portfolio) die elk laten zien hoe de vier hoofdscores anders wegen en welke extra checks gelden. |
 | **Industrie-bewuste scan** | De echte scanner heeft een branche-keuze. Per branche worden 2 extra, branche-specifieke checks uitgevoerd (bijv. trust-signalen bij e-commerce, leesbaarheid bij zorg/onderwijs, tel-link bij horeca) en wordt de eindscore herwogen volgens het profiel van die branche. |
+| **Mobiel menu** | De navigatie was op kleine schermen volledig verborgen zonder alternatief. Er is nu een hamburger-menu met dezelfde links plus de scan-CTA. |
+| **Gesynchroniseerde branchekeuze** | De drie Industry-selects (hero-scan, echte scanner, Fix-it-brief) staan gekoppeld: kies 'm één keer, de andere twee volgen automatisch (blijven los aanpasbaar). |
+| **Dynamisch toegankelijkheidslabel op de meter** | De `aria-label` van de meter-SVG geeft nu de actuele score en beoordeling weer (en in de juiste taal), in plaats van een vast "78/100, rated good". |
+| **"Try a sample"** | Een knop bij de echte scanner laadt een opzettelijk gebrekkige voorbeeldpagina, zodat bezoekers de tool direct kunnen zien werken zonder eigen HTML te zoeken. |
 | **Ready-to-build plan per issue** | Elk gevonden issue in de echte scan heeft een uitklapbaar stappenplan: concrete, genummerde stappen en — waar relevant — een codevoorbeeld. Direct uitvoerbaar voor een designer/developer. |
 | **Fix-it-brief downloaden** | De "Done for you"-sectie heeft een formulier (naam, website, branche, opmerkingen — geen e-mailadres) dat een gerangschikte Fix-it-brief samenstelt, inclusief de scansamenvatting als die er is. Bij versturen wordt een `.txt`-bestand gedownload; "Copy brief as text" kopieert dezelfde inhoud naar het klembord. Alles blijft lokaal, er wordt niets verzonden. |
+| **Geen herhaalde invoer (URL)** | De website-URL uit de hero-scan vult automatisch het "Website"-veld van de Fix-it-brief, met een zichtbare melding. Past de gebruiker dat veld zelf aan, dan stopt de automatische overname — geen ongewenste overschrijvingen. |
+| **Duidelijke veldvalidatie** | Een lege URL bij de demo-scan toont nu een echte foutmelding (`role="alert"`, `aria-invalid`) in plaats van alleen een rode rand — en verdwijnt zodra je begint te typen. |
+| **Bruggetje tussen demo en echte scan** | Na een demo-scan verschijnt een directe link naar de echte HTML-scanner, met de melding dat de branchekeuze meegaat. |
+| **Browser-autofill** | Naam- en website-velden hebben `autocomplete`-attributen, zodat browsers eerder ingevulde gegevens kunnen aanbieden. |
 | **EN/NL taalwisseling** | Een EN/NL-knop in de header vertaalt de hele site — statische teksten, de branchetabs, en de scanresultaten (titels, fixes, stappenplannen) — direct, zonder te herladen. |
 | **Performance** | Geen framework, geen build, ~3 kleine bestanden. Snelle first paint, stabiele layout. |
 

@@ -47,7 +47,20 @@
       <span class="lang-toggle__sep">/</span>
       <span class="lang-toggle__opt" data-lang="nl">NL</span>
     </button>
+    <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu">
+      <span class="menu-toggle__bar"></span>
+      <span class="menu-toggle__bar"></span>
+      <span class="menu-toggle__bar"></span>
+    </button>
   </div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Primary (mobile)" hidden>
+    <a href="#how" data-i18n="nav.how">How it works</a>
+    <a href="#criteria" data-i18n="nav.criteria">What we measure</a>
+    <a href="#industries" data-i18n="nav.industries">By industry</a>
+    <a href="#run-scan" data-i18n="nav.scan">Real scan</a>
+    <a href="#report" data-i18n="nav.report">Sample report</a>
+    <a class="btn btn--solid mobile-nav__cta" href="#scan" data-i18n="nav.cta">Scan a page</a>
+  </nav>
 </header>
 
 <main id="main">
@@ -63,17 +76,19 @@
       <form class="scan" id="scan" autocomplete="off" novalidate>
         <label class="scan__label" for="url" data-i18n="hero.scanLabel">Page to scan</label>
         <div class="scan__row">
-          <input class="scan__input" id="url" name="url" type="url" inputmode="url"
-                 placeholder="https://your-site.com" aria-describedby="scan-note" />
+          <input class="scan__input" id="url" name="url" type="url" inputmode="url" autocomplete="url"
+                 placeholder="https://your-site.com" aria-describedby="scan-note url-error" />
           <button class="btn btn--solid" type="submit" id="scan-btn">
             <span class="btn__label" data-i18n="hero.scanBtn">Scan my design</span>
           </button>
         </div>
+        <p class="field-error" id="url-error" role="alert" hidden></p>
         <div class="scan__industry-row">
           <label class="scan__label scan__label--inline" for="hero-industry-select" data-i18n="scanner.industryLabel">Industry</label>
           <select id="hero-industry-select" class="scanner__select scanner__select--hero"></select>
         </div>
         <p class="scan__note" id="scan-note" data-i18n="hero.scanNote">Free preview · No sign-up · Result in seconds</p>
+        <p class="scan__bridge" id="hero-bridge" hidden></p>
       </form>
 
       <ul class="trust" aria-label="What the scan checks">
@@ -286,6 +301,7 @@
         <div class="scanner__controls">
           <label class="scan__label scan__label--inline" for="industry-select" data-i18n="scanner.industryLabel">Industry</label>
           <select id="industry-select" class="scanner__select"></select>
+          <button class="btn btn--ghost" id="load-sample-btn" type="button" data-i18n="scanner.loadSample">Try a sample</button>
           <label class="btn btn--ghost scanner__file">
             <input type="file" id="html-file" accept=".html,.htm,text/html" hidden />
             <span data-i18n="scanner.chooseFile">Choose .html file</span>
@@ -405,16 +421,17 @@
     <div class="fixit-request" id="fixit-request">
       <h3 data-i18n="fixitForm.title">Build your Fix-it brief</h3>
       <p class="fixit-request__intro" data-i18n="fixitForm.intro">Fill in a few details and we'll put together a ranked, ready-to-build brief based on this scan — no email required. Download it or copy it to share with your team.</p>
+      <p class="fixit-request__prefill" id="ff-prefill-note" data-i18n="fixitForm.prefillNote" hidden>Website and industry are filled in from your scan above — change them here if needed.</p>
 
       <form id="fixit-form" novalidate>
         <div class="ff-grid">
           <div class="ff-row">
             <label for="ff-name" data-i18n="fixitForm.name">Your name</label>
-            <input id="ff-name" name="name" type="text" required />
+            <input id="ff-name" name="name" type="text" autocomplete="name" required />
           </div>
           <div class="ff-row">
             <label for="ff-url" data-i18n="fixitForm.url">Website</label>
-            <input id="ff-url" name="url" type="url" placeholder="https://" required />
+            <input id="ff-url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="https://your-site.com" required />
           </div>
           <div class="ff-row">
             <label for="ff-industry" data-i18n="fixitForm.industry">Industry</label>
