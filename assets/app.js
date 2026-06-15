@@ -231,19 +231,19 @@
       "fixit.priceFrom": "From", "fixit.priceUnit": " · one-time",
       "fixit.cta": "Request my Fix-it report",
       "fixit.note": 'Or run a free scan first — <a href="#run-scan">scan your HTML</a> or <a href="#scan">scan a URL</a>.',
-      "fixitForm.title": "Request a Fix-it report",
-      "fixitForm.intro": "Tell us a bit about the site and we'll prepare your ranked, ready-to-build plan within four working days.",
-      "fixitForm.name": "Your name", "fixitForm.email": "Email address", "fixitForm.url": "Website URL",
+      "fixitForm.title": "Build your Fix-it brief",
+      "fixitForm.intro": "Fill in a few details and we'll put together a ranked, ready-to-build brief based on this scan — no email required. Download it or copy it to share with your team.",
+      "fixitForm.name": "Your name", "fixitForm.url": "Website",
       "fixitForm.industry": "Industry", "fixitForm.notes": "Anything specific you'd like us to focus on? (optional)",
       "fixitForm.attached": "Attached scan summary:",
-      "fixitForm.submit": "Send request", "fixitForm.copy": "Copy request as text",
-      "fixitForm.disclaimer": 'This opens a pre-filled email to send to us — nothing is submitted automatically. No mail client? Use "Copy request" instead.',
-      "fixitForm.doneTitle": "<strong>Request ready.</strong>",
-      "fixitForm.doneBody": 'Your email client should have opened with everything filled in — just hit send. If nothing opened, use "Copy request as text" above and paste it into an email yourself.',
-      "fixitForm.hintMissing": "Please fill in your name, email and the website URL.",
+      "fixitForm.submit": "Download brief", "fixitForm.copy": "Copy brief as text",
+      "fixitForm.disclaimer": "Everything stays on your device — nothing is sent anywhere. The brief downloads as a text file you can share however you like.",
+      "fixitForm.doneTitle": "<strong>Brief ready.</strong>",
+      "fixitForm.doneBody": "Your brief has downloaded as a text file. Open it, attach it to an email, or paste it wherever you need it — share it with your team or agency to get started.",
+      "fixitForm.hintMissing": "Please fill in your name and your website.",
       "fixitForm.copied": "Copied to clipboard.",
       "fixitForm.copyFailed": "Couldn't copy automatically — select the text below and copy it manually.",
-      "fixitForm.subject": "Fix-it report request — {url}",
+      "fixitForm.briefTitle": "DesignScan Fix-it brief",
       "fixitForm.summaryTitle": "DesignScan summary",
       "fixitForm.summaryScore": "Overall score",
       "fixitForm.summaryIndustry": "Industry",
@@ -344,19 +344,19 @@
       "fixit.priceFrom": "Vanaf", "fixit.priceUnit": " · eenmalig",
       "fixit.cta": "Vraag mijn Fix-it-rapport aan",
       "fixit.note": 'Of draai eerst een gratis scan — <a href="#run-scan">scan je HTML</a> of <a href="#scan">scan een URL</a>.',
-      "fixitForm.title": "Vraag een Fix-it-rapport aan",
-      "fixitForm.intro": "Vertel ons iets over de site en wij stellen binnen vier werkdagen je gerangschikte, direct uitvoerbare plan op.",
-      "fixitForm.name": "Je naam", "fixitForm.email": "E-mailadres", "fixitForm.url": "Website-URL",
+      "fixitForm.title": "Stel je Fix-it-brief samen",
+      "fixitForm.intro": "Vul een paar details in en wij stellen een gerangschikte, direct uitvoerbare brief samen op basis van deze scan — geen e-mail nodig. Download hem of kopieer hem om te delen met je team.",
+      "fixitForm.name": "Je naam", "fixitForm.url": "Website",
       "fixitForm.industry": "Branche", "fixitForm.notes": "Iets specifieks waar we op moeten focussen? (optioneel)",
       "fixitForm.attached": "Bijgevoegde scansamenvatting:",
-      "fixitForm.submit": "Verstuur aanvraag", "fixitForm.copy": "Kopieer aanvraag als tekst",
-      "fixitForm.disclaimer": 'Dit opent een vooraf ingevulde e-mail naar ons — er wordt niets automatisch verzonden. Geen mailprogramma? Gebruik "Kopieer aanvraag".',
-      "fixitForm.doneTitle": "<strong>Aanvraag gereed.</strong>",
-      "fixitForm.doneBody": 'Je e-mailprogramma zou geopend moeten zijn met alles al ingevuld — verstuur de mail. Ging er niets open? Gebruik "Kopieer aanvraag als tekst" hierboven en plak het zelf in een e-mail.',
-      "fixitForm.hintMissing": "Vul je naam, e-mailadres en de website-URL in.",
+      "fixitForm.submit": "Download brief", "fixitForm.copy": "Kopieer brief als tekst",
+      "fixitForm.disclaimer": "Alles blijft op je eigen apparaat — er wordt niets verzonden. De brief downloadt als tekstbestand dat je kunt delen zoals jij wilt.",
+      "fixitForm.doneTitle": "<strong>Brief gereed.</strong>",
+      "fixitForm.doneBody": "Je brief is gedownload als tekstbestand. Open het, voeg het toe aan een e-mail, of plak het waar je het nodig hebt — deel het met je team of bureau om aan de slag te gaan.",
+      "fixitForm.hintMissing": "Vul je naam en je website in.",
       "fixitForm.copied": "Gekopieerd naar klembord.",
       "fixitForm.copyFailed": "Kon niet automatisch kopiëren — selecteer de tekst hieronder en kopieer hem handmatig.",
-      "fixitForm.subject": "Aanvraag Fix-it-rapport — {url}",
+      "fixitForm.briefTitle": "DesignScan Fix-it-brief",
       "fixitForm.summaryTitle": "DesignScan-samenvatting",
       "fixitForm.summaryScore": "Totaalscore",
       "fixitForm.summaryIndustry": "Branche",
@@ -1831,49 +1831,60 @@
     panel.addEventListener("click", function (e) { if (e.target === panel) closePanel(); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panel.hidden) closePanel(); });
 
-    function buildEmail() {
+    function buildBrief() {
       var name = document.getElementById("ff-name").value.trim();
-      var email = document.getElementById("ff-email").value.trim();
       var url = document.getElementById("ff-url").value.trim();
       var industry = document.getElementById("ff-industry").value;
       var notes = document.getElementById("ff-notes").value.trim();
 
-      var body = [];
-      body.push("Name: " + name);
-      body.push("Email: " + email);
-      body.push("URL: " + url);
-      body.push((LANG === "nl" ? "Branche" : "Industry") + ": " + t(INDUSTRY_PROFILES[industry] ? INDUSTRY_PROFILES[industry].labelKey : "industries.general.label"));
+      var lines = [];
+      lines.push(t("fixitForm.briefTitle"));
+      lines.push("");
+      lines.push((LANG === "nl" ? "Naam" : "Name") + ": " + name);
+      lines.push((LANG === "nl" ? "Website" : "Website") + ": " + url);
+      lines.push((LANG === "nl" ? "Branche" : "Industry") + ": " + t(INDUSTRY_PROFILES[industry] ? INDUSTRY_PROFILES[industry].labelKey : "industries.general.label"));
       if (notes) {
-        body.push("");
-        body.push((LANG === "nl" ? "Opmerkingen" : "Notes") + ":");
-        body.push(notes);
+        lines.push("");
+        lines.push((LANG === "nl" ? "Opmerkingen" : "Notes") + ":");
+        lines.push(notes);
       }
       var summary = buildSummaryText();
       if (summary) {
-        body.push("");
-        body.push("---");
-        body.push(summary);
+        lines.push("");
+        lines.push("---");
+        lines.push(summary);
       }
+
+      var hostSlug = (url || "site").replace(/^https?:\/\//, "").replace(/[^a-z0-9.-]+/gi, "-").replace(/^-+|-+$/g, "") || "site";
       return {
-        subject: t("fixitForm.subject", { url: url || "—" }),
-        body: body.join("\n"),
-        valid: !!(name && email && url)
+        text: lines.join("\n"),
+        filename: "designscan-fixit-brief-" + hostSlug + ".txt",
+        valid: !!(name && url)
       };
+    }
+
+    function downloadText(text, filename) {
+      var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
 
     if (form) {
       form.addEventListener("submit", function (e) {
         e.preventDefault();
-        var email = buildEmail();
-        if (!email.valid) {
+        var brief = buildBrief();
+        if (!brief.valid) {
           hint.textContent = t("fixitForm.hintMissing");
           hint.className = "ff-hint ff-hint--err";
           return;
         }
-        var mailto = "mailto:hello@designscan.example" +
-          "?subject=" + encodeURIComponent(email.subject) +
-          "&body=" + encodeURIComponent(email.body);
-        window.location.href = mailto;
+        downloadText(brief.text, brief.filename);
         form.hidden = true;
         doneBox.hidden = false;
       });
@@ -1881,15 +1892,14 @@
 
     if (copyBtn) {
       copyBtn.addEventListener("click", function () {
-        var email = buildEmail();
-        if (!email.valid) {
+        var brief = buildBrief();
+        if (!brief.valid) {
           hint.textContent = t("fixitForm.hintMissing");
           hint.className = "ff-hint ff-hint--err";
           return;
         }
-        var text = "Subject: " + email.subject + "\n\n" + email.body;
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(function () {
+          navigator.clipboard.writeText(brief.text).then(function () {
             hint.textContent = t("fixitForm.copied");
             hint.className = "ff-hint";
           }, function () {

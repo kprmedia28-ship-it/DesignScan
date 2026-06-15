@@ -396,12 +396,12 @@
       </div>
     </div>
 
-    <!-- FIX-IT REQUEST PANEL -->
+    <!-- FIX-IT BRIEF PANEL -->
     <div class="fixit-request" id="fixit-request" hidden>
       <div class="fixit-request__card">
         <button class="fixit-request__close" id="close-fixit-request" type="button" aria-label="Close">&times;</button>
-        <h3 data-i18n="fixitForm.title">Request a Fix-it report</h3>
-        <p class="fixit-request__intro" data-i18n="fixitForm.intro">Tell us a bit about the site and we'll prepare your ranked, ready-to-build plan within four working days.</p>
+        <h3 data-i18n="fixitForm.title">Build your Fix-it brief</h3>
+        <p class="fixit-request__intro" data-i18n="fixitForm.intro">Fill in a few details and we'll put together a ranked, ready-to-build brief based on this scan — no email required. Download it or copy it to share with your team.</p>
 
         <form id="fixit-form" novalidate>
           <div class="ff-row">
@@ -409,11 +409,7 @@
             <input id="ff-name" name="name" type="text" required />
           </div>
           <div class="ff-row">
-            <label for="ff-email" data-i18n="fixitForm.email">Email address</label>
-            <input id="ff-email" name="email" type="email" required />
-          </div>
-          <div class="ff-row">
-            <label for="ff-url" data-i18n="fixitForm.url">Website URL</label>
+            <label for="ff-url" data-i18n="fixitForm.url">Website</label>
             <input id="ff-url" name="url" type="url" placeholder="https://" required />
           </div>
           <div class="ff-row">
@@ -429,16 +425,16 @@
             <pre class="ff-summary__pre" id="ff-summary-pre"></pre>
           </div>
           <div class="ff-actions">
-            <button class="btn btn--solid" type="submit" data-i18n="fixitForm.submit">Send request</button>
+            <button class="btn btn--solid" type="submit" data-i18n="fixitForm.submit">Download brief</button>
             <span class="ff-hint" id="ff-hint"></span>
           </div>
-          <p class="ff-disclaimer" data-i18n="fixitForm.disclaimer">This opens a pre-filled email to send to us — nothing is submitted automatically. No mail client? Use "Copy request" instead.</p>
-          <button class="ff-copy" id="ff-copy" type="button" data-i18n="fixitForm.copy">Copy request as text</button>
+          <p class="ff-disclaimer" data-i18n="fixitForm.disclaimer">Everything stays on your device — nothing is sent anywhere. The brief downloads as a text file you can share however you like.</p>
+          <button class="ff-copy" id="ff-copy" type="button" data-i18n="fixitForm.copy">Copy brief as text</button>
         </form>
 
         <div class="fixit-request__done" id="fixit-done" hidden>
-          <p data-i18n="fixitForm.doneTitle"><strong>Request ready.</strong></p>
-          <p data-i18n="fixitForm.doneBody">Your email client should have opened with everything filled in — just hit send. If nothing opened, use "Copy request as text" above and paste it into an email yourself.</p>
+          <p data-i18n="fixitForm.doneTitle"><strong>Brief ready.</strong></p>
+          <p data-i18n="fixitForm.doneBody">Your brief has downloaded as a text file. Open it, attach it to an email, or paste it wherever you need it — share it with your team or agency to get started.</p>
         </div>
       </div>
     </div>
