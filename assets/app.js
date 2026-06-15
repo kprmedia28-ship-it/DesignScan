@@ -317,6 +317,7 @@
       "fixitForm.allIssues": "All issues, ranked by impact, with fixes and a ready-to-build plan",
       "fixitForm.codeLabel": "Code",
       "fixitForm.noScanYet": "No scan has been run yet. Run a real scan above, then come back here — your results, fixes and ready-to-build plans will be included in the brief automatically.",
+      "fixitForm.noScanInline": 'No scan results yet — a demo reading on the homepage doesn\u2019t count. <a href="#run-scan">Run the real HTML scan above</a> and your scores, fixes and plans will be added to this brief automatically.',
       "cta.title": "Stop guessing what's wrong.<br>Measure it.", "cta.btn": "Scan my design",
       "footer.tag": "Objective design analysis", "footer.privacy": "Privacy Policy", "footer.terms": "Terms of Service",
       "issue.tag": "Industry",
@@ -441,6 +442,7 @@
       "fixitForm.allIssues": "Alle issues, gerangschikt op impact, met fixes en een direct uitvoerbaar plan",
       "fixitForm.codeLabel": "Code",
       "fixitForm.noScanYet": "Er is nog geen scan uitgevoerd. Voer hierboven een echte scan uit en kom dan terug — je resultaten, fixes en stappenplannen worden automatisch in de brief opgenomen.",
+      "fixitForm.noScanInline": 'Nog geen scanresultaten — een demo-meting op de homepage telt niet mee. <a href="#run-scan">Voer hierboven de echte HTML-scan uit</a> en je scores, fixes en plannen worden automatisch aan deze brief toegevoegd.',
       "cta.title": "Stop met gokken wat er mis is.<br>Meet het.", "cta.btn": "Scan mijn design",
       "footer.tag": "Objectieve designanalyse", "footer.privacy": "Privacybeleid", "footer.terms": "Algemene voorwaarden",
       "issue.tag": "Branche",
@@ -1606,10 +1608,27 @@
   var SEV_CLASS = { high: "issue--high", med: "issue--med", low: "issue--low" };
   var SEV_TAG_CLASS = { high: "", med: "issue__sev--med", low: "issue__sev--low" };
 
-  var lastResult = null; // cached so we can re-render on language switch
+  var LAST_RESULT_KEY = "designscan:lastResult";
 
-  function renderResults(result) {
+  function saveLastResult(result) {
+    try {
+      if (window.localStorage) localStorage.setItem(LAST_RESULT_KEY, JSON.stringify(result));
+    } catch (e) { /* storage unavailable (private mode, sandboxed preview, etc.) — fine, just in-memory */ }
+  }
+  function loadLastResult() {
+    try {
+      if (!window.localStorage) return null;
+      var raw = localStorage.getItem(LAST_RESULT_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+  }
+
+  var lastResult = null; // cached so we can re-render on language switch / page reload
+
+  function renderResults(result, opts) {
+    var scroll = !opts || opts.scroll !== false;
     lastResult = result;
+    saveLastResult(result);
     var box = document.getElementById("scanner-results");
     document.getElementById("result-file").textContent = result.filename;
     document.getElementById("result-score").textContent = result.overall;
@@ -1729,7 +1748,7 @@
         i.style.width = i.style.getPropertyValue("--v");
       });
     });
-    if (!reduce) box.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (scroll && !reduce) box.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function wireRealScanner() {
@@ -1986,6 +2005,8 @@
     var copyBtn = document.getElementById("ff-copy");
     if (!panel) return;
 
+    var noScanNote = document.getElementById("ff-noscan-note");
+
     function refreshSummary() {
       var summary = buildSummaryText();
       if (summary) {
@@ -1993,6 +2014,14 @@
         summaryPre.textContent = summary;
       } else {
         summaryRow.hidden = true;
+      }
+      if (noScanNote) {
+        if (lastResult) {
+          noScanNote.hidden = true;
+        } else {
+          noScanNote.innerHTML = t("fixitForm.noScanInline");
+          noScanNote.hidden = false;
+        }
       }
     }
 
@@ -2011,6 +2040,7 @@
 
     // expose so language toggle / scan completion can refresh the attached summary
     wireFixitRequest.refreshSummary = refreshSummary;
+    refreshSummary();
 
     function buildBrief() {
       var name = document.getElementById("ff-name").value.trim();
@@ -2179,6 +2209,11 @@
     wireFixitRequest();
     wireLangToggle();
     wireMobileMenu();
+
+    // Restore the last scan result (if any) so a page reload doesn't
+    // lose the report — without yanking the viewport on load.
+    var restored = loadLastResult();
+    if (restored) renderResults(restored, { scroll: false });
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

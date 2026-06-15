@@ -135,6 +135,12 @@ a { color: inherit; }
   font-family: var(--mono); font-size: 12px; color: var(--ember-2);
   margin: -4px 0 18px; letter-spacing: .02em;
 }
+.fixit-request__noscan {
+  font-size: 14px; color: var(--ink-2); background: var(--paper-2);
+  border: 1px dashed var(--line); border-radius: 8px; padding: 12px 14px;
+  margin: -4px 0 18px;
+}
+.fixit-request__noscan a { color: var(--ember-2); font-weight: 600; text-decoration: underline; }
 .scanner__select--hero { padding: 9px 12px; font-size: 14px; }
 .readout__industry-line {
   font-family: var(--mono); font-size: 11px; color: var(--ember-2); margin: 8px 0 0;
